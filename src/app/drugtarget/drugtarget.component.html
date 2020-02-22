@@ -1,0 +1,182 @@
+<div id="d-title">
+  <div class="container">
+    <h1>Drug-Target Connectivity</h1>
+  </div>
+</div>
+
+<div id="d-input">
+  <div class="container">
+    <div class="di-container">
+      <h1>Drug Side</h1>
+    </div>
+    <div class="di-container">
+      <h1>Target Side</h1>
+      <ngb-tabset type="pills" [destroyOnHide]="false">
+        <ngb-tab title="Protein Input">
+          <ng-template ngbTabContent>
+            <h1>Protein</h1>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Disease Input">
+          <ng-template ngbTabContent>
+            <h1>Disease</h1>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+    <button (click)="predict()">Search</button>
+  </div>
+</div>
+<!--
+<div id="loading" *ngIf='showload'>
+  <div class="loader"></div>
+  <h5>predicting..</h5>
+</div> -->
+
+
+<div id="d-result" *ngIf='showresult'>
+  <div class="container">
+    <h1>Drug-Target Result</h1>
+    <ngb-tabset [destroyOnHide]="false">
+      <ngb-tab title="Summary">
+        <ng-template ngbTabContent>
+          <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+            master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
+            dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
+            iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Connectivity Graph">
+        <ng-template ngbTabContent>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
+          <p>Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table
+            craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl
+            cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia
+            yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean
+            shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero
+            sint qui sapiente accusamus tattooed echo park.</p>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Connectivity Table">
+        <ng-template ngbTabContent>
+          <ngb-tabset type="pills">
+            <ngb-tab title="Plant to Compound">
+              <ng-template ngbTabContent>
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>Plant Name</th>
+                      <th>Connectivity Weight</th>
+                      <th>Compound Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let pla_com of pla_com">
+                      <td>{{pla_com.pla_name}}</td>
+                      <td>{{pla_com.weight}}</td>
+                      <td>{{pla_com.com_pubchem_name}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Compound to Protein">
+              <ng-template ngbTabContent>
+
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Protein to Disease">
+              <ng-template ngbTabContent>
+
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Metadata">
+        <ng-template ngbTabContent>
+          <ngb-tabset type="pills">
+            <ngb-tab title="Plant">
+              <ng-template ngbTabContent>
+                <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Plant Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let pla_com of pla_com">
+                      <td>{{pla_com.pla_id}}</td>
+                      <td>{{pla_com.pla_name}}</td>
+                    </tr>
+                  </tbody>
+                </table> -->
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Compound">
+              <ng-template ngbTabContent>
+                <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First name</th>
+                      <th>Last name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let group of data">
+                      <td>{{group.name}}</td>
+                      <td>{{group.area}}</td>
+                      <td>{{group.population}}</td>
+                    </tr>
+                  </tbody>
+                </table> -->
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Protein">
+              <ng-template ngbTabContent>
+                <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First name</th>
+                      <th>Last name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let group of data">
+                      <td>{{group.name}}</td>
+                      <td>{{group.area}}</td>
+                      <td>{{group.population}}</td>
+                    </tr>
+                  </tbody>
+                </table> -->
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Disease">
+              <ng-template ngbTabContent>
+                <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First name</th>
+                      <th>Last name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let group of data">
+                      <td>{{group.name}}</td>
+                      <td>{{group.area}}</td>
+                      <td>{{group.population}}</td>
+                    </tr>
+                  </tbody>
+                </table> -->
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+
+  </div>
+</div>

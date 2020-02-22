@@ -1,0 +1,80 @@
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+/* title */
+#d-title {
+  width: 100%;
+  background: #6AE173;
+  padding: 1.5em 0;
+  margin-top: 85px;
+}
+
+#d-title h1 {
+  color: white;
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+/* input */
+#d-input {
+  padding: 5rem 0;
+  background: #3E4B3E;
+  width: 100%;
+}
+
+#d-input h1 {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+#d-input .container {
+  display: flex;
+  flex-direction: row;
+  justify-content:
+}
+
+#d-input .di-container {
+  width: 50%;
+}
+
+#d-input .di-container button {
+  background-color: #3E4B3E;
+  /* Green */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  border: 2px solid #4CAF50;
+  margin-right: 10px;
+}
+
+#d-input .di-container button:hover {
+  border: 2px solid #4CAF50;
+  box-shadow: 0 0 10px rgba(167, 245, 66, .7);
+}
+
+#d-input .dic-button .active {
+  background-color: #4CAF50;
+  border: 2px solid #4CAF50;
+}
+
+/* result */
+#d-result {
+  background: #F6F6F6;
+  padding: 4rem 0;
+}
+
+#d-result h1 {
+  font-size: 25px;
+  font-weight: 400;
+  color: #505050
+}

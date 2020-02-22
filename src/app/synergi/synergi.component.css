@@ -1,0 +1,127 @@
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* title */
+#s-title{
+  width: 100%;
+  background: #6AE173;
+  padding: 1.5em 0;
+  margin-top: 85px;
+}
+
+#s-title h1{
+  color: white;
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+/* input */
+#s-input{
+  padding: 5rem 0;
+  background: #3E4B3E;
+  width: 100%;
+}
+
+#s-input .si-container{
+  width: 60%;
+  min-width: 300px;
+}
+
+#s-input h1{
+  color: white;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+#s-input input{
+  width: 100%;
+  min-width: 300px;
+  height: 30px;
+  border-radius: 50px;
+}
+
+#s-input button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  margin: 15px 0 0 0;
+}
+
+#s-input .si-form{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#loading{
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  margin-top: 87px;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: flex;
+  flex-direction: column;
+  padding: 10rem 0;
+}
+#loading .loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid green;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+#loading h5{
+  margin: 0 auto;
+  color: white;
+  margin-top: 10px;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* result */
+
+#s-result{
+  background: #F6F6F6;
+  padding: 4rem 0;
+}
+
+#s-result h1{
+  font-size: 25px;
+  font-weight: 400;
+  color:#505050
+}
+
+#s-result p{
+  font-size: 15px;
+  font-weight: 400;
+  color:#505050
+}

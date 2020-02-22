@@ -1,0 +1,277 @@
+/* banner */
+
+#h-banner{
+  width: 100%;
+  margin-top: 90px;
+  height: 600px;
+  background-image: url('../../assets/img/banner.png');
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hb-judul{
+  width: 100%;
+  text-align: center;
+}
+
+.hb-judul h1{
+  font-size: 55px;
+  color: white;
+  font-weight: 700;
+  margin: 0;
+}
+
+.hb-judul p{
+  font-size: 20px;
+  color: white;
+  font-weight: 400;
+  margin: 0 20px;
+}
+
+.hb-feature{
+  margin-top: 85px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hbf-select{
+  margin: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.hbf-select:hover{
+  transform: scale(1.1,1.1);
+}
+
+.hbf-select img{
+  max-width: 90px;
+  height: 70px;
+}
+
+.hbf-select h5{
+  color: white;
+  margin-top: 10px;
+  font-size: 15px;
+  text-align: center;
+  font-weight: 400;
+}
+
+/* what is ijah */
+#h-ijah{
+  width: 100%;
+  background: #F4F4F4;
+  padding: 5em 0;
+}
+
+.hi-text{
+    max-width: 60%;
+    margin: 0 auto;
+}
+
+.hi-text h1{
+  font-size: 45px;
+  color: #686868;
+  margin: 0;
+  font-weight: 700;
+}
+
+.hi-text p{
+  margin: 30px 0;
+  color: #686868;
+}
+
+.hi-text button{
+  padding: 5px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: 'Poppins', 'sans-serif';
+  font-weight: 700;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  color: #4CAF50;
+  border: 2px solid #4CAF50;
+  border-radius: 50px;
+  background-color: #F4F4F4;
+}
+
+.hi-text button:hover {
+  background-color: #4CAF50;
+  color: #F4F4F4;
+}
+
+#h-feature{
+  padding: 4rem 0;
+}
+
+#h-feature .container{
+  padding: 0 5rem;
+}
+
+
+#h-feature h1{
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  color: #686868;
+}
+
+#h-feature .hf-select{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+}
+
+#h-feature .hf-select img{
+  width: 150px;
+  max-height: 150px;
+  margin-right: 50px;
+}
+
+#h-feature .hf-select h4{
+  font-weight: 700;
+  color: #6AE173;
+  font-size: 25px;
+}
+
+#h-feature .hf-select p{
+  font-size: 16px;
+  color: #686868;
+}
+
+#h-feature .hf-select button{
+  padding: 5px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: 'Poppins', 'sans-serif';
+  font-weight: 700;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 50px;
+}
+
+#h-feature .hfs-drugtarget button{
+  color: #6AE173;
+  border: 2px solid #6AE173;
+}
+
+#h-feature .hfs-drugtarget button:hover {
+  background-color: #6AE173;
+  color: white;
+}
+
+#h-feature .hfs-drugtarget h4{
+  color: #6AE173;
+}
+
+#h-feature .hfs-cluster button{
+  color: #60D935;
+  border: 2px solid #60D935;
+}
+
+#h-feature .hfs-cluster button:hover {
+  background-color: #60D935;
+  color: white;
+}
+
+#h-feature .hfs-cluster h4{
+  color: #60D935;
+}
+
+#h-feature .hfs-synergi button{
+  color: #92D935;
+  border: 2px solid #92D935;
+}
+
+#h-feature .hfs-synergi button:hover {
+  background-color: #92D935;
+  color: white;
+}
+
+#h-feature .hfs-synergi h4{
+  color: #92D935;
+}
+
+/* contribute */
+#h-contribute{
+  padding: 5rem 0;
+  background-color: #74C88D;
+}
+
+#h-contribute .container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#h-contribute .hc-left{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  max-width: 600px;
+}
+
+#h-contribute .hc-left h1{
+  color: white;
+  font-weight: 700;
+}
+
+#h-contribute .hc-left p{
+  color: white;
+  font-size: 16px;
+}
+
+#h-contribute .hc-left button{
+  padding: 5px 16px;
+  width: fit-content;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: 'Poppins', 'sans-serif';
+  font-weight: 700;
+  font-size: 16px;
+  margin: 20px 0;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 50px;
+  color: white;
+  border: 2px solid white;
+  background-color: #74C88D;
+}
+
+#h-contribute .hc-left button:hover{
+  background-color: white;
+  color: #74C88D;
+}
+
+#h-contribute .hc-right{
+  max-width: 300px;
+  margin-left: 100px;
+}
+
+#h-contribute .hc-right img{
+  max-width: 200px;
+}

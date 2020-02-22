@@ -1,1 +1,143 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', 'sans-serif';
+}
+
+.dropdown-item.active, .dropdown-item:active{
+  color: black;
+  background-color: #7BEE84 !important;
+}
+
+/* synergi bootstrap */
+#s-result tr{
+    background: white;
+}
+
+#s-result thead tr{
+  background: #3E4B3E;
+  color: white;
+}
+
+#s-result .table td{
+  border : 1px solid #8A8A8A;
+}
+
+#s-result thead th{
+  border : 1px solid #3E4B3E;
+}
+
+#s-result .page-item.active .page-link{
+  background: #2ECC71;
+  border-color: #2ECC71;
+  color: white;
+}
+
+#s-result .d-flex .page-link{
+  color: #2ECC71;
+}
+
+/* cluster bootstrap */
+
+#c-result h1{
+  margin-bottom: 30px;
+}
+#c-result .nav-link{
+  background-color: #C9C6C6;
+  color: black;
+}
+
+#c-result .active{
+  color: white;
+  background-color: #2ECC71;
+}
+
+#c-result .tab-pane{
+  background-color: white !important;
+  padding: 2rem 0 0 0;
+  color: black;
+  border-top: 5px solid #2ECC71;
+}
+
+#c-result .nav-tabs .nav-link{
+  border: none;
+  border-radius: 0;
+}
+
+#c-result #ngb-tab-3-panel .tab-pane{
+  background-color: white !important;
+  padding: 1rem 0 !important;
+  color: black !important;
+  border-top: none !important;
+}
+
+#c-result #ngb-tab-3-panel .nav-item{
+  margin-left: 10px;
+}
+
+/* input drugtarget */
+#d-input .di-container .nav-link{
+  background-color: #C9C6C6;
+  border-radius: 50px;
+  color: black;
+}
+
+#d-input .di-container .nav-item .active{
+  background-color: blue !important;
+}
+
+/* result drugtarget */
+#d-result h1{
+  margin-bottom: 30px;
+}
+#d-result .nav-link{
+  background-color: #C9C6C6;
+  color: black;
+}
+
+#d-result .active{
+  color: white;
+  background-color: #2ECC71;
+}
+
+#d-result .tab-pane{
+  background-color: white !important;
+  padding: 2rem 0 0 0;
+  color: black;
+  border-top: 5px solid #2ECC71;
+}
+
+#d-result .nav-tabs .nav-link{
+  border: none;
+  border-radius: 0;
+}
+
+#d-result #ngb-tab-5-panel .tab-pane{
+  background-color: white !important;
+  padding: 1rem 0 !important;
+  color: black !important;
+  border-top: none !important;
+}
+
+#d-result #ngb-tab-5-panel .nav-item{
+  margin-left: 10px;
+}
+
+/* synergi result datatable */
+#s-result #DataTables_Table_0_wrapper {
+  z-index: 500 !important;
+}
+
+/* ngb-tab-2-panel */
+#d-result #ngb-tab-4-panel .tab-pane{
+  background-color: white !important;
+  padding: 1rem 0 !important;
+  color: black !important;
+  border-top: none !important;
+}
+
+#d-result #ngb-tab-4-panel .nav-item{
+  margin-left: 10px;
+}

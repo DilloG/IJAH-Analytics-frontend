@@ -1,0 +1,56 @@
+<div id="s-title">
+  <div class="container">
+    <h1>Compound Synergi</h1>
+  </div>
+</div>
+
+<div id="s-input">
+  <div class="container">
+    <div class="si-container">
+      <h1>Disease Name</h1>
+      <!-- <input id="typeahead-prevent-manual-entry"  type="text" class="form-control"
+       [(ngModel)]="model"
+       [ngbTypeahead]="search"
+       [inputFormatter]="formatter"
+       [resultFormatter]="formatter"
+       [editable]='false' /> -->
+      <!-- <pre>Model: {{ model | json }}</pre> -->
+      <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" />
+      <div class="si-form">
+        <button (click)="predict()">Search</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loading" *ngIf='showload'>
+  <div class="loader"></div>
+  <h5>predicting..</h5>
+</div>
+
+<div id="s-result" *ngIf='showresult'>
+  <div class="container">
+    <h1>Synergi Result</h1>
+    <p>Table of Synergis Compound of {{model_parse}}</p>
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+      <thead>
+        <tr>
+          <th>Compound 1</th>
+          <th>Compound 2</th>
+          <th>Agent Score</th>
+          <th>Topology Score</th>
+          <th>Synergi Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let synergi of synergi">
+          <td>{{synergi.compound1}}</td>
+          <td>{{synergi.compound2}}</td>
+          <td>{{synergi.aScore}}</td>
+          <td>{{synergi.tScore}}</td>
+          <td>{{synergi.sScore}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,173 @@
+<div id="c-title">
+  <div class="container">
+    <h1>Cluster Connectivity</h1>
+  </div>
+</div>
+
+<div id="c-input">
+  <div class="container">
+    <div class="ci-container">
+      <h1>Drug Side</h1>
+      <div class="cic-drug">
+        <div class="cicd cicd-analgesic">
+          <h1>Analgesic Compound</h1>
+          <input id="typeahead-analg" type="text" class="form-control" [(ngModel)]="modelAnalg" [ngbTypeahead]="searchAnalg" />
+        </div>
+        <div class="cicd cicd-bacteri">
+          <h1>Antibacterial Compound</h1>
+          <input id="typeahead-bacteri" type="text" class="form-control" [(ngModel)]="modelBacteri" [ngbTypeahead]="searchBacteri" />
+        </div>
+        <div class="cicd cicd-inflam">
+          <h1>Antiinflamatory Compound</h1>
+          <input id="typeahead-inflam" type="text" class="form-control" [(ngModel)]="modelInflam" [ngbTypeahead]="searchInflam" />
+        </div>
+      </div>
+
+      <h1>Target Side</h1>
+      <div class="cic-target">
+        <div class="cict cict-efficacy">
+          <h1>Efficacy</h1>
+          <input id="typeahead-efficacy" type="text" class="form-control" [(ngModel)]="modelEfficacy" [ngbTypeahead]="searchEfficacy" />
+        </div>
+        <div class="cict cict-activity">
+          <h1>Activity</h1>
+          <input id="typeahead-activity" type="text" class="form-control" [(ngModel)]="modelActivity" [ngbTypeahead]="searchActivity" />
+        </div>
+        <div class="cict cict-target">
+          <h1>Target</h1>
+          <input id="typeahead-target" type="text" class="form-control" [(ngModel)]="modelTarget" [ngbTypeahead]="searchTarget" />
+        </div>
+      </div>
+
+      <div class="ci-form">
+        <button class="reset">Reset</button>
+        <button class="search" (click)="predict()">Search</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loading" *ngIf='showload'>
+  <div class="loader"></div>
+  <h5>predicting..</h5>
+</div>
+
+<div id="c-result">
+  <div class="container">
+    <h1>Cluster Result</h1>
+    <ngb-tabset [destroyOnHide]="false">
+      <ngb-tab title="Summary">
+        <ng-template ngbTabContent>
+          <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+            master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
+            dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
+            iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Connectivity Graph">
+        <ng-template ngbTabContent>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
+          <p>Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table
+            craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl
+            cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia
+            yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean
+            shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero
+            sint qui sapiente accusamus tattooed echo park.</p>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Connectivity Text">
+        <ng-template ngbTabContent>
+          <p>Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi. Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et odio. Duis pharetra
+            et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam urna, egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec tristique ipsum euismod
+            facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in eget neque. Phasellus nec tortor vel tellus
+            pulvinar feugiat.</p>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Metadata">
+        <ng-template ngbTabContent>
+          <ngb-tabset type="pills">
+            <ngb-tab title="Plant">
+              <ng-template ngbTabContent>
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First name</th>
+                      <th>Last name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let group of data">
+                      <td>{{group.name}}</td>
+                      <td>{{group.area}}</td>
+                      <td>{{group.population}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Compound">
+              <ng-template ngbTabContent>
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First name</th>
+                      <th>Last name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let group of data">
+                      <td>{{group.name}}</td>
+                      <td>{{group.area}}</td>
+                      <td>{{group.population}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Protein">
+              <ng-template ngbTabContent>
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First name</th>
+                      <th>Last name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let group of data">
+                      <td>{{group.name}}</td>
+                      <td>{{group.area}}</td>
+                      <td>{{group.population}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Disease">
+              <ng-template ngbTabContent>
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First name</th>
+                      <th>Last name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let group of data">
+                      <td>{{group.name}}</td>
+                      <td>{{group.area}}</td>
+                      <td>{{group.population}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

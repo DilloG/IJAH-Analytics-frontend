@@ -1,0 +1,323 @@
+{
+  "plant": [
+    {
+      "pla_id": "PLA00000010",
+      "pla_name": "Ochna squarrosa",
+      "pla_idr_name": null
+    },
+    {
+      "pla_id": "PLA00000003",
+      "pla_name": "Malus sylvestris",
+      "pla_idr_name": null
+    },
+    {
+      "pla_id": "PLA00000005",
+      "pla_name": "Stephania dicentrinifera",
+      "pla_idr_name": null
+    },
+    {
+      "pla_id": "PLA00000009",
+      "pla_name": "Syzygium jambos",
+      "pla_idr_name": null
+    },
+    {
+      "pla_id": "PLA00000008",
+      "pla_name": "Aframomum daniellii",
+      "pla_idr_name": null
+    },
+    {
+      "pla_id": "PLA00000025",
+      "pla_name": "Guazuma tomentosa",
+      "pla_idr_name": null
+    },
+    {
+      "pla_id": "PLA00000027",
+      "pla_name": "Solanum spirale",
+      "pla_idr_name": null
+    },
+    {
+      "pla_id": "PLA00000028",
+      "pla_name": "Zanthoxylum fagara",
+      "pla_idr_name": null
+    },
+    {
+      "pla_id": "PLA00000038",
+      "pla_name": "Dioscorea rotundifolia",
+      "pla_idr_name": null
+    }
+  ],
+  "disease": [
+    {
+      "dis_id": "DIS00000001",
+      "dis_omim_id": "606072",
+      "dis_name": "Rippling muscle disease",
+      "dis_uniprot_abbrv": "RM"
+    },
+    {
+      "dis_id": "DIS00000002",
+      "dis_omim_id": "606071",
+      "dis_name": "Charcot-Marie-Tooth disease 2C",
+      "dis_uniprot_abbrv": "CMT2"
+    },
+    {
+      "dis_id": "DIS00000003",
+      "dis_omim_id": "606070",
+      "dis_name": "Amyotrophic lateral sclerosis 2",
+      "dis_uniprot_abbrv": "ALS2"
+    },
+    {
+      "dis_id": "DIS00000004",
+      "dis_omim_id": "259730",
+      "dis_name": "Osteopetrosis, autosomal recessive 3",
+      "dis_uniprot_abbrv": "OPTB"
+    },
+    {
+      "dis_id": "DIS00000005",
+      "dis_omim_id": "145750",
+      "dis_name": "pertriglyceridemia, familial",
+      "dis_uniprot_abbrv": "FMT"
+    },
+    {
+      "dis_id": "DIS00000006",
+      "dis_omim_id": "606408",
+      "dis_name": "Ehlers-Danlos syndrome due to tenascin X deficiency",
+      "dis_uniprot_abbrv": "EDSTNX"
+    },
+    {
+      "dis_id": "DIS00000007",
+      "dis_omim_id": "611960",
+      "dis_name": "Asthma-related traits 7",
+      "dis_uniprot_abbrv": "ASRT"
+    },
+    {
+      "dis_id": "DIS00000008",
+      "dis_omim_id": "616570",
+      "dis_name": "Cerebro-oculo-facio-skeletal syndrome 3",
+      "dis_uniprot_abbrv": "COFS"
+    }
+  ],
+  "compound": [
+    {
+      "com_id": "COM00018881",
+      "com_pubchem_name": "Balhimycin",
+      "com_type": "Analgesic"
+    },
+    {
+      "com_id": "COM00018882",
+      "com_pubchem_name": "Ergotamine",
+      "com_type": "Antiinflamatory"
+    },
+    {
+      "com_id": "COM00018883",
+      "com_pubchem_name": "Dnd-omi 70 nmol/l",
+      "com_type": "Antibacterial"
+    },
+    {
+      "com_id": "COM00018884",
+      "com_pubchem_name": "D-cysteine",
+      "com_type": "Analgesic"
+    },
+    {
+      "com_id": "COM00018885",
+      "com_pubchem_name": "3'-demethylnobiletin",
+      "com_type": "Antiinflamatory"
+    },
+    {
+      "com_id": "COM00018886",
+      "com_pubchem_name": "Curcolone",
+      "com_type": "Antibacterial"
+    },
+    {
+      "com_id": "COM00018887",
+      "com_pubchem_name": "Jolkinolide e",
+      "com_type": "Analgesic"
+    },
+    {
+      "com_id": "COM00018888",
+      "com_pubchem_name": "Lup-20(29)-en-3-one",
+      "com_type": "Antiinflamatory"
+    },
+    {
+      "com_id": "COM00018889",
+      "com_pubchem_name": "Tanacetin",
+      "com_type": "Antibacterial"
+    },
+    {
+      "com_id": "COM00018890",
+      "com_pubchem_name": "1-hydroxyanthraquinone",
+      "com_type": "Analgesic"
+    }
+  ],
+  "synergi_post": [],
+  "drugtarget_post": [],
+  "cluster_post": [],
+  "synergi_result": [
+    {
+      "compound1": "Balhimycin",
+      "compound2": "Dnd-omi 70 nmol/l",
+      "aScore": "0.4950",
+      "tScore": "0.7056",
+      "sScore": "0.6090"
+    },
+    {
+      "compound1": "Balhimycin",
+      "compound2": "Dnd-omi 70 nmol/l",
+      "aScore": "0.4950",
+      "tScore": "0.7056",
+      "sScore": "0.6090"
+    },
+    {
+      "compound1": "Balhimycin",
+      "compound2": "Dnd-omi 70 nmol/l",
+      "aScore": "0.4950",
+      "tScore": "0.7056",
+      "sScore": "0.6090"
+    },
+    {
+      "compound1": "Balhimycin",
+      "compound2": "Dnd-omi 70 nmol/l",
+      "aScore": "0.4950",
+      "tScore": "0.7056",
+      "sScore": "0.6090"
+    },
+    {
+      "compound1": "Balhimycin",
+      "compound2": "D-cysteine",
+      "aScore": "0.5550",
+      "tScore": "0.3056",
+      "sScore": "0.4090"
+    },
+    {
+      "compound1": "Balhimycin",
+      "compound2": "Ergotamine",
+      "aScore": "0.6950",
+      "tScore": "0.3056",
+      "sScore": "0.5090"
+    },
+    {
+      "compound1": "Balhimycin",
+      "compound2": "Gancaonin e",
+      "aScore": "0.2950",
+      "tScore": "0.4456",
+      "sScore": "0.3590"
+    },
+    {
+      "compound1": "Balhimycin",
+      "compound2": "3'-demethylnobiletin",
+      "aScore": "0.6950",
+      "tScore": "0.5056",
+      "sScore": "0.5590"
+    },
+    {
+      "compound1": "D-cysteine",
+      "compound2": "Gancaonin e",
+      "aScore": "0.7950",
+      "tScore": "0.50536",
+      "sScore": "0.65490"
+    },
+    {
+      "compound1": "D-cysteine",
+      "compound2": "Ergotamine",
+      "aScore": "0.66950",
+      "tScore": "0.57056",
+      "sScore": "0.6590"
+    },
+    {
+      "compound1": "D-cysteine",
+      "compound2": "Dnd-omi 70 nmol/l",
+      "aScore": "0.7950",
+      "tScore": "0.56056",
+      "sScore": "0.5590"
+    },
+    {
+      "compound1": "D-cysteine",
+      "compound2": "3'-demethylnobiletin",
+      "aScore": "0.8950",
+      "tScore": "0.6056",
+      "sScore": "0.76590"
+    }
+  ],
+  "drugtarget_result":
+    {
+      "plant_compound": [
+       {
+         "pla_id": "PLA00000010",
+         "pla_name": "Ochna squarrosa",
+         "com_id": "COM00018881",
+         "com_pubchem_name": "Balhimycin",
+         "weight": "0.489"
+       },
+       {
+         "pla_id": "PLA00000010",
+         "pla_name": "Ochna squarrosa",
+         "com_id": "COM00018882",
+         "com_pubchem_name": "Ergotamine",
+         "weight": "0.893"
+       },
+       {
+         "pla_id": "PLA00000010",
+         "pla_name": "Ochna squarrosa",
+         "com_id": "COM00018883",
+         "com_pubchem_name": "Dnd-omi 70 nmol/l",
+         "weight": "0.012"
+       },
+       {
+         "pla_id": "PLA00000003",
+         "pla_name": "Malus sylvestris",
+         "com_id": "COM00018881",
+         "com_pubchem_name": "Balhimycin",
+         "weight": "1"
+       },
+       {
+         "pla_id": "PLA00000003",
+         "pla_name": "Malus sylvestris",
+         "com_id": "COM00018882",
+         "com_pubchem_name": "Ergotamine",
+         "weight": "0.981"
+       },
+       {
+         "pla_id": "PLA00000003",
+         "pla_name": "Malus sylvestris",
+         "com_id": "COM00018883",
+         "com_pubchem_name": "Dnd-omi 70 nmol/l",
+         "weight": "0.765"
+       },
+       {
+         "pla_id": "PLA00000008",
+         "pla_name": "Aframomum daniellii",
+         "com_id": "COM00018883",
+         "com_pubchem_name": "Dnd-omi 70 nmol/l",
+         "weight": "0.1243"
+       },
+       {
+         "pla_id": "PLA00000008",
+         "pla_name": "Aframomum daniellii",
+         "com_id": "COM00018886",
+         "com_pubchem_name": "Curcolone",
+         "weight": "0.234"
+       },
+       {
+         "pla_id": "PLA00000025",
+         "pla_name": "Guazuma tomentosa",
+         "com_id": "COM00018886",
+         "com_pubchem_name": "Curcolone",
+         "weight": "0.456"
+       },
+       {
+         "pla_id": "PLA00000003",
+         "pla_name": "Malus sylvestris",
+         "com_id": "COM00018886",
+         "com_pubchem_name": "Curcolone",
+         "weight": "0.898"
+       }
+      ],
+      "compound_protein": [
+        {
+          "com_id": "COM00018886",
+          "com_pubchem_name": "Curcolone",
+          "pro_name": "",
+          "weight": ""
+        }
+      ]
+    }
+}
