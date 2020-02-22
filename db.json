@@ -245,21 +245,21 @@
          "pla_name": "Ochna squarrosa",
          "com_id": "COM00018881",
          "com_pubchem_name": "Balhimycin",
-         "weight": "0.489"
+         "weight": "1"
        },
        {
          "pla_id": "PLA00000010",
          "pla_name": "Ochna squarrosa",
          "com_id": "COM00018882",
          "com_pubchem_name": "Ergotamine",
-         "weight": "0.893"
+         "weight": "1"
        },
        {
          "pla_id": "PLA00000010",
          "pla_name": "Ochna squarrosa",
          "com_id": "COM00018883",
          "com_pubchem_name": "Dnd-omi 70 nmol/l",
-         "weight": "0.012"
+         "weight": "1"
        },
        {
          "pla_id": "PLA00000003",
@@ -273,50 +273,186 @@
          "pla_name": "Malus sylvestris",
          "com_id": "COM00018882",
          "com_pubchem_name": "Ergotamine",
-         "weight": "0.981"
+         "weight": "1"
        },
        {
          "pla_id": "PLA00000003",
          "pla_name": "Malus sylvestris",
          "com_id": "COM00018883",
          "com_pubchem_name": "Dnd-omi 70 nmol/l",
-         "weight": "0.765"
+         "weight": "1"
        },
        {
          "pla_id": "PLA00000008",
          "pla_name": "Aframomum daniellii",
          "com_id": "COM00018883",
          "com_pubchem_name": "Dnd-omi 70 nmol/l",
-         "weight": "0.1243"
+         "weight": "1"
        },
        {
          "pla_id": "PLA00000008",
          "pla_name": "Aframomum daniellii",
          "com_id": "COM00018886",
          "com_pubchem_name": "Curcolone",
-         "weight": "0.234"
+         "weight": "1"
        },
        {
          "pla_id": "PLA00000025",
          "pla_name": "Guazuma tomentosa",
          "com_id": "COM00018886",
          "com_pubchem_name": "Curcolone",
-         "weight": "0.456"
+         "weight": "1"
        },
        {
          "pla_id": "PLA00000003",
          "pla_name": "Malus sylvestris",
          "com_id": "COM00018886",
          "com_pubchem_name": "Curcolone",
-         "weight": "0.898"
+         "weight": "1"
        }
       ],
       "compound_protein": [
         {
           "com_id": "COM00018886",
           "com_pubchem_name": "Curcolone",
-          "pro_name": "",
-          "weight": ""
+          "pro_id": "PRO00000025",
+          "pro_name": "Lactase-phlorizin hydrolase",
+          "weight": "0.2638"
+        },
+        {
+          "com_id": "COM00018886",
+          "com_pubchem_name": "Curcolone",
+          "pro_id": "PRO00000006",
+          "pro_name": "Protein C9orf72",
+          "weight": "0.9813"
+        },
+        {
+          "com_id": "COM00018886",
+          "com_pubchem_name": "Curcolone",
+          "pro_id": "PRO00000006",
+          "pro_name": "Protein C9orf72",
+          "weight": "0.8729"
+        },
+        {
+          "com_id": "COM00018881",
+          "com_pubchem_name": "Balhimycin",
+          "pro_id": "PRO00000025",
+          "pro_name": "Lactase-phlorizin hydrolase",
+          "weight": "0.42536"
+        },
+        {
+          "com_id": "COM00018881",
+          "com_pubchem_name": "Balhimycin",
+          "pro_id": "PRO00000029",
+          "pro_name": "Sal-like protein 2",
+          "weight": "0.6354"
+        },
+        {
+          "com_id": "COM00018882",
+          "com_pubchem_name": "Ergotamine",
+          "pro_id": "PRO00000031",
+          "pro_name": "Alpha-methylacyl-CoA racemase",
+          "weight": "0.2314"
+        },
+        {
+          "com_id": "COM00018882",
+          "com_pubchem_name": "Ergotamine",
+          "pro_id": "PRO00000034",
+          "pro_name": "Myotubularin-related protein 13",
+          "weight": "0.8728"
+        },
+        {
+          "com_id": "COM00018882",
+          "com_pubchem_name": "Ergotamine",
+          "pro_id": "PRO00000031",
+          "pro_name": "Alpha-methylacyl-CoA racemase",
+          "weight": "0.6673"
+        },
+        {
+          "com_id": "COM00018883",
+          "com_pubchem_name": "Dnd-omi 70 nmol/l",
+          "pro_id": "PRO00000034",
+          "pro_name": "Myotubularin-related protein 13",
+          "weight": "0.2342"
+        },
+        {
+          "com_id": "COM00018883",
+          "com_pubchem_name": "Dnd-omi 70 nmol/l",
+          "pro_id": "PRO00000029",
+          "pro_name": "Sal-like protein 2",
+          "weight": "0.8972"
+        }
+      ],
+      "protein_disease":[
+        {
+          "pro_id": "PRO00000029",
+          "pro_name": "Sal-like protein 2",
+          "dis_id": "DIS00000001",
+          "dis_name": "Rippling muscle disease",
+          "weight": "0.34572"
+        },
+        {
+          "pro_id": "PRO00000031",
+          "pro_name": "Alpha-methylacyl-CoA racemase",
+          "dis_id": "DIS00000002",
+          "dis_name": "Charcot-Marie-Tooth disease 2C",
+          "weight": "0.32972"
+        },
+        {
+          "pro_id": "PRO00000029",
+          "pro_name": "Sal-like protein 2",
+          "dis_id": "DIS00000003",
+          "dis_name": "Amyotrophic lateral sclerosis 2",
+          "weight": "0.34972"
+        },
+        {
+          "pro_id": "PRO00000031",
+          "pro_name": "Alpha-methylacyl-CoA racemase",
+          "dis_id": "DIS00000001",
+          "dis_name": "Rippling muscle disease",
+          "weight": "0.21972"
+        },
+        {
+          "pro_id": "PRO00000034",
+          "pro_name": "Myotubularin-related protein 13",
+          "dis_id": "DIS00000002",
+          "dis_name": "Charcot-Marie-Tooth disease 2C",
+          "weight": "0.67872"
+        },
+        {
+          "pro_id": "PRO00000034",
+          "pro_name": "Myotubularin-related protein 13",
+          "dis_id": "DIS00000003",
+          "dis_name": "Amyotrophic lateral sclerosis 2",
+          "weight": "0.5972"
+        },
+        {
+          "pro_id": "PRO00000031",
+          "pro_name": "Alpha-methylacyl-CoA racemase",
+          "dis_id": "DIS00000005",
+          "dis_name": "pertriglyceridemia, familial",
+          "weight": "0.8272"
+        },
+        {
+          "pro_id": "PRO00000006",
+          "pro_name": "Protein C9orf72",
+          "dis_id": "DIS00000006",
+          "dis_name": "Ehlers-Danlos syndrome due to tenascin X deficiency",
+          "weight": "0.8972"
+        },
+        {
+          "pro_id": "PRO00000006",
+          "pro_name": "Protein C9orf72",
+          "dis_id": "DIS00000007",
+          "dis_name": "Asthma-related traits 7",
+          "weight": "0.2372"
+        },
+        {
+          "pro_id": "PRO00000025",
+          "pro_name": "Lactase-phlorizin hydrolase",
+          "dis_id": "DIS00000007",
+          "dis_name": "Asthma-related traits 7",
+          "weight": "0.4372"
         }
       ]
     }

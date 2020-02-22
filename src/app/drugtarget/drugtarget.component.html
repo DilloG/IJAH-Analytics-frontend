@@ -8,25 +8,30 @@
   <div class="container">
     <div class="di-container">
       <h1>Drug Side</h1>
+      <div class="dic-button">
+        <button [style.background]="pla_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="plant_input()">Plant Input</button>
+        <button [style.background]="com_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="compound_input()">Compound Input</button>
+      </div>
+      <div *ngIf="pla_input_btn">
+        <h1>Masuk Plant</h1>
+      </div>
+      <div *ngIf="com_input_btn">
+        <h1>Masuk Compound</h1>
+      </div>
     </div>
     <div class="di-container">
       <h1>Target Side</h1>
-      <ngb-tabset type="pills" [destroyOnHide]="false">
-        <ngb-tab title="Protein Input">
-          <ng-template ngbTabContent>
-            <h1>Protein</h1>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Disease Input">
-          <ng-template ngbTabContent>
-            <h1>Disease</h1>
-          </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
+      <div class="dic-button">
+        <button [style.background]="pro_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="protein_input()">Protein Input</button>
+        <button [style.background]="dis_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="disease_input()">Disease Input</button>
+      </div>
+      <div>
+      </div>
     </div>
     <button (click)="predict()">Search</button>
   </div>
 </div>
+
 <!--
 <div id="loading" *ngIf='showload'>
   <div class="loader"></div>
@@ -58,122 +63,70 @@
       </ngb-tab>
       <ngb-tab title="Connectivity Table">
         <ng-template ngbTabContent>
-          <ngb-tabset type="pills">
-            <ngb-tab title="Plant to Compound">
-              <ng-template ngbTabContent>
-                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                  <thead>
-                    <tr>
-                      <th>Plant Name</th>
-                      <th>Connectivity Weight</th>
-                      <th>Compound Name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let pla_com of pla_com">
-                      <td>{{pla_com.pla_name}}</td>
-                      <td>{{pla_com.weight}}</td>
-                      <td>{{pla_com.com_pubchem_name}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab title="Compound to Protein">
-              <ng-template ngbTabContent>
+          <div class="ct_button">
+              <button (click)="pla_com_on()">Plant - Compound</button>
+              <button (click)="com_pro_on()">Compound - Protein</button>
+              <button (click)="pro_dis_on()">Protein - Disease</button>
+          </div>
+          <div class="ct_table" *ngIf="pla_com_btn">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead>
+                <tr>
+                  <th>Plant Name</th>
+                  <th>Connectivity Weight</th>
+                  <th>Compound Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pla_com of pla_com">
+                  <td>{{pla_com.pla_name}}</td>
+                  <td>{{pla_com.weight}}</td>
+                  <td>{{pla_com.com_pubchem_name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ct_table" *ngIf="com_pro_btn">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead>
+                <tr>
+                  <th>Compound Name</th>
+                  <th>Connectivity Weight</th>
+                  <th>Protein Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let com_pro of com_pro">
+                  <td>{{com_pro.com_pubchem_name}}</td>
+                  <td>{{com_pro.weight}}</td>
+                  <td>{{com_pro.pro_name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ct_table" *ngIf="pro_dis_btn">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+              <thead>
+                <tr>
+                  <th>Protein Name</th>
+                  <th>Connectivity Weight</th>
+                  <th>Disease Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pro_dis of pro_dis">
+                  <td>{{pro_dis.pro_name}}</td>
+                  <td>{{pro_dis.weight}}</td>
+                  <td>{{pro_dis.dis_name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab title="Protein to Disease">
-              <ng-template ngbTabContent>
-
-              </ng-template>
-            </ngb-tab>
-          </ngb-tabset>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Metadata">
         <ng-template ngbTabContent>
-          <ngb-tabset type="pills">
-            <ngb-tab title="Plant">
-              <ng-template ngbTabContent>
-                <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Plant Name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let pla_com of pla_com">
-                      <td>{{pla_com.pla_id}}</td>
-                      <td>{{pla_com.pla_name}}</td>
-                    </tr>
-                  </tbody>
-                </table> -->
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab title="Compound">
-              <ng-template ngbTabContent>
-                <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>First name</th>
-                      <th>Last name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let group of data">
-                      <td>{{group.name}}</td>
-                      <td>{{group.area}}</td>
-                      <td>{{group.population}}</td>
-                    </tr>
-                  </tbody>
-                </table> -->
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab title="Protein">
-              <ng-template ngbTabContent>
-                <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>First name</th>
-                      <th>Last name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let group of data">
-                      <td>{{group.name}}</td>
-                      <td>{{group.area}}</td>
-                      <td>{{group.population}}</td>
-                    </tr>
-                  </tbody>
-                </table> -->
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab title="Disease">
-              <ng-template ngbTabContent>
-                <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>First name</th>
-                      <th>Last name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let group of data">
-                      <td>{{group.name}}</td>
-                      <td>{{group.area}}</td>
-                      <td>{{group.population}}</td>
-                    </tr>
-                  </tbody>
-                </table> -->
-              </ng-template>
-            </ngb-tab>
-          </ngb-tabset>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

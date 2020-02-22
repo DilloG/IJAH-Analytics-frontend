@@ -66,16 +66,6 @@ body {
   border-radius: 0;
 }
 
-#c-result #ngb-tab-3-panel .tab-pane{
-  background-color: white !important;
-  padding: 1rem 0 !important;
-  color: black !important;
-  border-top: none !important;
-}
-
-#c-result #ngb-tab-3-panel .nav-item{
-  margin-left: 10px;
-}
 
 /* input drugtarget */
 #d-input .di-container .nav-link{
@@ -114,30 +104,7 @@ body {
   border-radius: 0;
 }
 
-#d-result #ngb-tab-5-panel .tab-pane{
-  background-color: white !important;
-  padding: 1rem 0 !important;
-  color: black !important;
-  border-top: none !important;
-}
-
-#d-result #ngb-tab-5-panel .nav-item{
-  margin-left: 10px;
-}
-
 /* synergi result datatable */
 #s-result #DataTables_Table_0_wrapper {
   z-index: 500 !important;
-}
-
-/* ngb-tab-2-panel */
-#d-result #ngb-tab-4-panel .tab-pane{
-  background-color: white !important;
-  padding: 1rem 0 !important;
-  color: black !important;
-  border-top: none !important;
-}
-
-#d-result #ngb-tab-4-panel .nav-item{
-  margin-left: 10px;
 }

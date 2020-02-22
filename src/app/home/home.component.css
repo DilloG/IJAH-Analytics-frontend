@@ -275,3 +275,69 @@
 #h-contribute .hc-right img{
   max-width: 200px;
 }
+
+
+/* sitasi */
+#h-sitasi{
+  padding: 5rem 0;
+  background-color: white;
+}
+
+#h-sitasi .container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 85%;
+}
+
+#h-sitasi .hs-right{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  max-width: 600px;
+}
+
+#h-sitasi .hs-right h1{
+  color: #686868;
+  font-weight: 700;
+}
+
+#h-sitasi .hs-right p{
+  color: #686868;
+  font-size: 18px;
+  width: 80%;
+}
+
+#h-sitasi .hs-right button{
+  padding: 5px 16px;
+  width: fit-content;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: 'Poppins', 'sans-serif';
+  font-weight: 700;
+  font-size: 16px;
+  margin: 20px 0;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 50px;
+  color: #6AE173;
+  border: 2px solid #6AE173;
+  background-color: white;
+}
+
+#h-sitasi .hs-right button:hover{
+  background-color: #6AE173;
+  color: white;
+}
+
+#h-sitasi .hs-left{
+  max-width: 300px;
+  margin-left: 100px;
+}
+
+#h-sitasi .hs-left img{
+  max-width: 200px;
+}
