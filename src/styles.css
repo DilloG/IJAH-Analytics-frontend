@@ -1,7 +1,7 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,700&display=swap');
 
-body {
+body, * {
     margin: 0;
     font-family: 'Poppins', 'sans-serif';
 }
@@ -11,24 +11,31 @@ body {
   background-color: #7BEE84 !important;
 }
 
-/* synergi bootstrap */
-#s-result tr{
+.dropdown-item{
+  padding: 7px 20px !important;
+}
+
+
+/* table */
+tr{
     background: white;
 }
 
-#s-result thead tr{
+thead tr{
   background: #3E4B3E;
   color: white;
 }
 
-#s-result .table td{
+.table td{
   border : 1px solid #8A8A8A;
 }
 
-#s-result thead th{
+thead th{
   border : 1px solid #3E4B3E;
 }
 
+
+/* synergi bootstrap */
 #s-result .page-item.active .page-link{
   background: #2ECC71;
   border-color: #2ECC71;

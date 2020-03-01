@@ -41,7 +41,46 @@
   width: 50%;
 }
 
-#d-input .di-container button {
+#d-input .di-button button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  margin: 15px 0 0 0;
+}
+
+#d-input .di-button{
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#d-input .di-button .reset{
+    background-color: #FF6464;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    padding: 6px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#d-input .dic-title{
+  font-weight: 700;
+}
+
+#d-input .dic-button button {
   background-color: #3E4B3E;
   outline: none;
   border: none;
@@ -55,16 +94,77 @@
   cursor: pointer;
   border: 2px solid #4CAF50;
   margin-right: 10px;
+  margin-bottom: 20px;
 }
 
-#d-input .di-container button:hover {
+#d-input .dic-button button:hover {
   border: 2px solid #4CAF50;
   box-shadow: 0 0 10px rgba(167, 245, 66, .7);
 }
 
-#d-input .dic-button .active {
-  background-color: #4CAF50;
-  border: 2px solid #4CAF50;
+
+#d-input .dic_input form{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  padding-right: 30px;
+}
+
+#d-input .dic_input form div{
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  /* padding-right: 30px; */
+}
+
+#d-input .dic_input input{
+  width: 90%;
+  height: 30px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+}
+
+#d-input .dic_input form button{
+  height: 30px;
+  background: none;
+  color: red;
+  font-weight: 700;
+  border: none;
+  margin-left: -30px;
+  z-index: 100;
+}
+
+#d-input .dic_input form button img{
+  height: 15px;
+}
+
+#d-input .dic_input form button img:hover{
+  transform: scale(1.1);
+}
+
+#d-input .close_icon button{
+  background-color: #007BFF;
+  outline: none;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 3px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  border: 2px solid #007BFF;
+  margin-bottom: 20px;
+}
+
+#d-input .close_icon button:hover{
+  transform: scale(1.05);
+}
+
+
+#d-input .choice-title span{
+  font-size: 10px;
 }
 
 /* result */
@@ -91,4 +191,111 @@
 #d-result .ct_button button{
   margin-right: 10px;
   outline: none;
+}
+
+#d-result a{
+  cursor: pointer;
+  color: #008EFC
+}
+
+#d-result a:hover{
+  color: blue;
+  text-decoration: underline;
+}
+
+#d-result .chartnya{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#d-result .ct_button button{
+  background-color: #C9C6C6; /* Green */
+  border: none;
+  border-radius: 50px;
+  color: black;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#d-result .legendgraph{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 30px;
+  background: #3E4B3E;
+  margin-bottom: 10px;
+}
+
+#d-result .legendgraph p{
+  color: white;
+  font-weight: 700;
+  margin: 0;
+}
+
+#d-result .drs-place{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#d-result .drs-place .drsp-atas{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#d-result .drspa-atas{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+#d-result .drs-place h6{
+  text-align: center;
+  font-size: 15px;
+  color: #665D55;
+}
+
+#d-result .drsp-atas .drspa-bawah{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+#d-result .drsp-atas .drspa-bawah div{
+  width: 25.3%;
+}
+
+#d-result .drs-place .score{
+  font-size: 40px;
+}
+
+#d-result .drspa-atas .score{
+  font-size: 50px;
+  color: #27AE60;
+}
+
+#d-result .drspa-atas .scoreName{
+  font-size: 25px;
+}
+
+#d-result .drspa-bawah .scoreName{
+  font-size: 20px;
+}
+
+
+#d-result .drsp-bawah{
+  margin-top: 50px;
+  width: 80%;
+  border-top: 3px solid #4E4E4E;
+  padding-top: 50px;
 }
