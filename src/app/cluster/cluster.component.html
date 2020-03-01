@@ -52,26 +52,76 @@
   <h5>predicting..</h5>
 </div>
 
-<div id="c-result">
+<div id="c-result" *ngIf='showresult'>
   <div class="container">
     <h1>Cluster Result</h1>
     <ngb-tabset [destroyOnHide]="false">
       <ngb-tab title="Summary">
         <ng-template ngbTabContent>
-          <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
-            master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
-            dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
-            iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+          <div class="drs-place">
+            <div class="drsp-atas">
+              <div class="drspa-atas">
+                <h6 class="score">{{totalScore}}</h6>
+                <h6 class="scoreName">Total Connectivity Score</h6>
+              </div>
+              <div class="drspa-bawah">
+                <div>
+                  <h6 class="score" [style.color]="'#2ECC43'">{{pla_com_score}}</h6>
+                  <h6 class="scoreName">Plant-Compound Connectivity Score</h6>
+                </div>
+                <div>
+                  <h6 class="score" [style.color]="'#94AE27'">{{com_pro_score}}</h6>
+                  <h6 class="scoreName">Compound-Protein Connectivity Score</h6>
+                </div>
+                <div>
+                  <h6 class="score" [style.color]="'#AE2762'">{{pro_dis_score}}</h6>
+                  <h6 class="scoreName">Protein-Disease Connectivity Score</h6>
+                </div>
+              </div>
+            </div>
+
+            <div class="drsp-bawah">
+              <div class="drspb-kiri">
+                <div>
+                  <h6 class="score">{{meta_pla}}</h6>
+                  <h6>Plants</h6>
+                </div>
+                <div>
+                  <h6 class="score">{{meta_com}}</h6>
+                  <h6>Compounds</h6>
+                </div>
+                <div>
+                  <h6 class="score">{{meta_pro}}</h6>
+                  <h6>Proteins</h6>
+                </div>
+                <div>
+                  <h6 class="score">{{meta_dis}}</h6>
+                  <h6>Diseases</h6>
+                </div>
+              </div>
+            </div>
+          </div>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Connectivity Graph">
-        <ng-template ngbTabContent>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
-          <p>Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table
-            craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl
-            cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia
-            yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean
-            shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero
-            sint qui sapiente accusamus tattooed echo park.</p>
+        <ng-template ngbTabContent>
+          <div class="legendgraph">
+          <p>Plant</p>
+          <p>Compound</p>
+          <p>Protein</p>
+          <p>Disease</p>
+          </div>
+          <div class="chartnya">
+            <google-chart #chart
+               [title]="title"
+               [type]="type"
+               [data]="sankeyData"
+               [columnNames]="columnNames"
+               [options]="options"
+               [width]="width"
+               [height]="height">
+            </google-chart>
+          </div>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Connectivity Text">

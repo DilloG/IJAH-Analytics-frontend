@@ -312,6 +312,28 @@
       "com_type": "Analgesic"
     }
   ],
+  "protein":[
+    {
+      "pro_id": "PRO00000025",
+      "pro_name": "Lactase-phlorizin hydrolase"
+    },
+    {
+      "pro_id": "PRO00000006",
+      "pro_name": "Protein C9orf72"
+    },
+    {
+      "pro_id": "PRO00000029",
+      "pro_name": "Sal-like protein 2"
+    },
+    {
+      "pro_id": "PRO00000031",
+      "pro_name": "Alpha-methylacyl-CoA racemase"
+    },
+    {
+      "pro_id": "PRO00000034",
+      "pro_name": "Myotubularin-related protein 13"
+    }
+  ],
   "synergi_post": [],
   "drugtarget_post": [],
   "cluster_post": [],

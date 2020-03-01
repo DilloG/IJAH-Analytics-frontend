@@ -34,7 +34,7 @@
           <div class="dic_input">
             <form  #plantForm="ngForm">
               <div *ngFor="let compounds of compounds; let i = index;">
-                <input id="typeahead-target" type="text" class="form-control" [(ngModel)]="compounds.dis_name" [value]="compounds.dis_name" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchDisease" />
+                <input id="typeahead-target" type="text" class="form-control" [(ngModel)]="compounds.com_pubchem_name" [value]="compounds.com_pubchem_name" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchCompound" />
                 <button class="close-icon" type="reset" (click)="removeCompound(i)"><img src="assets/img/reset.png"/></button>
               </div>
             </form>
@@ -52,8 +52,37 @@
         <button [style.background]="pro_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="protein_input()">Protein Input</button>
         <button [style.background]="dis_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="disease_input()">Disease Input</button>
       </div>
-      <div>
+
+      <div *ngIf="pro_input_btn">
+        <h1 class="choice-title">Protein Input <span>max. 4 Input</span></h1>
+        <div class="dic_input">
+          <form  #plantForm="ngForm">
+            <div *ngFor="let proteins of proteins; let i = index;">
+              <input id="typeahead-target" type="text" class="form-control" [(ngModel)]="proteins.pro_name" [value]="proteins.pro_name" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchProtein" />
+              <button class="close-icon" type="reset" (click)="removeProtein(i)"><img src="assets/img/reset.png"/></button>
+            </div>
+          </form>
+          <div class="close_icon">
+            <button type="reset" [style.display]="addInput_btn_target > 2 ? 'none' : 'inline'" (click)="addProtein()">+ Add Input</button>
+          </div>
+        </div>
       </div>
+
+      <div *ngIf="dis_input_btn">
+          <h1 class="choice-title">Disease Input <span>max. 4 Input</span></h1>
+          <div class="dic_input">
+            <form  #plantForm="ngForm">
+              <div *ngFor="let diseases of diseases; let i = index;">
+                <input id="typeahead-target" type="text" class="form-control" [(ngModel)]="diseases.dis_name" [value]="diseases.dis_name" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchDisease" />
+                <button class="close-icon" type="reset" (click)="removeDisease(i)"><img src="assets/img/reset.png"/></button>
+              </div>
+            </form>
+            <div class="close_icon">
+              <button type="reset" [style.display]="addInput_btn_target > 2 ? 'none' : 'inline'" (click)="addDisease()">+ Add Input</button>
+            </div>
+          </div>
+      </div>
+
     </div>
   </div>
   <div class="di-button">
@@ -62,11 +91,11 @@
   </div>
 </div>
 
-<!--
+
 <div id="loading" *ngIf='showload'>
   <div class="loader"></div>
   <h5>predicting..</h5>
-</div> -->
+</div>
 
 
 <div id="d-result" *ngIf='showresult'>
