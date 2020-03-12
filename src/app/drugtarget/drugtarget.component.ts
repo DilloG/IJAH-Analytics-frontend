@@ -160,6 +160,22 @@ export class DrugtargetComponent implements OnInit {
     this.pro_input_btn = false;
     this.dis_input_btn = true;
   }
+
+  resetinput(){
+    if(this.pla_input_btn == true){
+      this.plant_input();
+    }
+    if(this.com_input_btn == true){
+      this.compound_input();
+    }
+    if(this.pro_input_btn == true){
+      this.protein_input();
+    }
+    if(this.dis_input_btn == true){
+      this.disease_input();
+    }
+
+  }
   //endof show input
 
 

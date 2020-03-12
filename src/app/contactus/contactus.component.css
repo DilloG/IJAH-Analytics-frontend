@@ -1,0 +1,82 @@
+.cu-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 99px;
+}
+
+.cu-container img{
+  position: absolute;
+  width: 500px;
+  z-index: 100;
+  bottom: 0;
+  margin-left: -210px;
+}
+
+.cu-left{
+  width: 15%;
+  background: #6AE173;
+}
+
+.cu-right{
+  width: 85%;
+  background: #3E4B3E;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 20px;
+}
+
+.cu-right .cu-judul{
+  font-size: 50px;
+  font-weight: 700;
+  align-self: flex-end;
+  margin-right: 40px;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.cu-right .cu-form{
+  width: 90%;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.cu-right form{
+  z-index: 150;
+}
+
+.cu-right form h6{
+  color: white;
+}
+
+.cu-right form input{
+  width: 85%;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.cu-right form textarea{
+  width: 85%;
+}
+
+.cuf-button{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  width:90%;
+  justify-content: flex-end;
+}
+
+.cuf-button button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  margin: 15px 0 0 0;
+}

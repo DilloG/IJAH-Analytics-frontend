@@ -99,11 +99,12 @@ export class ClusterComponent implements OnInit {
   // console.log(this.compound_arr);
 }
 
+public showload = false;
 public showresult = false;
 async predict() {
   this.showload = true;
   this.getDrugTargetResult();
-  this.logValue();
+  // this.logValue();
   // console.log(this.model);
 }
   dtOptions: any = {};
