@@ -19,61 +19,29 @@ export class DrugtargetComponent implements OnInit {
 
   // input dynamic
   public addInput_btn = 0;
-  public addInput_btn_target = 0;
   public plants: any[] = [{
     pla_name: ''
   }];
-  public compounds: any[] = [
-    {
-    com_pubchem_name: ''
-  }
-];
-  public proteins: any[] = [{
-    pro_name: ''
-  }];
-  public diseases: any[] = [
-    {
+  public diseases: any[] = [{
     dis_name: ''
-  }
-];
+  }];
 
-  addPlant() {
-    if (this.plants.length < 4) {
-      this.plants.push({
-        pla_name: ''
-      });
-      this.addInput_btn += 1;
-    }
-    console.log(this.addInput_btn);
-  }
-  addCompound() {
-    if (this.compounds.length < 4) {
-      this.compounds.push({
-        com_pubchem_name: ''
-      });
-      this.addInput_btn += 1;
-    }
-    console.log(this.addInput_btn);
-  }
-  addProtein() {
-    if (this.proteins.length < 4) {
-      this.proteins.push({
-        pro_name: ''
-      });
-      this.addInput_btn_target += 1;
-    }
-    console.log(this.addInput_btn_target);
-  }
-  addDisease() {
-    if (this.diseases.length < 4) {
-      this.diseases.push({
-        dis_name: ''
-      });
-      this.addInput_btn_target += 1;
-    }
-    console.log(this.addInput_btn_target);
-    console.log(this.proteins.length);
-  }
+  // addPlant() {
+  //   if (this.plants.length < 4) {
+  //     this.plants.push({
+  //       pla_name: ''
+  //     });
+  //     this.addInput_btn += 1;
+  //   }
+  // }
+  // addDisease() {
+  //   if (this.diseases.length < 4) {
+  //     this.diseases.push({
+  //       dis_name: ''
+  //     });
+  //     this.addInput_btn += 1;
+  //   }
+  // }
 
   removePlant(i: number) {
     if (this.plants.length > 1) {
@@ -81,34 +49,16 @@ export class DrugtargetComponent implements OnInit {
       this.addInput_btn -= 1;
     }
   }
-  removeCompound(i: number) {
-    if (this.compounds.length > 1) {
-      this.compounds.splice(i, 1);
-      this.addInput_btn -= 1;
-    }
-  }
-  removeProtein(i: number) {
-    if (this.proteins.length > 1) {
-      this.proteins.splice(i, 1);
-      this.addInput_btn_target -= 1;
-    }
-  }
   removeDisease(i: number) {
     if (this.diseases.length > 1) {
       this.diseases.splice(i, 1);
-      this.addInput_btn_target -= 1;
+      this.addInput_btn -= 1;
     }
   }
 
   logValue() {
     if (this.pla_input_btn == true) {
       console.log(this.plants);
-    }
-    if (this.com_input_btn == true) {
-      console.log(this.compounds);
-    }
-    if (this.pro_input_btn == true) {
-      console.log(this.proteins);
     }
     if (this.dis_input_btn == true) {
       console.log(this.diseases);
@@ -119,45 +69,14 @@ export class DrugtargetComponent implements OnInit {
 
   //show input
   public pla_input_btn = true;
-  public com_input_btn = false;
-  public pro_input_btn = true;
   public dis_input_btn = false;
 
   plant_input() {
-    if (this.pla_input_btn == false) {
-      this.addInput_btn -= (this.addInput_btn + 1);
-      this.compounds.splice(0, this.compounds.length);
-      this.addCompound();
-    }
     this.pla_input_btn = true;
-    this.com_input_btn = false;
-  }
-  compound_input() {
-    if (this.com_input_btn == false) {
-      this.addInput_btn -= (this.addInput_btn + 1);
-      this.plants.splice(0, this.plants.length);
-      this.addPlant();
-    }
-    this.pla_input_btn = false;
-    this.com_input_btn = true;
-  }
-  protein_input() {
-    if (this.pro_input_btn == false) {
-      this.addInput_btn_target -= (this.addInput_btn_target + 1);
-      this.diseases.splice(0, this.diseases.length);
-      this.addDisease();
-    }
-    this.pro_input_btn = true;
     this.dis_input_btn = false;
   }
   disease_input() {
-    if (this.dis_input_btn == false) {
-      this.addInput_btn_target -= (this.addInput_btn_target + 1);
-      this.proteins.splice(0, this.proteins.length);
-      this.addProtein();
-
-    }
-    this.pro_input_btn = false;
+    this.pla_input_btn = false;
     this.dis_input_btn = true;
   }
 
@@ -165,21 +84,27 @@ export class DrugtargetComponent implements OnInit {
     if(this.pla_input_btn == true){
       this.plant_input();
     }
-    if(this.com_input_btn == true){
-      this.compound_input();
-    }
-    if(this.pro_input_btn == true){
-      this.protein_input();
-    }
     if(this.dis_input_btn == true){
       this.disease_input();
     }
-
   }
   //endof show input
 
 
   // getinput meta
+
+  plant_new: Object;
+  plant_new_arr: any;
+  getPlantNewMeta(){
+    this.http.get<any>("http://localhost:3000/plant_new").toPromise().then(data => {
+      this.plant_new = data;
+      console.log(this.plant_new[0].pla_name);
+      if (this.plant_new) {
+
+      }
+    });
+  }
+
   disease: any;
   disease_arr: any = [];
   getDiseaseMeta() {
@@ -258,22 +183,6 @@ export class DrugtargetComponent implements OnInit {
       map(term => term.length < 1 ? []
         : this.plant_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
-
-  searchProtein = (text$: Observable<string>) =>
-    text$.pipe( //typeahead target
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : this.protein_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
-
-  searchCompound = (text$: Observable<string>) =>
-    text$.pipe( //typeahead target
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : this.compound_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
   //end of ngbTypeahead
 
 
@@ -290,7 +199,7 @@ export class DrugtargetComponent implements OnInit {
 
   dtOptions: any = {};
   ngOnInit() {
-
+    this.getPlantNewMeta();
     this.getDiseaseMeta();
     this.getPlantMeta();
     this.getProteinMeta();
@@ -523,5 +432,7 @@ export class DrugtargetComponent implements OnInit {
     height: 2100
   };
   // end of sankey diagram
+
+
 
 }

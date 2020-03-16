@@ -31,6 +31,11 @@
   font-size: 20px;
 }
 
+#d-input form{
+  display: flex;
+  flex-direction: column;
+}
+
 #d-input .container {
   display: flex;
   flex-direction: row;
@@ -103,14 +108,14 @@
 }
 
 
-#d-input .dic_input form{
+#d-input .dic_input .ngForm{
   display: flex;
   flex-direction: column;
   /* justify-content: space-between; */
   padding-right: 30px;
 }
 
-#d-input .dic_input form div{
+#d-input .dic_input .ngForm div{
   display: flex;
   flex-direction: row;
   /* justify-content: space-between; */
@@ -124,7 +129,7 @@
   margin-bottom: 10px;
 }
 
-#d-input .dic_input form button{
+#d-input .dic_input .ngForm button{
   height: 30px;
   background: none;
   color: red;
@@ -134,11 +139,11 @@
   z-index: 100;
 }
 
-#d-input .dic_input form button img{
+#d-input .dic_input .ngForm button img{
   height: 15px;
 }
 
-#d-input .dic_input form button img:hover{
+#d-input .dic_input .ngForm button img:hover{
   transform: scale(1.1);
 }
 

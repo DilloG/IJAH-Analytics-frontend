@@ -210,6 +210,25 @@
       "pla_name": "Rheum undulatum"
     }
   ],
+  "plant_new":[
+    {
+    "PLA00000010": [
+      {
+        "pla_name": "Ochna squarrosa"
+      }
+    ],
+    "PLA00000003": [
+      {
+        "pla_name": "Malus sylvestris"
+      }
+    ],
+    "PLA00000005": [
+      {
+        "pla_name": "Stephania dicentrinifera"
+      }
+    ]
+  }
+],
   "disease": [
     {
       "dis_id": "DIS00000001",
@@ -638,7 +657,8 @@
         "weight": "1"
       }
     ],
-    "compound_protein": [{
+    "compound_protein": [
+      {
         "com_id": "COM00018886",
         "com_pubchem_name": "Curcolone",
         "pro_id": "PRO00000025",
@@ -709,7 +729,8 @@
         "weight": "0.8972"
       }
     ],
-    "protein_disease": [{
+    "protein_disease": [
+      {
         "pro_id": "PRO00000029",
         "pro_name": "Sal-like protein 2",
         "dis_id": "DIS00000001",
