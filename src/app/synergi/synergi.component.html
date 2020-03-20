@@ -8,14 +8,13 @@
   <div class="container">
     <div class="si-container">
       <h1>Disease Name</h1>
-      <!-- <input id="typeahead-prevent-manual-entry"  type="text" class="form-control"
-       [(ngModel)]="model"
-       [ngbTypeahead]="search"
-       [inputFormatter]="formatter"
-       [resultFormatter]="formatter"
-       [editable]='false' /> -->
-      <!-- <pre>Model: {{ model | json }}</pre> -->
-      <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" />
+        <input id="typeahead-target" type="text" class="form-control"
+        [ngModelOptions]="{standalone: true}"
+        [ngbTypeahead]="searchDisease"
+        [(ngModel)]="modelDis"
+        [inputFormatter]="formatterDis"
+        [resultFormatter]="formatterDis"
+        [editable]='false' />
       <div class="si-form">
         <button (click)="predict()">Search</button>
       </div>

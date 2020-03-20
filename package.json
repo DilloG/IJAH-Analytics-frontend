@@ -28,6 +28,7 @@
     "datatables.net-buttons-dt": "^1.6.1",
     "datatables.net-dt": "^1.10.20",
     "jquery": "^3.4.1",
+    "json-server": "^0.16.1",
     "jszip": "^3.2.2",
     "ng-onload": "^0.8.0",
     "ng2-bootstrap-typeahead": "^2.0.6",

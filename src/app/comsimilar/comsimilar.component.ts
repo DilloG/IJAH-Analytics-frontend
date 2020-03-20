@@ -8,11 +8,11 @@ type Plant_m = {id: string, name: string};
 type Disease_m = {id: string, name: string};
 
 @Component({
-  selector: 'app-drugtarget',
-  templateUrl: './drugtarget.component.html',
-  styleUrls: ['./drugtarget.component.css']
+  selector: 'app-comsimilar',
+  templateUrl: './comsimilar.component.html',
+  styleUrls: ['./comsimilar.component.css']
 })
-export class DrugtargetComponent implements OnInit {
+export class ComsimilarComponent implements OnInit {
 
 
   constructor(private http: HttpClient) {
