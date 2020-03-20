@@ -20,6 +20,7 @@ export class DrugtargetComponent implements OnInit {
 
 // BAGIAN INPUT. BAGIAN INPUT
 
+<<<<<<< HEAD
 
   logValue() {
     if (this.pla_input_btn == true) {
@@ -28,24 +29,98 @@ export class DrugtargetComponent implements OnInit {
     if (this.dis_input_btn == true) {
       console.log(this.modelDis);
     }
+=======
+ // input dynamic
+  public addInput_btn = 0;
+  public plants: any[] = [{
+    pla_name: ''
+  }];
+  public compounds: any[] = [{
+    dis_name: ''
+  }]
+
+  addPlant() {
+    if(this.plants.length < 4){
+      this.plants.push({
+        pla_name: ''
+      });
+      this.addInput_btn +=1;
+    }
+        console.log(this.addInput_btn);
+  }
+  addCompound() {
+    if(this.compounds.length < 4){
+      this.compounds.push({
+        dis_name: ''
+      });
+      this.addInput_btn +=1;
+    }
+    console.log(this.addInput_btn);
+  }
+
+  removePlant(i: number) {
+    if(this.plants.length > 1){
+      this.plants.splice(i, 1);
+      this.addInput_btn -=1;
+    }
+  }
+  removeCompound(i: number) {
+    if(this.compounds.length > 1){
+      this.compounds.splice(i, 1);
+      this.addInput_btn -=1;
+    }
+  }
+
+  logValue() {
+    console.log(this.plants);
+    console.log(this.compounds);
+>>>>>>> parent of c7c2c48... testo
   }
   // end of input dynamic
 
-
+  //show input
   //show input
   public pla_input_btn = true;
   public dis_input_btn = false;
 
   plant_input() {
+<<<<<<< HEAD
     this.pla_input_btn = true;
     this.dis_input_btn = false;
   }
   disease_input() {
     this.pla_input_btn = false;
+=======
+    if(this.pla_input_btn == false){
+      this.addInput_btn -= (this.addInput_btn + 1);
+      this.compounds.splice(0, this.compounds.length);
+      this.addCompound();
+    }
+    this.pla_input_btn = true;
+    this.com_input_btn = false;
+  }
+  compound_input() {
+    if(this.com_input_btn == false){
+      this.addInput_btn -= (this.addInput_btn + 1);
+      this.plants.splice(0, this.plants.length);
+      this.addPlant();
+    }
+    this.pla_input_btn = false;
+    this.com_input_btn = true;
+  }
+
+  protein_input() {
+    this.pro_input_btn = true;
+    this.dis_input_btn = false;
+  }
+  disease_input() {
+    this.pro_input_btn = false;
+>>>>>>> parent of c7c2c48... testo
     this.dis_input_btn = true;
   }
   //endof show input
 
+<<<<<<< HEAD
 
   // getinput meta
 
@@ -90,6 +165,13 @@ export class DrugtargetComponent implements OnInit {
 
   disease: Object;
   public disease_arr: Disease_m[] = [];
+=======
+  // getdisease meta
+  // getdisease meta
+  disease: any;
+  disease_arr: any = [];
+
+>>>>>>> parent of c7c2c48... testo
   getDiseaseMeta() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -119,7 +201,10 @@ export class DrugtargetComponent implements OnInit {
 
   plant: any;
   plant_arr: any = [];
+<<<<<<< HEAD
   plant_obj: any = {}; //dictionary have this
+=======
+>>>>>>> parent of c7c2c48... testo
 
   getPlantMeta() {
     this.http.get<any>("http://localhost:8000/plant").toPromise().then(data => {
@@ -142,6 +227,7 @@ export class DrugtargetComponent implements OnInit {
 
   }
 
+<<<<<<< HEAD
 
 
   protein: any;
@@ -181,12 +267,31 @@ export class DrugtargetComponent implements OnInit {
     public modelDis: Disease_m;
     formatterDis = (disease : Disease_m) => disease.name;
     searchDisease = (text$: Observable<string>) => text$.pipe(
+=======
+  // ngbTypeahead
+  public modelDrug0: any;
+  public modelDrug1: any;
+  public modelDrug2: any;
+  public modelDrug3: any;
+  searchDisease = (text$: Observable<string>) =>
+    text$.pipe( //typeahead target
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 1 ? []
+        : this.disease_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),
+    )
+
+  public modelPlant0: any;
+  searchPlant = (text$: Observable<string>) =>
+    text$.pipe( //typeahead target
+>>>>>>> parent of c7c2c48... testo
       debounceTime(200),
       distinctUntilChanged(),
       filter(term => term.length >= 1),
       map(term => this.disease_arr.filter(disease => new RegExp(term, 'mi').test(disease.name)).slice(0, 10))
     )
 
+<<<<<<< HEAD
     public modelPla: Plant_m;
     formatterPla = (plant : Plant_m) => plant.name;
     searchPlant = (text$: Observable<string>) => text$.pipe(
@@ -197,17 +302,18 @@ export class DrugtargetComponent implements OnInit {
     )
   //end of ngbTypeahead
 
+=======
+>>>>>>> parent of c7c2c48... testo
 
   showresult: boolean = false;
-  showload: boolean = false;
 
   async predict() {
-    this.showload = true;
+    // this.showload = true;
     this.getDrugTargetResult();
     this.logValue();
     // console.log(this.model);
   }
-// BAGIAN INPUT, END OF BAGIAN INPUT!
+  // BAGIAN INPUT. END OF BAGIAN INPUT!
 
   dtOptions: any = {};
   ngOnInit() {
@@ -215,9 +321,12 @@ export class DrugtargetComponent implements OnInit {
     this.getPlantNewMeta();
     this.getDiseaseMeta();
     this.getPlantMeta();
+<<<<<<< HEAD
     this.getProteinMeta();
     this.getCompoundMeta();
     this.postDrugTarget();
+=======
+>>>>>>> parent of c7c2c48... testo
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -229,6 +338,7 @@ export class DrugtargetComponent implements OnInit {
     };
   }
 
+<<<<<<< HEAD
   private data_sankey = [];
   postId;
   postDrugTarget(){
@@ -251,6 +361,8 @@ export class DrugtargetComponent implements OnInit {
   }
 
   // get result
+=======
+>>>>>>> parent of c7c2c48... testo
   drugtarget: any;
   pla_com: any;
   com_pro: any;
@@ -264,15 +376,15 @@ export class DrugtargetComponent implements OnInit {
         this.pro_dis = this.drugtarget.protein_disease;
         if (this.pla_com) {
           this.sankeyData();
-          this.showresult = true;
-          this.showload = false;
         }
+        this.showresult = true;
         this.removeDuplicates();
       }
     });
   }
-  // end of get result
 
+
+  // show table ngIf
   // show table ngIf
   private pla_com_btn: boolean = true;
   private com_pro_btn: boolean = false;
@@ -292,10 +404,11 @@ export class DrugtargetComponent implements OnInit {
     this.pla_com_btn = false;
     this.com_pro_btn = false;
     this.pro_dis_btn = true;
-  }
+  }  // end of show table ngIf
   // end of show table ngIf
 
 
+  // show table ngIF for Metadata
   // show table ngIF for Metadata
   private pla_btn: boolean = true;
   private com_btn: boolean = false;
@@ -327,7 +440,9 @@ export class DrugtargetComponent implements OnInit {
     this.dis_btn = true;
   }
   // end of show table ngIF for Metadata
+  // end of show table ngIF for Metadata
 
+  //remove duplicates in result
   //remove duplicates in result
   private meta_pla = [];
   private meta_com = [];
@@ -335,6 +450,7 @@ export class DrugtargetComponent implements OnInit {
   private meta_dis = [];
 
   removeDuplicates() {
+
     this.meta_pla.splice(0, this.meta_pla.length);
     this.meta_com.splice(0, this.meta_com.length);
     this.meta_pro.splice(0, this.meta_pro.length);
@@ -355,41 +471,49 @@ export class DrugtargetComponent implements OnInit {
       let objTitle = this.pla_com[i_pla]['pla_name'];
       pla_unique[objTitle] = this.pla_com[i_pla];
     }
+
     for (i_pla in pla_unique) {
       this.meta_pla.push(pla_unique[i_pla]);
     }
     console.log(this.meta_pla);
-    // compound remove duplicates
+
+    // compound remove removeDuplicates
     for (i_com in this.pla_com) {
       let objTitle = this.pla_com[i_com]['com_pubchem_name'];
       com_unique[objTitle] = this.pla_com[i_com];
     }
+
     for (i_com in com_unique) {
       this.meta_com.push(com_unique[i_com]);
     }
     console.log(this.meta_com);
-    // protein remove duplicates
+
+    // protein remove removeDuplicates
     for (i_pro in this.pro_dis) {
       let objTitle = this.pro_dis[i_pro]['pro_name'];
       pro_unique[objTitle] = this.pro_dis[i_pro];
     }
+
     for (i_pro in pro_unique) {
       this.meta_pro.push(pro_unique[i_pro]);
     }
     console.log(this.meta_pro);
-    // compound remove duplicates
+
+    // compound remove removeDuplicates
     for (i_dis in this.pro_dis) {
       let objTitle = this.pro_dis[i_dis]['dis_name'];
       dis_unique[objTitle] = this.pro_dis[i_dis];
     }
+
     for (i_dis in dis_unique) {
       this.meta_dis.push(dis_unique[i_dis]);
     }
     console.log(this.meta_dis);
-  }
+  }  //end of remove duplicates in result
   //end of remove duplicates in result
 
 
+  //links to gbif plant databases
   //links to gbif plant databases
   generateLink(a: string) {
     var links = "";
@@ -401,10 +525,10 @@ export class DrugtargetComponent implements OnInit {
         window.open(newurl, "_blank")
       }
     });
-  }
+  }//end of links to gbif plant databases
   //end of links to gbif plant databases
 
-
+  //summary score function & sankey diagram data
   //summary score function & sankey diagram data
   private totalScore: any = 0;
   private pla_com_score: any = 0;
@@ -441,9 +565,8 @@ export class DrugtargetComponent implements OnInit {
     console.log(this.sankey_Data);
     console.log(this.pla_com_score);
   }
-  //end of summary score function & sankey diagram data
 
-
+  // sankey diagram
   // sankey diagram
   title = '';
   type = 'Sankey';
@@ -466,7 +589,9 @@ export class DrugtargetComponent implements OnInit {
     width: $(window).width() * 0.80,
     height: 10000
   };
-  // end of sankey diagram
+  // width = 1000;
+  // height = 400;
+
 
 
 

@@ -29,6 +29,7 @@
               [editable]='false'
               required/>
 
+<<<<<<< HEAD
               <button class="close-icon" type="reset"><img src="assets/img/reset.png"/></button>
             </div>
           </div>
@@ -58,8 +59,33 @@
               <button type="button" [style.display]="addInput_btn_target > 2 ? 'none' : 'inline'" (click)="addDisease()">+ Add Input</button>
             </div> -->
           </div>
-      </div>
+=======
+      <div *ngIf="com_input_btn">
+          <h1 class="choice-title">Compound Input <span>max. 4 Input</span></h1>
+          <div class="dic_input">
+            <form  #plantForm="ngForm">
+              <div *ngFor="let compounds of compounds; let i = index;">
+                <input id="typeahead-target" type="text" class="form-control" [(ngModel)]="compounds.dis_name" [value]="compounds.dis_name" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchDisease" />
+                <button class="close-icon" type="reset" (click)="removeCompound(i)"><img src="assets/img/reset.png"/></button>
+              </div>
+            </form>
+            <div class="close_icon">
+              <button type="reset" [style.display]="addInput_btn > 2 ? 'none' : 'inline'" (click)="addCompound()">+ Add Input</button>
+            </div>
+          </div>
 
+      </div>
+    </div>
+
+    <div class="di-container">
+      <h1 class="dic-title">Target Side</h1>
+      <div class="dic-button">
+        <button [style.background]="pro_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="protein_input()">Protein Input</button>
+        <button [style.background]="dis_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="disease_input()">Disease Input</button>
+      </div>
+      <div>
+>>>>>>> parent of c7c2c48... testo
+      </div>
     </div>
   </div>
   <div class="di-button">
@@ -69,11 +95,11 @@
   </form>
 </div>
 
-
+<!--
 <div id="loading" *ngIf='showload'>
   <div class="loader"></div>
   <h5>predicting..</h5>
-</div>
+</div> -->
 
 <div id="loading" *ngIf='showloadFirst'>
   <div class="loader"></div>
