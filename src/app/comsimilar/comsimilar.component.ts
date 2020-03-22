@@ -48,7 +48,6 @@ export class ComsimilarComponent implements OnInit {
 
 
   // getinput meta
-
   showloadFirst: boolean = true;
   i_load = 0;
   switchLoad(){
@@ -120,7 +119,6 @@ export class ComsimilarComponent implements OnInit {
   plant: any;
   plant_arr: any = [];
   plant_obj: any = {}; //dictionary have this
-
   getPlantMeta() {
     this.http.get<any>("http://localhost:8000/plant").toPromise().then(data => {
       this.plant = data;
@@ -141,7 +139,6 @@ export class ComsimilarComponent implements OnInit {
     });
 
   }
-
 
 
   protein: any;
@@ -202,9 +199,8 @@ export class ComsimilarComponent implements OnInit {
   showload: boolean = false;
 
   async predict() {
-    this.showload = true;
-    this.getDrugTargetResult();
-    this.logValue();
+    this.showresult = true;
+    // this.logValue();
     // console.log(this.model);
   }
 // BAGIAN INPUT, END OF BAGIAN INPUT!
@@ -229,7 +225,8 @@ export class ComsimilarComponent implements OnInit {
     };
   }
 
-  private data_sankey = [];
+  // postinput user
+  private data_result = [];
   postId;
   postDrugTarget(){
         // Simple POST request with a JSON body and response type <any>
@@ -238,155 +235,36 @@ export class ComsimilarComponent implements OnInit {
               "X-Requested-With": "XMLHttpRequest"
             })
           };
-        this.http.post<any>('https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/graph',{"id":"PLA00000260"}, httpOptions).subscribe(data => {
+        this.http.post<any>('https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/graph',{"id":"PLA00000200"}, httpOptions).subscribe(data => {
             this.postId = data.data;
             if(this.postId){
               console.log(this.postId);
               for(let i in this.postId){
-                this.data_sankey.push([this.postId[i][0], this.postId[i][1], parseFloat(this.postId[i][2])])
+                this.data_result.push({
+                  parent: this.postId[i][0],
+                  child: this.postId[i][1],
+                  similarity: parseFloat(this.postId[i][2])
+                })
               }
+              console.log(this.data_result);
+              this.predict();
             }
 
         })
   }
-
+  // end of postinput user
+// 260
   // get result
-  drugtarget: any;
-  pla_com: any;
-  com_pro: any;
-  pro_dis: any;
-  getDrugTargetResult() {
-    this.http.get<any>("http://localhost:8000/drugtarget_result").toPromise().then(data => {
-      this.drugtarget = data;
-      if (this.drugtarget) {
-        this.pla_com = this.drugtarget.plant_compound;
-        this.com_pro = this.drugtarget.compound_protein;
-        this.pro_dis = this.drugtarget.protein_disease;
-        if (this.pla_com) {
-          this.sankeyData();
-          this.showresult = true;
-          this.showload = false;
-        }
-        this.removeDuplicates();
-      }
-    });
-  }
   // end of get result
 
   // show table ngIf
-  private pla_com_btn: boolean = true;
-  private com_pro_btn: boolean = false;
-  private pro_dis_btn: boolean = false;
-
-  pla_com_on() {
-    this.pla_com_btn = true;
-    this.com_pro_btn = false;
-    this.pro_dis_btn = false;
-  }
-  com_pro_on() {
-    this.pla_com_btn = false;
-    this.com_pro_btn = true;
-    this.pro_dis_btn = false;
-  }
-  pro_dis_on() {
-    this.pla_com_btn = false;
-    this.com_pro_btn = false;
-    this.pro_dis_btn = true;
-  }
   // end of show table ngIf
 
 
   // show table ngIF for Metadata
-  private pla_btn: boolean = true;
-  private com_btn: boolean = false;
-  private pro_btn: boolean = false;
-  private dis_btn: boolean = false;
-
-  pla_on() {
-    this.pla_btn = true;
-    this.com_btn = false;
-    this.pro_btn = false;
-    this.dis_btn = false;
-  }
-  com_on() {
-    this.pla_btn = false;
-    this.com_btn = true;
-    this.pro_btn = false;
-    this.dis_btn = false;
-  }
-  pro_on() {
-    this.pla_btn = false;
-    this.com_btn = false;
-    this.pro_btn = true;
-    this.dis_btn = false;
-  }
-  dis_on() {
-    this.pla_btn = false;
-    this.com_btn = false;
-    this.pro_btn = false;
-    this.dis_btn = true;
-  }
   // end of show table ngIF for Metadata
 
   //remove duplicates in result
-  private meta_pla = [];
-  private meta_com = [];
-  private meta_pro = [];
-  private meta_dis = [];
-
-  removeDuplicates() {
-    this.meta_pla.splice(0, this.meta_pla.length);
-    this.meta_com.splice(0, this.meta_com.length);
-    this.meta_pro.splice(0, this.meta_pro.length);
-    this.meta_dis.splice(0, this.meta_dis.length);
-
-    let pla_unique = {};
-    let com_unique = {};
-    let pro_unique = {};
-    let dis_unique = {};
-
-    let i_pla;
-    let i_com;
-    let i_pro;
-    let i_dis;
-
-    // plant remove duplicate
-    for (i_pla in this.pla_com) {
-      let objTitle = this.pla_com[i_pla]['pla_name'];
-      pla_unique[objTitle] = this.pla_com[i_pla];
-    }
-    for (i_pla in pla_unique) {
-      this.meta_pla.push(pla_unique[i_pla]);
-    }
-    console.log(this.meta_pla);
-    // compound remove duplicates
-    for (i_com in this.pla_com) {
-      let objTitle = this.pla_com[i_com]['com_pubchem_name'];
-      com_unique[objTitle] = this.pla_com[i_com];
-    }
-    for (i_com in com_unique) {
-      this.meta_com.push(com_unique[i_com]);
-    }
-    console.log(this.meta_com);
-    // protein remove duplicates
-    for (i_pro in this.pro_dis) {
-      let objTitle = this.pro_dis[i_pro]['pro_name'];
-      pro_unique[objTitle] = this.pro_dis[i_pro];
-    }
-    for (i_pro in pro_unique) {
-      this.meta_pro.push(pro_unique[i_pro]);
-    }
-    console.log(this.meta_pro);
-    // compound remove duplicates
-    for (i_dis in this.pro_dis) {
-      let objTitle = this.pro_dis[i_dis]['dis_name'];
-      dis_unique[objTitle] = this.pro_dis[i_dis];
-    }
-    for (i_dis in dis_unique) {
-      this.meta_dis.push(dis_unique[i_dis]);
-    }
-    console.log(this.meta_dis);
-  }
   //end of remove duplicates in result
 
 
@@ -406,66 +284,10 @@ export class ComsimilarComponent implements OnInit {
 
 
   //summary score function & sankey diagram data
-  private totalScore: any = 0;
-  private pla_com_score: any = 0;
-  private com_pro_score: any = 0;
-  private pro_dis_score: any = 0;
-
-  private sankey_Data = [];
-  sankeyData() {
-    // console.log(this.pla_com);
-    var number0 = 0;
-    var number1 = 0;
-    var number2 = 0;
-
-    for (var i in this.pla_com) {
-      this.sankey_Data.push([this.plant_new[this.pla_com[i].pla_id].nlat, this.pla_com[i].com_pubchem_name, parseFloat(this.pla_com[i].weight)]);
-      // adding score pla_com connectivity
-      number0 += parseFloat(this.pla_com[i].weight)
-    }
-    for (var i in this.com_pro) {
-      this.sankey_Data.push([this.com_pro[i].com_pubchem_name, this.com_pro[i].pro_name, parseFloat(this.com_pro[i].weight)]);
-      // adding score pla_com connectivity
-      number1 += parseFloat(this.com_pro[i].weight);
-    }
-    for (var i in this.pro_dis) {
-      this.sankey_Data.push([this.pro_dis[i].pro_name, this.pro_dis[i].dis_name, parseFloat(this.com_pro[i].weight)]);
-      number2 += parseFloat(this.pro_dis[i].weight);
-    }
-
-    this.pla_com_score = number0.toFixed(3);
-    this.com_pro_score = number1.toFixed(3);
-    this.pro_dis_score = number2.toFixed(3);
-    this.totalScore = (number0 + number1 + number2).toFixed(3);
-
-    console.log(this.sankey_Data);
-    console.log(this.pla_com_score);
-  }
   //end of summary score function & sankey diagram data
 
 
   // sankey diagram
-  title = '';
-  type = 'Sankey';
-  columnNames = ['From', 'To', 'Weight'];
-  options = {
-    sankey: {
-      node: {
-        width: 20,
-        label: {
-          fontSize: 9,
-          color: '#000000',
-          bold: true,
-        },
-        interactivity: true
-      },
-      link: {
-        colorMode: 'source'
-      }
-    },
-    width: $(window).width() * 0.80,
-    height: 10000
-  };
   // end of sankey diagram
 
 

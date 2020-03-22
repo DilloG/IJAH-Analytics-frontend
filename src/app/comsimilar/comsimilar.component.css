@@ -1,4 +1,4 @@
-.container {
+#d.container {
   width: 90%;
   margin: 0 auto;
 }
@@ -173,134 +173,21 @@
 }
 
 /* result */
-#d-result {
+/* result */
+
+#d-result{
   background: #F6F6F6;
   padding: 4rem 0;
 }
 
-#d-result h1 {
+#d-result h1{
   font-size: 25px;
   font-weight: 400;
-  color: #505050
+  color:#505050
 }
 
-/* connectivity table */
-#d-result .ct_button{
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  margin-bottom: 20px;
-}
-
-#d-result .ct_button button{
-  margin-right: 10px;
-  outline: none;
-}
-
-#d-result a{
-  cursor: pointer;
-  color: #008EFC
-}
-
-#d-result a:hover{
-  color: blue;
-  text-decoration: underline;
-}
-
-#d-result .chartnya{
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-#d-result .ct_button button{
-  background-color: #C9C6C6; /* Green */
-  border: none;
-  border-radius: 50px;
-  color: black;
-  padding: 6px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+#d-result p{
   font-size: 15px;
-  cursor: pointer;
-}
-
-#d-result .legendgraph{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px 30px;
-  background: #3E4B3E;
-  margin-bottom: 10px;
-}
-
-#d-result .legendgraph p{
-  color: white;
-  font-weight: 700;
-  margin: 0;
-}
-
-#d-result .drs-place{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-#d-result .drs-place .drsp-atas{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-#d-result .drspa-atas{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-#d-result .drs-place h6{
-  text-align: center;
-  font-size: 15px;
-  color: #665D55;
-}
-
-#d-result .drsp-atas .drspa-bawah{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin-top: 30px;
-}
-
-#d-result .drsp-atas .drspa-bawah div{
-  width: 25.3%;
-}
-
-#d-result .drs-place .score{
-  font-size: 40px;
-}
-
-#d-result .drspa-atas .score{
-  font-size: 50px;
-  color: #27AE60;
-}
-
-#d-result .drspa-atas .scoreName{
-  font-size: 25px;
-}
-
-#d-result .drspa-bawah .scoreName{
-  font-size: 20px;
-}
-
-
-#d-result .drsp-bawah{
-  margin-top: 50px;
-  width: 80%;
-  border-top: 3px solid #4E4E4E;
-  padding-top: 50px;
+  font-weight: 400;
+  color:#505050
 }

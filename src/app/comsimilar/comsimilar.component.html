@@ -70,7 +70,7 @@
 </div>
 
 
-<div id="loading" *ngIf='showload'>
+<!-- <div id="loading" *ngIf='showload'>
   <div class="loader"></div>
   <h5>predicting..</h5>
 </div>
@@ -78,233 +78,32 @@
 <div id="loading" *ngIf='showloadFirst'>
   <div class="loader"></div>
   <h5>loading..</h5>
-</div>
+</div> -->
 
 
 <div id="d-result" *ngIf='showresult'>
   <div class="container">
     <h1>Drug-Target Result</h1>
-    <ngb-tabset [destroyOnHide]="false">
-      <ngb-tab title="Summary">
-        <ng-template ngbTabContent>
-          <div class="drs-place">
-            <div class="drsp-atas">
-              <div class="drspa-atas">
-                <h6 class="score">{{totalScore}}</h6>
-                <h6 class="scoreName">Total Connectivity Score</h6>
-              </div>
-              <div class="drspa-bawah">
-                <div>
-                  <h6 class="score" [style.color]="'#2ECC43'">{{pla_com_score}}</h6>
-                  <h6 class="scoreName">Plant-Compound Connectivity Score</h6>
-                </div>
-                <div>
-                  <h6 class="score" [style.color]="'#94AE27'">{{com_pro_score}}</h6>
-                  <h6 class="scoreName">Compound-Protein Connectivity Score</h6>
-                </div>
-                <div>
-                  <h6 class="score" [style.color]="'#AE2762'">{{pro_dis_score}}</h6>
-                  <h6 class="scoreName">Protein-Disease Connectivity Score</h6>
-                </div>
-              </div>
-            </div>
-
-            <div class="drsp-bawah">
-              <div class="drspb-kiri">
-                <div>
-                  <h6 class="score">{{meta_pla.length}}</h6>
-                  <h6>Plants</h6>
-                </div>
-                <div>
-                  <h6 class="score">{{meta_com.length}}</h6>
-                  <h6>Compounds</h6>
-                </div>
-                <div>
-                  <h6 class="score">{{meta_pro.length}}</h6>
-                  <h6>Proteins</h6>
-                </div>
-                <div>
-                  <h6 class="score">{{meta_dis.length}}</h6>
-                  <h6>Diseases</h6>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Connectivity Graph">
-        <ng-template ngbTabContent>
-          <div class="legendgraph">
-          <p>Plant</p>
-          <p>Compound</p>
-          <p>Protein</p>
-          <p>Disease</p>
-          </div>
-          <div class="chartnya">
-            <google-chart #chart
-               [title]="title"
-               [type]="type"
-               [data]="data_sankey"
-               [columnNames]="columnNames"
-               [options]="options"
-               [width]="width"
-               [height]="height">
-            </google-chart>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Connectivity Table">
-        <ng-template ngbTabContent>
-          <div class="ct_button">
-              <button [style.background]="pla_com_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="pla_com_btn ? '#ffffff' : '#000000'"
-                      (click)="pla_com_on()">Plant - Compound</button>
-              <button [style.background]="com_pro_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="com_pro_btn ? '#ffffff' : '#000000'"
-                      (click)="com_pro_on()">Compound - Protein</button>
-              <button [style.background]="pro_dis_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="pro_dis_btn ? '#ffffff' : '#000000'"
-                      (click)="pro_dis_on()">Protein - Disease</button>
-          </div>
-          <div class="ct_table" *ngIf="pla_com_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-              <thead>
-                <tr>
-                  <th>Plant Name</th>
-                  <th>Connectivity Weight</th>
-                  <th>Compound Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let pla_com of pla_com">
-                  <td>{{pla_com.pla_name}}</td>
-                  <td>{{pla_com.weight}}</td>
-                  <td>{{pla_com.com_pubchem_name}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="ct_table" *ngIf="com_pro_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-              <thead>
-                <tr>
-                  <th>Compound Name</th>
-                  <th>Connectivity Weight</th>
-                  <th>Protein Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let com_pro of com_pro">
-                  <td>{{com_pro.com_pubchem_name}}</td>
-                  <td>{{com_pro.weight}}</td>
-                  <td>{{com_pro.pro_name}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="ct_table" *ngIf="pro_dis_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-              <thead>
-                <tr>
-                  <th>Protein Name</th>
-                  <th>Connectivity Weight</th>
-                  <th>Disease Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let pro_dis of pro_dis">
-                  <td>{{pro_dis.pro_name}}</td>
-                  <td>{{pro_dis.weight}}</td>
-                  <td>{{pro_dis.dis_name}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Metadata">
-        <ng-template ngbTabContent>
-          <div class="ct_button">
-              <button [style.background]="pla_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="pla_btn ? '#ffffff' : '#000000'"
-                      (click)="pla_on()">Plant</button>
-              <button [style.background]="com_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="com_btn ? '#ffffff' : '#000000'"
-                      (click)="com_on()">Compound</button>
-              <button [style.background]="pro_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="pro_btn ? '#ffffff' : '#000000'"
-                      (click)="pro_on()">Protein</button>
-              <button [style.background]="dis_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="dis_btn ? '#ffffff' : '#000000'"
-                      (click)="dis_on()">Disease</button>
-          </div>
-          <div class="meta_table" *ngIf="pla_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-              <thead>
-                <tr>
-                  <th>Plant ID</th>
-                  <th>Plant Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let meta_pla of meta_pla">
-                  <td>{{meta_pla.pla_id}}</td>
-                  <td><a href="javascript:void(0)" (click)="generateLink(meta_pla.pla_name)">{{meta_pla.pla_name}}</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="meta_table" *ngIf="com_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-              <thead>
-                <tr>
-                  <th>Compound ID</th>
-                  <th>Compound Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let meta_com of meta_com">
-                  <td>{{meta_com.com_id}}</td>
-                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{meta_com.com_pubchem_name}}" target="_blank">{{meta_com.com_pubchem_name}}</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="meta_table" *ngIf="pro_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-              <thead>
-                <tr>
-                  <th>Protein ID</th>
-                  <th>Protein Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let meta_pro of meta_pro">
-                  <td>{{meta_pro.pro_id}}</td>
-                  <td><a>{{meta_pro.pro_name}}</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="meta_table" *ngIf="dis_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-              <thead>
-                <tr>
-                  <th>Disease ID</th>
-                  <th>Disease Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let meta_dis of meta_dis">
-                  <td>{{meta_dis.dis_id}}</td>
-                  <td><a>{{meta_dis.dis_name}}</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </ng-template>
-      </ngb-tab>
-    </ngb-tabset>
-
+    <p>Table of Synergis Compound of {{model_parse}}</p>
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+      <thead>
+        <tr>
+          <th>Compound 1</th>
+          <th>Compound 2</th>
+          <th>Agent Score</th>
+          <th>Topology Score</th>
+          <th>Synergi Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let res of data_result">
+          <td>{{res.parent}}</td>
+          <td>{{res.child}}</td>
+          <td>{{res.similarity}}</td>
+          <td>{{res.child}}</td>
+          <td>{{res.similarity}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
