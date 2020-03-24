@@ -1,0 +1,193 @@
+#d.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+/* title */
+#d-title {
+  width: 100%;
+  background: #6AE173;
+  padding: 1.5em 0;
+  margin-top: 85px;
+}
+
+#d-title h1 {
+  color: white;
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+/* input */
+#d-input {
+  padding: 5rem 0;
+  background: #3E4B3E;
+  width: 100%;
+}
+
+#d-input h1 {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+#d-input form{
+  display: flex;
+  flex-direction: column;
+}
+
+#d-input .container {
+  display: flex;
+  flex-direction: row;
+  justify-content:
+}
+
+#d-input .di-container {
+  width: 50%;
+}
+
+#d-input .di-button button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  margin: 15px 0 0 0;
+}
+
+#d-input .di-button{
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#d-input .di-button .reset{
+    background-color: #FF6464;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    padding: 6px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#d-input .dic-title{
+  font-weight: 700;
+}
+
+#d-input .dic-button button {
+  background-color: #3E4B3E;
+  outline: none;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  border: 2px solid #4CAF50;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+#d-input .dic-button button:hover {
+  border: 2px solid #4CAF50;
+  box-shadow: 0 0 10px rgba(167, 245, 66, .7);
+}
+
+
+#d-input .dic_input .ngForm{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  padding-right: 30px;
+}
+
+#d-input .dic_input .ngForm div{
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  /* padding-right: 30px; */
+}
+
+#d-input .dic_input input{
+  width: 90%;
+  height: 30px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+}
+
+#d-input .dic_input .ngForm button{
+  height: 30px;
+  background: none;
+  color: red;
+  font-weight: 700;
+  border: none;
+  margin-left: -30px;
+  z-index: 100;
+}
+
+#d-input .dic_input .ngForm button img{
+  height: 15px;
+}
+
+#d-input .dic_input .ngForm button img:hover{
+  transform: scale(1.1);
+}
+
+#d-input .close_icon button{
+  background-color: #007BFF;
+  outline: none;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 3px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  border: 2px solid #007BFF;
+  margin-bottom: 20px;
+}
+
+#d-input .close_icon button:hover{
+  transform: scale(1.05);
+}
+
+
+#d-input .choice-title span{
+  font-size: 10px;
+}
+
+/* result */
+/* result */
+
+#d-result{
+  background: #F6F6F6;
+  padding: 4rem 0;
+}
+
+#d-result h1{
+  font-size: 25px;
+  font-weight: 400;
+  color:#505050
+}
+
+#d-result p{
+  font-size: 15px;
+  font-weight: 400;
+  color:#505050
+}

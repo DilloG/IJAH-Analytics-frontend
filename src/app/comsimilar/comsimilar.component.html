@@ -1,0 +1,109 @@
+<div id="d-title">
+  <div class="container">
+    <h1>Drug-Target Connectivity</h1>
+  </div>
+</div>
+
+<div id="d-input">
+  <form #dtInputForm="ngForm"  (ngSubmit)="predict()">
+  <div class="container">
+    <div class="di-container">
+      <h1 class="dic-title">Drug/Target Side</h1>
+      <div class="dic-button">
+        <button type="reset" [style.background]="pla_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="plant_input()">Plant Input</button>
+        <button type="reset" [style.background]="dis_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="disease_input()">Disease Input</button>
+      </div>
+
+      <div *ngIf="pla_input_btn">
+        <h1 class="choice-title">Plant Input</h1>
+        <div class="dic_input">
+          <div class="ngForm">
+            <div>
+
+              <input id="typeahead-target" type="text" class="form-control"
+              [ngModelOptions]="{standalone: true}"
+              [ngbTypeahead]="searchPlant"
+              [(ngModel)]="modelPla"
+              [inputFormatter]="formatterPla"
+              [resultFormatter]="formatterPla"
+              [editable]='false'
+              required/>
+
+              <button class="close-icon" type="reset"><img src="assets/img/reset.png"/></button>
+            </div>
+          </div>
+          <!-- <div class="close_icon">
+            <button type="button" [style.display]="addInput_btn > 2 ? 'none' : 'inline'" (click)="addPlant()">+ Add Input</button>
+          </div> -->
+        </div>
+
+      </div>
+
+      <div *ngIf="dis_input_btn">
+          <h1 class="choice-title">Disease Input</h1>
+          <div class="dic_input">
+            <div class="ngForm">
+              <div>
+                <input id="typeahead-target" type="text" class="form-control"
+                [ngModelOptions]="{standalone: true}"
+                [ngbTypeahead]="searchDisease"
+                [(ngModel)]="modelDis"
+                [inputFormatter]="formatterDis"
+                [resultFormatter]="formatterDis"
+                [editable]='false' />
+                <button class="close-icon" type="reset"><img src="assets/img/reset.png"/></button>
+              </div>
+            </div>
+            <!-- <div class="close_icon">
+              <button type="button" [style.display]="addInput_btn_target > 2 ? 'none' : 'inline'" (click)="addDisease()">+ Add Input</button>
+            </div> -->
+          </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="di-button">
+    <!-- <button class="reset" (click)="resetinput()">Reset</button> -->
+    <button type="submit" value="Submit">Search</button>
+  </div>
+  </form>
+</div>
+
+
+<!-- <div id="loading" *ngIf='showload'>
+  <div class="loader"></div>
+  <h5>predicting..</h5>
+</div>
+
+<div id="loading" *ngIf='showloadFirst'>
+  <div class="loader"></div>
+  <h5>loading..</h5>
+</div> -->
+
+
+<div id="d-result" *ngIf='showresult'>
+  <div class="container">
+    <h1>Drug-Target Result</h1>
+    <p>Table of Synergis Compound of {{model_parse}}</p>
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+      <thead>
+        <tr>
+          <th>Compound 1</th>
+          <th>Compound 2</th>
+          <th>Agent Score</th>
+          <th>Topology Score</th>
+          <th>Synergi Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let res of data_result">
+          <td>{{res.parent}}</td>
+          <td>{{res.child}}</td>
+          <td>{{res.similarity}}</td>
+          <td>{{res.child}}</td>
+          <td>{{res.similarity}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

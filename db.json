@@ -801,5 +801,33 @@
         "weight": "0.4372"
       }
     ]
+  },
+  "plant_meta" :{
+    "data" : {
+      "PLA00000010" : {
+           "nlat" : "Ochna squarrosa",
+           "nidr" : "aaaaa"
+      },
+      "PLA00000003" : {
+           "nlat" : "Malus sylvestris",
+           "nidr" : "aaaaa"
+      },
+      "PLA00000005" : {
+           "nlat" : "Stephania dicentrinifera",
+           "nidr" : "aaaaa"
+      },
+      "PLA00000009" : {
+           "nlat" : "Syzygium jambos",
+           "nidr" : "aaaaa"
+      },
+      "PLA00000008" : {
+           "nlat" : "Aframomum daniellii",
+           "nidr" : "aaaaa"
+      },
+      "PLA00000027" : {
+           "nlat" : "Solanum spirale",
+           "nidr" : "aaaaa"
+      }
+    }
   }
 }

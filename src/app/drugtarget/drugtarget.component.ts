@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+
+type Plant_m = { id: string, name: string };
+type Disease_m = { id: string, name: string };
 
 @Component({
   selector: 'app-drugtarget',
@@ -16,52 +19,43 @@ export class DrugtargetComponent implements OnInit {
   }
 
 // BAGIAN INPUT. BAGIAN INPUT
-
-  // input dynamic
-  public addInput_btn = 0;
-  public plants: any[] = [{
-    pla_name: ''
+  addDrug_btn = 1;
+  public plantFor: any[] = [{
+    name: '',
   }];
-  public diseases: any[] = [{
-    dis_name: ''
+  public compoundFor: any[] = [{
+    name: '',
   }];
 
-  // addPlant() {
-  //   if (this.plants.length < 4) {
-  //     this.plants.push({
-  //       pla_name: ''
-  //     });
-  //     this.addInput_btn += 1;
-  //   }
-  // }
-  // addDisease() {
-  //   if (this.diseases.length < 4) {
-  //     this.diseases.push({
-  //       dis_name: ''
-  //     });
-  //     this.addInput_btn += 1;
-  //   }
-  // }
+  addPlant() {
+    if(this.addDrug_btn < 5){
+        this.plantFor.push({
+          name: '',
+        });
+        this.addDrug_btn += 1
+    }
+    console.log(this.addDrug_btn);
+  }
+  addCompound() {
+  if(this.addDrug_btn < 5){
+      this.compoundFor.push({
+        name: '',
+      });
+      this.addDrug_btn += 1
+    }
+    console.log(this.addDrug_btn);
+  }
 
   removePlant(i: number) {
-    if (this.plants.length > 1) {
-      this.plants.splice(i, 1);
-      this.addInput_btn -= 1;
+      if(this.addDrug_btn > 0){
+        this.plantFor.splice(i, 1);
+        this.addDrug_btn -= 1;
+      }
     }
-  }
-  removeDisease(i: number) {
-    if (this.diseases.length > 1) {
-      this.diseases.splice(i, 1);
-      this.addInput_btn -= 1;
-    }
-  }
-
-  logValue() {
-    if (this.pla_input_btn == true) {
-      console.log(this.plants);
-    }
-    if (this.dis_input_btn == true) {
-      console.log(this.diseases);
+  removeCompound(i: number) {
+    if(this.addDrug_btn > 0){
+      this.compoundFor.splice(i, 1);
+      this.addDrug_btn -= 1;
     }
   }
   // end of input dynamic
@@ -69,141 +63,178 @@ export class DrugtargetComponent implements OnInit {
 
   //show input
   public pla_input_btn = true;
-  public dis_input_btn = false;
+  public com_input_btn = false;
 
   plant_input() {
+    if(this.pla_input_btn == false){
+      this.compoundFor.splice(0, this.compoundFor.length);
+      this.addDrug_btn -= this.addDrug_btn;
+      this.addCompound();
+    }
     this.pla_input_btn = true;
-    this.dis_input_btn = false;
+    this.com_input_btn = false;
   }
-  disease_input() {
+  compound_input() {
+    if(this.com_input_btn == false){
+      this.plantFor.splice(0, this.plantFor.length);
+      this.addDrug_btn -= this.addDrug_btn;
+      this.addPlant()
+    }
     this.pla_input_btn = false;
-    this.dis_input_btn = true;
-  }
-
-  resetinput(){
-    if(this.pla_input_btn == true){
-      this.plant_input();
-    }
-    if(this.dis_input_btn == true){
-      this.disease_input();
-    }
+    this.com_input_btn = true;
   }
   //endof show input
 
 
   // getinput meta
+  showloadFirst: boolean = true;
 
+  // plant meta
   plant_new: Object;
-  plant_new_arr: any;
-  getPlantNewMeta(){
-    this.http.get<any>("http://localhost:3000/plant_new").toPromise().then(data => {
-      this.plant_new = data;
-      console.log(this.plant_new[0].pla_name);
+  public plant_new_arr = [];
+  getPlantNewMeta() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    this.http.get<any>("http://localhost:8000/plant_meta", httpOptions).toPromise().then(data => {
+      this.plant_new = data.data;
+      console.log(this.plant_new);
       if (this.plant_new) {
-
+        var t2 = performance.now();
+        const nilai = this.plant_new;
+        this.plant_new_arr = Object.keys(this.plant_new).map(
+          function(key) {
+            return key + " | " + nilai[key].nlat;
+          });
+        console.log(this.plant_new_arr);
+        var t3 = performance.now();
+        console.log("Took: " + (t3 - t2) + "msecs");
+        this.showloadFirst = false;
       }
     });
+
   }
 
-  disease: any;
-  disease_arr: any = [];
-  getDiseaseMeta() {
-    this.http.get<any>("http://localhost:3000/disease").toPromise().then(data => {
-      this.disease = data;
-      console.log(this.disease[1].dis_name);
-      if (this.disease) {
-        for (var i = 0; i < this.disease.length; i++) {
-          this.disease_arr.push(this.disease[i].dis_name);
-        }
-      }
-    });
-    console.log(this.disease_arr);
-  }
-
-  plant: any;
-  plant_arr: any = [];
-  getPlantMeta() {
-    this.http.get<any>("http://localhost:3000/plant").toPromise().then(data => {
-      this.plant = data;
-      console.log(this.plant[1].pla_name);
-      if (this.plant) {
-        for (var i = 0; i < this.plant.length; i++) {
-          this.plant_arr.push(this.plant[i].pla_name);
-        }
-      }
-    });
-    console.log(this.plant_arr);
-  }
-
-  protein: any;
-  protein_arr: any = [];
-  getProteinMeta() {
-    this.http.get<any>("http://localhost:3000/protein").toPromise().then(data => {
-      this.protein = data;
-      console.log(this.protein[1].pro_name);
-      if (this.protein) {
-        for (var i = 0; i < this.protein.length; i++) {
-          this.protein_arr.push(this.protein[i].pro_name);
-        }
-      }
-    });
-    console.log(this.protein_arr);
-  }
-
+  // compound meta
   compound: any;
   compound_arr: any = [];
   getCompoundMeta() {
-    this.http.get<any>("http://localhost:3000/compound").toPromise().then(data => {
-      this.compound = data;
-      console.log(this.compound[1].com_pubchem_name);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    this.http.get<any>("https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/compound", httpOptions).toPromise().then(data => {
+      this.compound = data.data;
       if (this.compound) {
-        for (var i = 0; i < this.compound.length; i++) {
-          this.compound_arr.push(this.compound[i].com_pubchem_name);
-        }
+        var t2 = performance.now();
+        const nilai = this.compound;
+        this.compound_arr = Object.keys(this.compound).filter(
+          function(key) {
+            return nilai[key].npac !== null && nilai[key].npub !== null;
+          }
+        ).map(
+          function(key) {
+              return key + " | " + nilai[key].npub + " | " + nilai[key].npac;
+          });
+        console.log(this.compound_arr);
+        var t3 = performance.now();
+        console.log("Took: " + (t3 - t2) + "msecs");
+        this.showloadFirst = false;
       }
     });
-    console.log(this.compound_arr);
+  }
+
+  // disease meta
+  disease: Object;
+  disease_arr: any;
+  getDiseaseMeta() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    this.http.get<any>("https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/disease", httpOptions).toPromise().then(data => {
+      this.disease = data.data;
+      if (this.disease) {
+        var nilai = this.disease;
+        this.disease_arr = Object.keys(this.disease).map(
+          function(key) {
+            return key + " | " + nilai[key].oid + " | " + nilai[key].name + " | " + nilai[key].uab;
+          });
+        console.log(this.disease_arr);
+      }
+    });
+  }
+
+  // protein meta
+  protein: any;
+  protein_arr: any;
+  getProteinMeta() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    this.http.get<any>("https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/protein", httpOptions).toPromise().then(data => {
+      this.protein = data.data;
+      if (this.protein) {
+        var nilai = this.protein;
+        this.protein_arr = Object.keys(this.protein).map(
+          function(key) {
+            return key + " | " + nilai[key].name + " | " + nilai[key].uid + " | " + nilai[key].uab;
+          });
+        console.log(this.protein_arr);
+      }
+    });
   }
   // end of getinput meta
 
 
   // ngbTypeahead
-  searchDisease = (text$: Observable<string>) =>
-    text$.pipe( //typeahead target
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : this.disease_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),
-    )
+  public modelDis: Disease_m;
+  formatterDis = (disease: Disease_m) => disease.name;
+  searchDisease = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    filter(term => term.length >= 1),
+    map(term => this.disease_arr.filter(disease => new RegExp(term, 'mi').test(disease.name)).slice(0, 10))
+  )
 
-  searchPlant = (text$: Observable<string>) =>
-    text$.pipe( //typeahead target
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : this.plant_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
+  public modelPla: any;
+  searchPlant = (text$: Observable<string>) => text$.pipe( //typeahead drug
+    debounceTime(200),
+    distinctUntilChanged(),
+    map(term => term.length < 1 ? []
+      : this.plant_new_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  )
+
+  public modelCom: any;
+  searchCompound = (text$: Observable<string>) => text$.pipe( //typeahead drug
+    debounceTime(200),
+    distinctUntilChanged(),
+    map(term => term.length < 1 ? []
+      : this.compound_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)))
   //end of ngbTypeahead
 
 
+  // predict function
   showresult: boolean = false;
   showload: boolean = false;
-
   async predict() {
-    this.showload = true;
+    this.showresult = true;
     this.getDrugTargetResult();
-    this.logValue();
-    // console.log(this.model);
   }
-// BAGIAN INPUT, END OF BAGIAN INPUT!
+// END OF BAGIAN INPUT!
 
   dtOptions: any = {};
   ngOnInit() {
     this.getPlantNewMeta();
-    this.getDiseaseMeta();
-    this.getPlantMeta();
-    this.getProteinMeta();
-    this.getCompoundMeta();
+    // this.getDiseaseMeta();
+    // this.getProteinMeta();
+    // this.getCompoundMeta();
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -215,26 +246,146 @@ export class DrugtargetComponent implements OnInit {
     };
   }
 
+  private data_sankey = [];
+  postId;
+  postDrugTarget() {
+    // Simple POST request with a JSON body and response type <any>
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    this.http.post<any>('https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/graph', { "id": "PLA00000260" }, httpOptions).subscribe(data => {
+      this.postId = data.data;
+      if (this.postId) {
+        console.log(this.postId);
+        for (let i in this.postId) {
+          this.data_sankey.push([this.postId[i][0], this.postId[i][1], parseFloat(this.postId[i][2])])
+        }
+      }
+
+    })
+  }
+
   // get result
-  drugtarget: any;
+  drug_side: any = [];
   pla_com: any;
   com_pro: any;
   pro_dis: any;
   getDrugTargetResult() {
-    this.http.get<any>("http://localhost:3000/drugtarget_result").toPromise().then(data => {
-      this.drugtarget = data;
-      if (this.drugtarget) {
-        this.pla_com = this.drugtarget.plant_compound;
-        this.com_pro = this.drugtarget.compound_protein;
-        this.pro_dis = this.drugtarget.protein_disease;
-        if (this.pla_com) {
-          this.sankeyData();
-          this.showresult = true;
-          this.showload = false;
-        }
-        this.removeDuplicates();
+    if(this.pla_input_btn == true){
+      for (let i in this.plantFor) {
+        this.drug_side.push({ index: i, value: this.plantFor[i].name.substring(0, 11) });
       }
-    });
+    }
+    else{
+      for (let i in this.compoundFor) {
+        this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
+      }
+    }
+    this.getPlaCom();
+  }
+
+  con_plaCom: any;
+  com_arr: any = [];
+  sankey_plaCom: any;
+  getPlaCom() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    let disPostMsgJSON = JSON.stringify(this.drug_side);
+    if (disPostMsgJSON) {
+      this.drug_side.splice(0, this.drug_side.length);
+    }
+    console.log(disPostMsgJSON);
+    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', disPostMsgJSON, httpOptions).subscribe(data => {
+      this.con_plaCom = data;
+      console.log(this.con_plaCom);
+      if (this.con_plaCom) {
+        const temp_plaCom = this.con_plaCom;
+        this.com_arr = this.con_plaCom.map(
+          function(key){ return {comId: key.com_id} }
+        );
+
+        const temp_pla = this.plant_new; //temp_pla[key.pla_id].nlat
+        const temp_com = this.compound; //temp_com[key.com_id].npub
+        this.sankey_plaCom = this.con_plaCom.map(
+          function(key){ return [key.pla_id,
+           key.com_id,
+           Number(key.weight)] }
+        );
+        // let x = (names) => names.filter((v,i) => names.indexOf(v) === i)
+        console.log(this.sankey_plaCom);
+        console.log(this.com_arr);
+
+        // compro function
+        this.getComPro();
+        // this.sankeyData();
+      }
+    })
+  }
+
+  con_comPro: any;
+  pro_arr: any = [];
+  sankey_comPro: any;
+  getComPro(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    let disPostComJSON = JSON.stringify(this.com_arr);
+    console.log(disPostComJSON);
+    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php',disPostComJSON, httpOptions).subscribe(data => {
+        this.con_comPro = data;
+        if(this.con_comPro){
+          const temp_comPro = this.con_comPro;
+          this.pro_arr = this.con_comPro.map(
+            function(key){ return {value: key.pro_id} }
+          );
+          console.log(this.pro_arr);
+
+          const temp_com = this.compound; //temp_pla[key.pla_id].nlat
+          const temp_pro = this.protein; //temp_com[key.com_id].npub
+          this.sankey_comPro = this.con_comPro.map(
+            function(key){ return [key.com_id,
+             key.pro_id,
+             Number(key.weight)] }
+          );
+
+          this.getProDis();
+        }
+    })
+  }
+
+  con_proDis: any;
+  sankey_proDis: any;
+  getProDis(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    let disPostProJSON = JSON.stringify(this.pro_arr);
+    console.log(disPostProJSON);
+    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php',disPostProJSON, httpOptions).subscribe(data => {
+        this.con_proDis = data;
+        if(this.con_proDis){
+          console.log(this.con_proDis);
+
+          const temp_pro = this.protein; //temp_pla[key.pla_id].nlat
+          const temp_dis = this.disease; //temp_com[key.com_id].npub
+          this.sankey_proDis = this.con_proDis.map(
+            function(key){ return [key.pro_id,
+             key.dis_id,
+             Number(key.weight)] }
+          );
+          console.log(this.sankey_proDis);
+          this.sankeyData();
+        }
+    })
   }
   // end of get result
 
@@ -378,33 +529,8 @@ export class DrugtargetComponent implements OnInit {
 
   private sankey_Data = [];
   sankeyData() {
-    // console.log(this.pla_com);
-    var number0 = 0;
-    var number1 = 0;
-    var number2 = 0;
-
-    for (var i in this.pla_com) {
-      this.sankey_Data.push([this.pla_com[i].pla_name, this.pla_com[i].com_pubchem_name, parseFloat(this.pla_com[i].weight)]);
-      // adding score pla_com connectivity
-      number0 += parseFloat(this.pla_com[i].weight)
-    }
-    for (var i in this.com_pro) {
-      this.sankey_Data.push([this.com_pro[i].com_pubchem_name, this.com_pro[i].pro_name, parseFloat(this.com_pro[i].weight)]);
-      // adding score pla_com connectivity
-      number1 += parseFloat(this.com_pro[i].weight);
-    }
-    for (var i in this.pro_dis) {
-      this.sankey_Data.push([this.pro_dis[i].pro_name, this.pro_dis[i].dis_name, parseFloat(this.com_pro[i].weight)]);
-      number2 += parseFloat(this.pro_dis[i].weight);
-    }
-
-    this.pla_com_score = number0.toFixed(3);
-    this.com_pro_score = number1.toFixed(3);
-    this.pro_dis_score = number2.toFixed(3);
-    this.totalScore = (number0 + number1 + number2).toFixed(3);
-
-    console.log(this.sankey_Data);
-    console.log(this.pla_com_score);
+    this.sankey_Data = this.sankey_proDis.concat(this.sankey_comPro, this.sankey_plaCom);
+    console.log(this.sankey_Data.length);
   }
   //end of summary score function & sankey diagram data
 
@@ -416,9 +542,9 @@ export class DrugtargetComponent implements OnInit {
   options = {
     sankey: {
       node: {
-        width: 15,
+        width: 20,
         label: {
-          fontSize: 11,
+          fontSize: 9,
           color: '#000000',
           bold: true,
         },
@@ -429,7 +555,7 @@ export class DrugtargetComponent implements OnInit {
       }
     },
     width: $(window).width() * 0.80,
-    height: 2100
+    height: 10 * 100
   };
   // end of sankey diagram
 

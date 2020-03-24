@@ -8,47 +8,54 @@
   <form #dtInputForm="ngForm"  (ngSubmit)="predict()">
   <div class="container">
     <div class="di-container">
-      <h1 class="dic-title">Drug/Target Side</h1>
+      <h1 class="dic-title">Drug Side</h1>
       <div class="dic-button">
-        <button type="button" [style.background]="pla_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="plant_input()">Plant Input</button>
-        <button type="button" [style.background]="dis_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="disease_input()">Disease Input</button>
+        <button type="reset" [style.background]="pla_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="plant_input()">Plant Input</button>
+        <button type="reset" [style.background]="com_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="compound_input()">Compound Input</button>
       </div>
 
       <div *ngIf="pla_input_btn">
         <h1 class="choice-title">Plant Input</h1>
         <div class="dic_input">
-          <div class="ngForm">
-            <div *ngFor="let plants of plants; let i = index;">
-              <input id="typeahead-target" type="text" class="form-control" [(ngModel)]="plants.pla_name" [value]="plants.pla_name" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchPlant" required/>
+          <div class="ngForm" *ngFor="let plantFor of plantFor; let i = index;">
+            <div>
+              <input id="typeahead-target" type="text" class="form-control"
+              [ngModelOptions]="{standalone: true}"
+              [ngbTypeahead]="searchPlant"
+              [(ngModel)]="plantFor.name"
+              [value]="plantFor.name" />
               <button class="close-icon" type="reset" (click)="removePlant(i)"><img src="assets/img/reset.png"/></button>
             </div>
           </div>
-          <!-- <div class="close_icon">
-            <button type="button" [style.display]="addInput_btn > 2 ? 'none' : 'inline'" (click)="addPlant()">+ Add Input</button>
-          </div> -->
+          <div class="close_icon">
+            <button type="button" [style.display]="addDrug_btn > 4 ? 'none' : 'inline'" (click)="addPlant(i)">+ Add Input</button>
+          </div>
         </div>
 
       </div>
 
-      <div *ngIf="dis_input_btn">
-          <h1 class="choice-title">Disease Input</h1>
+      <div *ngIf="com_input_btn">
+          <h1 class="choice-title">Compound Input</h1>
           <div class="dic_input">
-            <div class="ngForm">
-              <div *ngFor="let diseases of diseases; let i = index;">
-                <input id="typeahead-target" type="text" class="form-control" [(ngModel)]="diseases.dis_name" [value]="diseases.dis_name" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchDisease" />
-                <button class="close-icon" type="reset" (click)="removeDisease(i)"><img src="assets/img/reset.png"/></button>
+            <div class="ngForm" *ngFor="let compoundFor of compoundFor; let i = index;">
+              <div>
+                <input id="typeahead-target" type="text" class="form-control"
+                [ngModelOptions]="{standalone: true}"
+                [ngbTypeahead]="searchCompound"
+                [(ngModel)]="compoundFor.name"
+                [value]="compoundFor.name" />
+                <button class="close-icon" type="button" (click)="removeCompound(i)"><img src="assets/img/reset.png"/></button>
               </div>
             </div>
-            <!-- <div class="close_icon">
-              <button type="button" [style.display]="addInput_btn_target > 2 ? 'none' : 'inline'" (click)="addDisease()">+ Add Input</button>
-            </div> -->
+            <div class="close_icon">
+              <button type="button" [style.display]="addDrug_btn > 4 ? 'none' : 'inline'" (click)="addCompound()">+ Add Input</button>
+            </div>
           </div>
       </div>
-
     </div>
   </div>
   <div class="di-button">
-    <button class="reset" (click)="resetinput()">Reset</button>
+    <!-- <button class="reset" (click)="resetinput()">Reset</button> -->
     <button type="submit" value="Submit">Search</button>
   </div>
   </form>
@@ -58,6 +65,11 @@
 <div id="loading" *ngIf='showload'>
   <div class="loader"></div>
   <h5>predicting..</h5>
+</div>
+
+<div id="loading" *ngIf='showloadFirst'>
+  <div class="loader"></div>
+  <h5>loading..</h5>
 </div>
 
 

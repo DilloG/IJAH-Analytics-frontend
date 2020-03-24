@@ -78,7 +78,7 @@ export class ClusterComponent implements OnInit {
   compound_Infl: any = [];
 
   getCompoundMeta() {
-  this.http.get<any>("http://localhost:3000/compound").toPromise().then(data => {
+  this.http.get<any>("http://localhost:8000/compound").toPromise().then(data => {
     this.compound = data;
     console.log(this.compound[1].com_pubchem_name);
     if(this.compound){
@@ -126,7 +126,7 @@ pla_com: any;
 com_pro: any;
 pro_dis: any;
 getDrugTargetResult() {
-  this.http.get<any>("http://localhost:3000/drugtarget_result").toPromise().then(data => {
+  this.http.get<any>("http://localhost:8000/drugtarget_result").toPromise().then(data => {
     this.drugtarget = data;
     if (this.drugtarget) {
       this.pla_com = this.drugtarget.plant_compound;
