@@ -118,7 +118,10 @@ constructor(private http:HttpClient) { }
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    let disPostProJSON = JSON.stringify(this.pro_arr);
+    let disPostProJSON = JSON.stringify([{ index: 0, value : 'PRO00002168'},
+            { index: 1, value : 'PRO00000061'},
+            { index: 2, value : 'PRO00000261'},
+            { index: 3, value : 'PRO00001836'}]);
     console.log(disPostProJSON);
     this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php',disPostProJSON, httpOptions).subscribe(data => {
         this.pro_dis = data;

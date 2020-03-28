@@ -5,9 +5,17 @@
 </div>
 
 <div id="d-input">
+  <div class="container">
+    <div class="dic-button-atas">
+    <h2 class="dic-title"> Choose Input Side : </h2>
+    <button type="reset" [style.background]="dsInput ? '#4CAF50' : '#3E4B3E'" (click)="ds_input_btn()">Drug Side</button>
+    <button type="reset" [style.background]="tsInput ? '#4CAF50' : '#3E4B3E'" (click)="ts_input_btn()">Target Side</button>
+    <button type="reset" [style.background]="dstsInput ? '#4CAF50' : '#3E4B3E'" (click)="dsts_input_btn()">Drug & Target Side</button>
+    </div>
+  </div>
   <form #dtInputForm="ngForm"  (ngSubmit)="predict()">
   <div class="container">
-    <div class="di-container">
+    <div class="di-container" *ngIf="dsInput || dstsInput">
       <h1 class="dic-title">Drug Side</h1>
       <div class="dic-button">
         <button type="reset" [style.background]="pla_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="plant_input()">Plant Input</button>
@@ -49,6 +57,52 @@
             </div>
             <div class="close_icon">
               <button type="button" [style.display]="addDrug_btn > 4 ? 'none' : 'inline'" (click)="addCompound()">+ Add Input</button>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="di-container" *ngIf="tsInput || dstsInput">
+      <h1 class="dic-title">Target Side</h1>
+      <div class="dic-button">
+        <button type="reset" [style.background]="pro_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="protein_input()">Protein Input</button>
+        <button type="reset" [style.background]="dis_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="disease_input()">Disease Input</button>
+      </div>
+
+      <div *ngIf="pro_input_btn">
+        <h1 class="choice-title">Protein Input</h1>
+        <div class="dic_input">
+          <div class="ngForm" *ngFor="let proteinFor of proteinFor; let i = index;">
+            <div>
+              <input id="typeahead-target" type="text" class="form-control"
+              [ngModelOptions]="{standalone: true}"
+              [ngbTypeahead]="searchProtein"
+              [(ngModel)]="proteinFor.name"
+              [value]="proteinFor.name" />
+              <button class="close-icon" type="reset" (click)="removeProtein(i)"><img src="assets/img/reset.png"/></button>
+            </div>
+          </div>
+          <div class="close_icon">
+            <button type="button" [style.display]="addTarget_btn > 4 ? 'none' : 'inline'" (click)="addProtein(i)">+ Add Input</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div *ngIf="dis_input_btn">
+          <h1 class="choice-title">Disease Input</h1>
+          <div class="dic_input">
+            <div class="ngForm" *ngFor="let diseaseFor of diseaseFor; let i = index;">
+              <div>
+                <input id="typeahead-target" type="text" class="form-control"
+                [ngModelOptions]="{standalone: true}"
+                [ngbTypeahead]="searchDisease"
+                [(ngModel)]="diseaseFor.name"
+                [value]="diseaseFor.name" />
+                <button class="close-icon" type="button" (click)="removeDisease(i)"><img src="assets/img/reset.png"/></button>
+              </div>
+            </div>
+            <div class="close_icon">
+              <button type="button" [style.display]="addTarget_btn > 4 ? 'none' : 'inline'" (click)="addDisease()">+ Add Input</button>
             </div>
           </div>
       </div>
@@ -133,7 +187,8 @@
           <p>Disease</p>
           </div>
           <div class="chartnya">
-            <google-chart #chart
+            <google-chart *ngIf="showChart"
+               #chart
                [title]="title"
                [type]="type"
                [data]="sankey_Data"
@@ -159,7 +214,7 @@
                       (click)="pro_dis_on()">Protein - Disease</button>
           </div>
           <div class="ct_table" *ngIf="pla_com_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_plaCom" class="row-border hover">
               <thead>
                 <tr>
                   <th>Plant Name</th>
@@ -168,16 +223,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pla_com of pla_com">
-                  <td>{{pla_com.pla_name}}</td>
-                  <td>{{pla_com.weight}}</td>
-                  <td>{{pla_com.com_pubchem_name}}</td>
+                <tr *ngFor="let con_plaCom of con_plaCom">
+                  <td>{{con_plaCom.pla_id}}</td>
+                  <td>{{con_plaCom.weight}}</td>
+                  <td>{{con_plaCom.com_id}}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="ct_table" *ngIf="com_pro_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_comPro" class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound Name</th>
@@ -186,16 +241,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let com_pro of com_pro">
-                  <td>{{com_pro.com_pubchem_name}}</td>
-                  <td>{{com_pro.weight}}</td>
-                  <td>{{com_pro.pro_name}}</td>
+                <tr *ngFor="let con_comPro of con_comPro">
+                  <td>{{con_comPro.com_id}}</td>
+                  <td>{{con_comPro.weight}}</td>
+                  <td>{{con_comPro.pro_id}}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="ct_table" *ngIf="pro_dis_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_proDis" class="row-border hover">
               <thead>
                 <tr>
                   <th>Protein Name</th>
@@ -204,10 +259,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pro_dis of pro_dis">
-                  <td>{{pro_dis.pro_name}}</td>
-                  <td>{{pro_dis.weight}}</td>
-                  <td>{{pro_dis.dis_name}}</td>
+                <tr *ngFor="let con_proDis of con_proDis">
+                  <td>{{con_proDis.pro_id}}</td>
+                  <td>{{con_proDis.weight}}</td>
+                  <td>{{con_proDis.dis_id}}</td>
                 </tr>
               </tbody>
             </table>

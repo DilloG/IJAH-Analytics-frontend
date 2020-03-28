@@ -18,26 +18,33 @@ export class DrugtargetComponent implements OnInit {
   constructor(private http: HttpClient) {
   }
 
-// BAGIAN INPUT. BAGIAN INPUT
+  // BAGIAN INPUT. BAGIAN INPUT
   addDrug_btn = 1;
+  addTarget_btn = 1;
   public plantFor: any[] = [{
     name: '',
   }];
   public compoundFor: any[] = [{
     name: '',
   }];
+  public proteinFor: any[] = [{
+    name: '',
+  }];
+  public diseaseFor: any[] = [{
+    name: '',
+  }];
 
   addPlant() {
-    if(this.addDrug_btn < 5){
-        this.plantFor.push({
-          name: '',
-        });
-        this.addDrug_btn += 1
+    if (this.addDrug_btn < 5) {
+      this.plantFor.push({
+        name: '',
+      });
+      this.addDrug_btn += 1
     }
     console.log(this.addDrug_btn);
   }
   addCompound() {
-  if(this.addDrug_btn < 5){
+    if (this.addDrug_btn < 5) {
       this.compoundFor.push({
         name: '',
       });
@@ -45,17 +52,47 @@ export class DrugtargetComponent implements OnInit {
     }
     console.log(this.addDrug_btn);
   }
+  addProtein() {
+    if (this.addTarget_btn < 5) {
+      this.proteinFor.push({
+        name: '',
+      });
+      this.addTarget_btn += 1
+    }
+    console.log(this.addTarget_btn);
+  }
+  addDisease() {
+    if (this.addTarget_btn < 5) {
+      this.diseaseFor.push({
+        name: '',
+      });
+      this.addTarget_btn += 1
+    }
+    console.log(this.addTarget_btn);
+  }
 
   removePlant(i: number) {
-      if(this.addDrug_btn > 0){
-        this.plantFor.splice(i, 1);
-        this.addDrug_btn -= 1;
-      }
+    if (this.addDrug_btn > 1) {
+      this.plantFor.splice(i, 1);
+      this.addDrug_btn -= 1;
     }
+  }
   removeCompound(i: number) {
-    if(this.addDrug_btn > 0){
+    if (this.addDrug_btn > 1) {
       this.compoundFor.splice(i, 1);
       this.addDrug_btn -= 1;
+    }
+  }
+  removeProtein(i: number) {
+    if (this.addTarget_btn > 1) {
+      this.proteinFor.splice(i, 1);
+      this.addTarget_btn -= 1;
+    }
+  }
+  removeDisease(i: number) {
+    if (this.addTarget_btn > 1) {
+      this.diseaseFor.splice(i, 1);
+      this.addTarget_btn -= 1;
     }
   }
   // end of input dynamic
@@ -64,9 +101,11 @@ export class DrugtargetComponent implements OnInit {
   //show input
   public pla_input_btn = true;
   public com_input_btn = false;
+  public pro_input_btn = true;
+  public dis_input_btn = false;
 
   plant_input() {
-    if(this.pla_input_btn == false){
+    if (this.pla_input_btn == false) {
       this.compoundFor.splice(0, this.compoundFor.length);
       this.addDrug_btn -= this.addDrug_btn;
       this.addCompound();
@@ -75,13 +114,31 @@ export class DrugtargetComponent implements OnInit {
     this.com_input_btn = false;
   }
   compound_input() {
-    if(this.com_input_btn == false){
+    if (this.com_input_btn == false) {
       this.plantFor.splice(0, this.plantFor.length);
       this.addDrug_btn -= this.addDrug_btn;
       this.addPlant()
     }
     this.pla_input_btn = false;
     this.com_input_btn = true;
+  }
+  protein_input() {
+    if (this.pro_input_btn == false) {
+      this.diseaseFor.splice(0, this.diseaseFor.length);
+      this.addTarget_btn -= this.addTarget_btn;
+      this.addDisease()
+    }
+    this.pro_input_btn = true;
+    this.dis_input_btn = false;
+  }
+  disease_input() {
+    if (this.dis_input_btn == false) {
+      this.proteinFor.splice(0, this.proteinFor.length);
+      this.addTarget_btn -= this.addTarget_btn;
+      this.addProtein()
+    }
+    this.pro_input_btn = false;
+    this.dis_input_btn = true;
   }
   //endof show input
 
@@ -137,7 +194,7 @@ export class DrugtargetComponent implements OnInit {
           }
         ).map(
           function(key) {
-              return key + " | " + nilai[key].npub + " | " + nilai[key].npac;
+            return key + " | " + nilai[key].npub + " | " + nilai[key].npac;
           });
         console.log(this.compound_arr);
         var t3 = performance.now();
@@ -149,7 +206,11 @@ export class DrugtargetComponent implements OnInit {
 
   // disease meta
   disease: Object;
-  disease_arr: any;
+  disease_arr: any = ['DIS00000470 | 601665 | Obesity', 'DIS00001061 | 600807 | Asthma',
+                      'DIS00000900 | 610551 | Herpes simplex encephalitis 1',
+                      'DIS00000900 | 156610 | Skin creases, congenital symmetric circumferential, 1',
+                      'DIS00003892 | 166710 | Osteoporosis',
+                      'DIS00000008 | 616570 | Cerebro-oculo-facio-skeletal syndrome 3'];
   getDiseaseMeta() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -171,7 +232,10 @@ export class DrugtargetComponent implements OnInit {
 
   // protein meta
   protein: any;
-  protein_arr: any;
+  protein_arr: any = ['PRO00002168 | P37231 | PPARG_HUMAN | Peroxisome proliferator-activated receptor gamma',
+'PRO00000061 | P01189 | COLI_HUMAN | Pro-opiomelanocortin', 'PRO00000261 | P02452 | CO1A1_HUMAN | Collagen alpha-1(I) chain',
+'PRO00001836 | Q9UHD2 | TBK1_HUMAN | Serine/threonine-protein kinase TBK1',
+'PRO00000025 | DUMMY | COLB_DUMMY | Lactase-phlorizin hydrolase'];
   getProteinMeta() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -194,15 +258,6 @@ export class DrugtargetComponent implements OnInit {
 
 
   // ngbTypeahead
-  public modelDis: Disease_m;
-  formatterDis = (disease: Disease_m) => disease.name;
-  searchDisease = (text$: Observable<string>) => text$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-    filter(term => term.length >= 1),
-    map(term => this.disease_arr.filter(disease => new RegExp(term, 'mi').test(disease.name)).slice(0, 10))
-  )
-
   public modelPla: any;
   searchPlant = (text$: Observable<string>) => text$.pipe( //typeahead drug
     debounceTime(200),
@@ -217,17 +272,36 @@ export class DrugtargetComponent implements OnInit {
     distinctUntilChanged(),
     map(term => term.length < 1 ? []
       : this.compound_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)))
+
+  public modelPro: any;
+  searchProtein = (text$: Observable<string>) => text$.pipe( //typeahead drug
+    debounceTime(200),
+    distinctUntilChanged(),
+    map(term => term.length < 1 ? []
+      : this.protein_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  )
+
+  public modelDis: any;
+  searchDisease = (text$: Observable<string>) => text$.pipe( //typeahead drug
+    debounceTime(200),
+    distinctUntilChanged(),
+    map(term => term.length < 1 ? []
+      : this.disease_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  )
   //end of ngbTypeahead
 
 
   // predict function
   showresult: boolean = false;
   showload: boolean = false;
+
   async predict() {
     this.showresult = true;
     this.getDrugTargetResult();
+    console.log(this.proteinFor);
+    console.log(this.diseaseFor);
   }
-// END OF BAGIAN INPUT!
+  // END OF BAGIAN INPUT!
 
   dtOptions: any = {};
   ngOnInit() {
@@ -268,124 +342,276 @@ export class DrugtargetComponent implements OnInit {
   }
 
   // get result
+
+  //button for drugtarget side
+  dsInput: boolean = true;
+  tsInput: boolean = false;
+  dstsInput: boolean = false;
+  ds_input_btn() {
+    this.dsInput = true;
+    this.tsInput = false;
+    this.dstsInput = false;
+  }
+  ts_input_btn() {
+    this.dsInput = false;
+    this.tsInput = true;
+    this.dstsInput = false;
+  }
+  dsts_input_btn() {
+    this.dsInput = false;
+    this.tsInput = false;
+    this.dstsInput = true;
+  }
+
+  //get result
   drug_side: any = [];
+  target_side: any = [];
   pla_com: any;
   com_pro: any;
   pro_dis: any;
   getDrugTargetResult() {
-    if(this.pla_input_btn == true){
-      for (let i in this.plantFor) {
-        this.drug_side.push({ index: i, value: this.plantFor[i].name.substring(0, 11) });
+    this.drug_side.splice(0, this.drug_side.length);
+    this.target_side.splice(0, this.target_side.length);
+    if (this.dsInput == true) {
+      if (this.pla_input_btn == true) {
+        for (let i in this.plantFor) {
+          this.drug_side.push({ index: i, value: this.plantFor[i].name.substring(0, 11) });
+        }
       }
-    }
-    else{
-      for (let i in this.compoundFor) {
-        this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
+      else {
+        for (let i in this.compoundFor) {
+          this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
+        }
       }
+      this.disPostMsgJSON = JSON.stringify(this.drug_side);
+      this.getPlaCom();
     }
-    this.getPlaCom();
+    if (this.tsInput == true) {
+      if (this.pro_input_btn == true) {
+        for (let i in this.proteinFor) {
+          this.target_side.push({ index: i, value: this.proteinFor[i].name.substring(0, 11) });
+        }
+      }
+      else {
+        for (let i in this.diseaseFor) {
+          this.target_side.push({ index: i, value: this.diseaseFor[i].name.substring(0, 11) });
+        }
+      }
+      this.disPostProJSON = JSON.stringify(this.temp_meta_pro);
+      this.getProDis();
+    }
+    if (this.dstsInput == true) {
+      if (this.pro_input_btn == true) {
+        for (let i in this.proteinFor) {
+          this.target_side.push({ index: i, value: this.proteinFor[i].name.substring(0, 11) });
+        }
+      }
+      else {
+        for (let i in this.diseaseFor) {
+          this.target_side.push({ index: i, value: this.diseaseFor[i].name.substring(0, 11) });
+        }
+      }
+
+      if (this.pla_input_btn == true) {
+        for (let i in this.plantFor) {
+          this.drug_side.push({ index: i, value: this.plantFor[i].name.substring(0, 11) });
+        }
+      }
+      else {
+        for (let i in this.compoundFor) {
+          this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
+        }
+      }
+      this.disPostMsgJSON = JSON.stringify(this.temp_meta_com);
+      this.getPlaCom();
+      this.disPostProJSON = JSON.stringify(this.temp_meta_pro);
+      this.getProDis();
+    }
   }
 
+
   con_plaCom: any;
-  com_arr: any = [];
+  con_com_arr: any = [];
+  temp_comId: any;
   sankey_plaCom: any;
+  temp_meta_com = [{ index: 1, value: 'COM00008027' },
+  { index: 2, value: 'COM00021005' },
+  { index: 3, value: 'COM00009696' },
+  { index: 4, value: 'COM00020511' }];
+  temp_meta_pla = [{ index: 0, value: 'PLA00000007' },
+  { index: 1, value: 'PLA00001504' },
+  { index: 2, value: 'PLA00001838' },
+  { index: 3, value: 'PLA00004093' },
+  { index: 4, value: 'PLA00001600' }];
+  temp_meta_pro = [{ index: 0, value : 'PRO00002168'},
+            { index: 1, value : 'PRO00000061'},
+            { index: 2, value : 'PRO00000261'},
+            { index: 3, value : 'PRO00001836'}];
+  disPostMsgJSON: any;
   getPlaCom() {
     const httpOptions = {
       headers: new HttpHeaders({
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    let disPostMsgJSON = JSON.stringify(this.drug_side);
-    if (disPostMsgJSON) {
-      this.drug_side.splice(0, this.drug_side.length);
-    }
-    console.log(disPostMsgJSON);
-    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', disPostMsgJSON, httpOptions).subscribe(data => {
+
+    // this.disPostMsgJSON = JSON.stringify(this.temp_meta_com); //ini dari input user
+    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', this.disPostMsgJSON, httpOptions).subscribe(data => {
       this.con_plaCom = data;
       console.log(this.con_plaCom);
       if (this.con_plaCom) {
-        const temp_plaCom = this.con_plaCom;
-        this.com_arr = this.con_plaCom.map(
-          function(key){ return {comId: key.com_id} }
-        );
 
+        // sankey graph
         const temp_pla = this.plant_new; //temp_pla[key.pla_id].nlat
         const temp_com = this.compound; //temp_com[key.com_id].npub
         this.sankey_plaCom = this.con_plaCom.map(
-          function(key){ return [key.pla_id,
-           key.com_id,
-           Number(key.weight)] }
+          function(key) {
+            return [key.pla_id,
+            key.com_id,
+            Number(key.weight)]
+          }
         );
         // let x = (names) => names.filter((v,i) => names.indexOf(v) === i)
         console.log(this.sankey_plaCom);
-        console.log(this.com_arr);
+        console.log(this.con_com_arr);
 
-        // compro function
-        this.getComPro();
-        // this.sankeyData();
+        this.getComId();
+        this.switcherPlaCom();
       }
     })
   }
 
+  switcherPlaCom(){
+    if(this.dsInput == true){
+      this.disPostComProJSON = JSON.stringify(this.temp_comId);
+      this.getComPro();
+    }
+    if(this.tsInput == true){
+      this.sankeyData();
+    }
+    if(this.dstsInput == true){
+      this.disPostComProJSON = JSON.stringify(this.temp_comId);
+      this.getComPro();
+    }
+  }
+    getComId(){
+      const temp_plaCom = this.con_plaCom;
+      this.temp_comId = this.con_plaCom.map(
+        function(key) { return { comId: key.com_id } }
+      );
+    }
+
   con_comPro: any;
-  pro_arr: any = [];
+  con_pro_arr: any = [];
   sankey_comPro: any;
-  getComPro(){
+  disPostComProJSON: any;
+  getComPro() {
     const httpOptions = {
       headers: new HttpHeaders({
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    let disPostComJSON = JSON.stringify(this.com_arr);
-    console.log(disPostComJSON);
-    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php',disPostComJSON, httpOptions).subscribe(data => {
-        this.con_comPro = data;
-        if(this.con_comPro){
-          const temp_comPro = this.con_comPro;
-          this.pro_arr = this.con_comPro.map(
-            function(key){ return {value: key.pro_id} }
-          );
-          console.log(this.pro_arr);
 
-          const temp_com = this.compound; //temp_pla[key.pla_id].nlat
-          const temp_pro = this.protein; //temp_com[key.com_id].npub
-          this.sankey_comPro = this.con_comPro.map(
-            function(key){ return [key.com_id,
-             key.pro_id,
-             Number(key.weight)] }
-          );
+    console.log(this.disPostComProJSON);
+    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', this.disPostComProJSON, httpOptions).subscribe(data => {
+      this.con_comPro = data;
+      if (this.con_comPro) {
 
-          this.getProDis();
-        }
+        const temp_com = this.compound; //temp_pla[key.pla_id].nlat
+        const temp_pro = this.protein; //temp_com[key.com_id].npub
+        this.sankey_comPro = this.con_comPro.map(
+          function(key) { return [
+            key.com_id,
+            key.pro_id,
+            Number(key.weight)]
+          }
+        );
+
+        this.getProValue();
+        this.getComValue();
+        this.switcherComPro();
+      }
     })
+  }
+
+  switcherComPro(){
+    if(this.dsInput == true){
+      this.disPostProJSON = JSON.stringify(this.con_pro_arr);
+      this.getProDis();
+    }
+    if(this.tsInput == true){
+      this.disPostMsgJSON = JSON.stringify(this.con_com_arr);
+      this.getPlaCom();
+    }
+  }
+  getProValue(){
+    const temp_comPro = this.con_comPro;
+    this.con_pro_arr = this.con_comPro.map(
+      function(key) { return { value: key.pro_id } }
+    );
+    console.log(this.con_pro_arr);
+  }
+  getComValue(){
+    const temp_comPro = this.con_comPro;
+    this.con_com_arr = this.con_comPro.map(
+      function(key) { return { value: key.com_id } }
+    );
+    console.log(this.con_com_arr);
   }
 
   con_proDis: any;
   sankey_proDis: any;
-  getProDis(){
+  disPostProJSON: any;
+  getProDis() {
     const httpOptions = {
       headers: new HttpHeaders({
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    let disPostProJSON = JSON.stringify(this.pro_arr);
-    console.log(disPostProJSON);
-    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php',disPostProJSON, httpOptions).subscribe(data => {
-        this.con_proDis = data;
-        if(this.con_proDis){
-          console.log(this.con_proDis);
+    console.log(this.disPostProJSON);
+    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', this.disPostProJSON, httpOptions).subscribe(data => {
+      this.con_proDis = data;
+      if (this.con_proDis) {
+        console.log(this.con_proDis);
 
-          const temp_pro = this.protein; //temp_pla[key.pla_id].nlat
-          const temp_dis = this.disease; //temp_com[key.com_id].npub
-          this.sankey_proDis = this.con_proDis.map(
-            function(key){ return [key.pro_id,
-             key.dis_id,
-             Number(key.weight)] }
-          );
-          console.log(this.sankey_proDis);
-          this.sankeyData();
-        }
+        const temp_pro = this.protein; //temp_pla[key.pla_id].nlat
+        const temp_dis = this.disease; //temp_com[key.com_id].npub
+        this.sankey_proDis = this.con_proDis.map(
+          function(key) {
+            return [key.pro_id,
+            key.dis_id,
+            Number(key.weight)]
+          }
+        );
+        console.log(this.sankey_proDis);
+
+        this.getProId()
+        this.switcherProDis();
+      }
     })
+  }
+
+  switcherProDis(){
+    if(this.dsInput == true){
+      this.sankeyData();
+    }
+    if(this.tsInput == true){
+      this.disPostComProJSON = JSON.stringify(this.temp_proId);
+      this.getComPro();
+    }
+    if(this.dstsInput == true){
+      this.disPostComProJSON = JSON.stringify(this.temp_proId);
+      this.getComPro();
+    }
+  }
+
+  temp_proId: any;
+  getProId(){
+    const temp_proDis = this.con_proDis;
+    this.temp_proId = this.con_proDis.map(
+      function(key) { return { proId: key.pro_id } }
+    );
+    console.log(this.con_pro_arr);
   }
   // end of get result
 
@@ -528,9 +754,151 @@ export class DrugtargetComponent implements OnInit {
   private pro_dis_score: any = 0;
 
   private sankey_Data = [];
+  len;
+  showChart: boolean = false;
   sankeyData() {
-    this.sankey_Data = this.sankey_proDis.concat(this.sankey_comPro, this.sankey_plaCom);
     console.log(this.sankey_Data.length);
+    this.sankey_Data = this.sankey_proDis.concat(this.sankey_comPro, this.sankey_plaCom);
+    if(this.dsInput == true){
+      this.comNotPro();
+      this.proNotDis();
+    }
+    if(this.tsInput == true){
+      this.proNotCom();
+      this.comNotPla();
+    }
+    this.sankey_Data.push(["PRO", "DIS", 0.0000000000000001]);
+    this.sankey_Data.push(["COM", "PRO", 0.0000000000000001]);
+    this.sankey_Data.push(["PLA", "COM", 0.0000000000000001]);
+    console.log(this.sankey_Data);
+    // size of output
+    this.len = this.sankey_Data.length;
+    if ((this.len / 2) * 30 > 2500) {
+      this.len = 2500;
+    } else {
+      this.len = (this.len / 2) * 30;
+    }
+    // sankey diagram options
+    var colors = ['#fcba03', '#fc0303', '#4afc03', '#03fcc2', '#03fcc2', '#03fcc2',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#03fcc2',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#03fcc2',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#80fc03',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#03fcc2',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#03fcc2', '#fc036f',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#4afc03',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#33a02c',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#4afc03',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#03fcc2', '#03fcad',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#e7fc03',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#a903fc',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#030ffc',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#030ffc',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#030ffc',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#030ffc'];
+    this.options = {
+      sankey: {
+        node: {
+          colors: colors,
+          width: 20,
+          label: {
+            fontSize: 10,
+            color: '#000000',
+            bold: true,
+          },
+          interactivity: true
+        },
+        link: {
+          colorMode: 'source'
+        }
+      },
+      width: $(window).width() * 0.80,
+      height: this.len
+    };
+    this.showChart = true;
+  }
+
+  comNotPro() {
+    // fungsi untuk mencari com yang tidak punya link ke prot
+    var t2 = performance.now();
+    var compro = [];
+    compro = this.con_comPro.map(
+      function(key) { return key.com_id }
+    );
+    var compro2 = [];
+    compro2 = this.temp_comId.filter(function(item) {
+      return !compro.includes(item[0]);
+    });
+    var comNotPro = [];
+    for (var i in compro2) {
+      this.sankey_Data.push([compro2[i].comId, "PRO", 0.0000000000000001]);
+    }
+    var t5 = performance.now();
+    console.log("Took: " + (t5 - t2) + "msecs");
+
+    console.log(this.con_comPro);
+    console.log(compro);
+    console.log(compro2);
+  }
+  proNotDis() {
+    // fungsi untuk mencari com yang tidak punya link ke prot
+        var t2 = performance.now();
+        var compro = [];
+        compro = this.con_proDis.map(
+          function(key) { return key.pro_id }
+        );
+        var compro2 = [];
+        compro2 = this.con_pro_arr.filter(function(item) {
+          return !compro.includes(item[0]);
+        });
+        console.log(compro);
+        console.log(compro2);
+        for (var i in compro2) {
+          this.sankey_Data.push([compro2[i].value, "DIS", 0.0000000000000001]);
+          console.log(compro2[i].value);
+        }
+        var t5 = performance.now();
+        console.log("Took: " + (t5 - t2) + "msecs");
+  }
+  proNotCom() {
+    // fungsi untuk mencari com yang tidak punya link ke prot
+    var t2 = performance.now();
+    var compro = [];
+    compro = this.con_comPro.map(
+      function(key) { return key.pro_id }
+    );
+    var compro2 = [];
+    compro2 = this.temp_proId.filter(function(item) {
+      return !compro.includes(item[0]);
+    });
+    for (var i in compro2) {
+      this.sankey_Data.push(["COM", compro2[i].proId, 0.0000000000000001]);
+      console.log(compro2[i].proId);
+    }
+    var t5 = performance.now();
+    console.log("Took: " + (t5 - t2) + "msecs");
+
+  }
+  comNotPla() {
+    // this.con_com_arr
+
+    var t2 = performance.now();
+    var compro = [];
+    compro = this.con_plaCom.map(
+      function(key) { return key.com_id }
+    );
+    var compro2 = [];
+    compro2 = this.con_com_arr.filter(function(item) {
+      return !compro.includes(item[0]);
+    });
+    console.log(compro);
+    console.log(compro2);
+    for (var i in compro2) {
+      this.sankey_Data.push(["PLA", compro2[i].value, 0.0000000000000001]);
+      console.log(compro2[i].value);
+    }
+    var t5 = performance.now();
+    console.log("Took: " + (t5 - t2) + "msecs");
+
   }
   //end of summary score function & sankey diagram data
 
@@ -539,24 +907,7 @@ export class DrugtargetComponent implements OnInit {
   title = '';
   type = 'Sankey';
   columnNames = ['From', 'To', 'Weight'];
-  options = {
-    sankey: {
-      node: {
-        width: 20,
-        label: {
-          fontSize: 9,
-          color: '#000000',
-          bold: true,
-        },
-        interactivity: true
-      },
-      link: {
-        colorMode: 'source'
-      }
-    },
-    width: $(window).width() * 0.80,
-    height: 10 * 100
-  };
+  options;
   // end of sankey diagram
 
 

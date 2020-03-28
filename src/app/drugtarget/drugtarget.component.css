@@ -20,7 +20,7 @@
 
 /* input */
 #d-input {
-  padding: 5rem 0;
+  padding: 4rem 0;
   background: #3E4B3E;
   width: 100%;
 }
@@ -45,6 +45,42 @@
 #d-input .di-container {
   width: 50%;
 }
+
+.dic-button-atas{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.dic-button-atas .dic-title{
+  margin: 0 20px 0 0 !important;
+  align-self: center;
+  color: white;
+  font-size: 18px;
+}
+
+#d-input .dic-button-atas button {
+  background-color: #3E4B3E;
+  outline: none;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 4px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  border: 2px solid #4CAF50;
+  margin-right: 10px;
+  /* margin-bottom: 20px; */
+}
+
+#d-input .dic-button-atas button:hover {
+  border: 2px solid #4CAF50;
+  box-shadow: 0 0 10px rgba(167, 245, 66, .7);
+}
+
 
 #d-input .di-button button{
   background-color: #4CAF50; /* Green */
