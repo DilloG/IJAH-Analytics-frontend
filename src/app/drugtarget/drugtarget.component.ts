@@ -400,7 +400,7 @@ export class DrugtargetComponent implements OnInit {
           this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
         }
       }
-      this.disPostMsgJSON = JSON.stringify(this.temp_meta_com);
+      this.disPostMsgJSON = JSON.stringify(this.drug_side);
       this.getPlaCom();
     }
     if (this.tsInput == true) {
@@ -473,8 +473,6 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-
-    // this.disPostMsgJSON = JSON.stringify(this.temp_meta_com); //ini dari input user
     this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', this.disPostMsgJSON, httpOptions).subscribe(data => {
       this.con_plaCom = data;
       console.log(this.con_plaCom);
@@ -490,6 +488,7 @@ export class DrugtargetComponent implements OnInit {
             Number(key.weight)]
           }
         );
+
         //connectivity Table
         this.placom_con_table = this.con_plaCom.map(
           function(key) {
@@ -504,17 +503,24 @@ export class DrugtargetComponent implements OnInit {
             }
           }
         );
+
         //meta table
-        this.pla_meta_table = this.con_plaCom.map(
+        var temp_conplaCom = this.con_plaCom.map(function (key) {
+          return key.pla_id;
+        });
+        var temp_conplaCom_unique = temp_conplaCom.filter(function(item, index){
+          return temp_conplaCom.indexOf(item) >= index;
+        });
+        this.pla_meta_table = temp_conplaCom_unique.map(
           function(key) {
             return{
-              pla_id: key.pla_id,
-              pla_nlat: temp_pla[key.pla_id].nlat,
-              pla_nidr: temp_pla[key.pla_id].nidr
+              pla_id: key,
+              pla_nlat: temp_pla[key].nlat,
+              pla_nidr: temp_pla[key].nidr
             }
           }
         )
-        // let x = (names) => names.filter((v,i) => names.indexOf(v) === i)
+
         console.log(this.sankey_plaCom);
         console.log(this.con_com_arr);
 
@@ -549,6 +555,8 @@ export class DrugtargetComponent implements OnInit {
   sankey_comPro: any;
   disPostComProJSON: any;
   compro_con_table:any;
+  com_meta_table:any;
+  pro_meta_table:any;
   getComPro() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -586,6 +594,8 @@ export class DrugtargetComponent implements OnInit {
           }
         );
 
+        this.getcommeta();
+        this.getprometa();
         this.getProValue();
         this.getComValue();
         this.switcherComPro();
@@ -601,6 +611,80 @@ export class DrugtargetComponent implements OnInit {
     if(this.tsInput == true){
       this.disPostMsgJSON = JSON.stringify(this.con_com_arr);
       this.getPlaCom();
+    }
+  }
+  getcommeta(){
+    const temp_com = this.compound;
+    if(this.dsInput == true){
+      var temp_concomPro1 = this.con_plaCom.map(function (key) {
+        return key.com_id;
+      });
+      var temp_concomPro1_unique = temp_concomPro1.filter(function(item, index){
+        return temp_concomPro1.indexOf(item) >= index;
+      });
+      this.com_meta_table = temp_concomPro1_unique.map(
+        function(key) {
+          return{
+            com_id: key,
+            com_name: temp_com[key].npub,
+            com_npac:  temp_com[key].npac
+          }
+        }
+      );
+    }
+    if(this.tsInput == true){
+      var temp_concomPro1 = this.con_comPro.map(function (key) {
+        return key.com_id;
+      });
+      var temp_concomPro1_unique = temp_concomPro1.filter(function(item, index){
+        return temp_concomPro1.indexOf(item) >= index;
+      });
+      this.com_meta_table = temp_concomPro1_unique.map(
+        function(key) {
+          return{
+            com_id: key,
+            com_name: temp_com[key].npub,
+            com_npac:  temp_com[key].npac
+          }
+        }
+      );
+    }
+  }
+  getprometa(){
+    const temp_pro = this.protein;
+    if(this.tsInput == true){
+      var temp_concomPro2 = this.con_proDis.map(function (key) {
+        return key.pro_id;
+      });
+      var temp_concomPro2_unique = temp_concomPro2.filter(function(item, index){
+        return temp_concomPro2.indexOf(item) >= index;
+      });
+      this.pro_meta_table = temp_concomPro2_unique.map(
+        function(key) {
+          return{
+            pro_id: key,
+            pro_name: temp_pro[key].name,
+            pro_uab: temp_pro[key].uab
+          }
+        }
+      );
+    }
+    if(this.dsInput == true){
+      var temp_concomPro2 = this.con_comPro.map(function (key) {
+        return key.pro_id;
+      });
+      var temp_concomPro2_unique = temp_concomPro2.filter(function(item, index){
+        return temp_concomPro2.indexOf(item) >= index;
+      });
+      this.pro_meta_table = temp_concomPro2_unique.map(
+        function(key) {
+          return{
+            pro_id: key,
+            pro_name: temp_pro[key].name,
+            pro_uab: temp_pro[key].uab
+          }
+        }
+      );
     }
   }
   getProValue(){
@@ -621,6 +705,7 @@ export class DrugtargetComponent implements OnInit {
   con_proDis: any;
   sankey_proDis: any;
   disPostProJSON: any;
+  dis_meta_table:any;
   getProDis() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -642,7 +727,26 @@ export class DrugtargetComponent implements OnInit {
             Number(key.weight)]
           }
         );
-        console.log(this.sankey_proDis);
+
+
+        var temp_conproDis = this.con_proDis.map(function (key) {
+        	return key.dis_id;
+        });
+        var temp_conproDis_unique = temp_conproDis.filter(function(item, index){
+        	return temp_conproDis.indexOf(item) >= index;
+        });
+        this.dis_meta_table = temp_conproDis_unique.map(
+          function(key) {
+            return{
+              dis_id: key,
+              dis_name: temp_dis[key].name,
+              dis_uab: temp_dis[key].uab,
+              dis_oid: temp_dis[key].oid
+            }
+          }
+        )
+
+        console.log(temp_conproDis_unique);
 
         this.getProId()
         this.switcherProDis();

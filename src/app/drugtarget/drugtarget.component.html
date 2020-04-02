@@ -222,24 +222,24 @@
             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_plaCom" class="row-border hover">
               <thead>
                 <tr>
-                  <!-- <th>Plant Id</th> -->
+                  <th>Plant Id</th>
                   <th>Plant Latin</th>
-                  <th>Plant Indonesia</th>
+                  <!-- <th>Plant Indonesia</th> -->
                   <th>Connectivity Weight</th>
-                  <!-- <th>Compound Id</th> -->
+                  <th>Compound Id</th>
                   <th>Compound Name</th>
-                  <th>Compound IUPAC</th>
+                  <!-- <th>Compound IUPAC</th> -->
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let placom_con_table of placom_con_table">
-                  <!-- <td>{{placom_con_table.pla_id}}</td> -->
+                  <td>{{placom_con_table.pla_id}}</td>
                   <td><a href="javascript:void(0)" (click)="generateLink(placom_con_table.pla_nlat)">{{placom_con_table.pla_nlat}}</a></td>
-                  <td>{{placom_con_table.pla_nidr}}</td>
-                  <td>{{placom_con_table.weight}}</td>
-                  <!-- <td>{{placom_con_table.com_id}}</td> -->
+                  <!-- <td>{{placom_con_table.pla_nidr}}</td> -->
+                  <td [style.width]="'40px'" [style.background]="'#8cff92'">{{placom_con_table.weight}}</td>
+                  <td>{{placom_con_table.com_id}}</td>
                   <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{placom_con_table.com_name}}" target="_blank">{{placom_con_table.com_name}}</a></td>
-                  <td>{{placom_con_table.com_npac}}</td>
+                  <!-- <td>{{placom_con_table.com_npac}}</td> -->
                 </tr>
               </tbody>
             </table>
@@ -248,24 +248,24 @@
             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_comPro" class="row-border hover">
               <thead>
                 <tr>
-                  <!-- <th>Compound Id</th> -->
+                  <th>Compound Id</th>
                   <th>Compound Name</th>
-                  <th>Compound IUPAC</th>
+                  <!-- <th>Compound IUPAC</th> -->
                   <th>Connectivity Weight</th>
-                  <!-- <th>Protein Id</th> -->
+                  <th>Protein Id</th>
                   <th>Protein Name</th>
-                  <th>Protein Uniprot ABBRV</th>
+                  <!-- <th>Protein Uniprot ABBRV</th> -->
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let compro_con_table of compro_con_table">
-                  <!-- <td>{{compro_con_table.com_id}}</td> -->
+                  <td>{{compro_con_table.com_id}}</td>
                   <td>{{compro_con_table.com_name}}</td>
-                  <td>{{compro_con_table.com_npac}}</td>
-                  <td>{{compro_con_table.weight}}</td>
-                  <!-- <td>{{compro_con_table.pro_id}}</td> -->
+                  <!-- <td>{{compro_con_table.com_npac}}</td> -->
+                  <td [style.width]="'40px'" [style.background]="'#8cff92'">{{compro_con_table.weight}}</td>
+                  <td>{{compro_con_table.pro_id}}</td>
                   <td>{{compro_con_table.pro_name}}</td>
-                  <td>{{compro_con_table.pro_uab}}</td>
+                  <!-- <td>{{compro_con_table.pro_uab}}</td> -->
                 </tr>
               </tbody>
             </table>
@@ -311,8 +311,8 @@
               <thead>
                 <tr>
                   <th>Plant ID</th>
-                  <th>Plant Latin</th>
-                  <th>Plant Indonesia</th>
+                  <th>Latin Name</th>
+                  <th>Indonesia Name</th>
                 </tr>
               </thead>
               <tbody>
@@ -325,49 +325,57 @@
             </table>
           </div>
           <div class="meta_table" *ngIf="com_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="com_meta_table" [dtTrigger]="dtTrigger" class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound ID</th>
-                  <th>Compound Name</th>
+                  <th>Pubchem Name</th>
+                  <th>IUPAC Name</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let meta_com of meta_com">
-                  <td>{{meta_com.com_id}}</td>
-                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{meta_com.com_pubchem_name}}" target="_blank">{{meta_com.com_pubchem_name}}</a></td>
+                <tr *ngFor="let com_meta_table of com_meta_table">
+                  <td>{{com_meta_table.com_id}}</td>
+                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{com_meta_table.com_name}}" target="_blank">{{com_meta_table.com_name}}</a></td>
+                  <td>{{com_meta_table.com_npac}}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="meta_table" *ngIf="pro_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="pro_meta_table" [dtTrigger]="dtTrigger" class="row-border hover">
               <thead>
                 <tr>
                   <th>Protein ID</th>
-                  <th>Protein Name</th>
+                  <th>Uniprot Name</th>
+                  <th>ABBRV Name</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let meta_pro of meta_pro">
-                  <td>{{meta_pro.pro_id}}</td>
-                  <td><a>{{meta_pro.pro_name}}</a></td>
+                <tr *ngFor="let pro_meta_table of pro_meta_table">
+                  <td>{{pro_meta_table.pro_id}}</td>
+                  <td><a href="https://www.uniprot.org/uniprot/{{pro_meta_table.pro_uab}}" target="_blank">{{pro_meta_table.pro_name}}</a></td>
+                  <td><a href="https://www.uniprot.org/uniprot/{{pro_meta_table.pro_uab}}" target="_blank">{{pro_meta_table.pro_uab}}</a></td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="meta_table" *ngIf="dis_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="dis_meta_table" [dtTrigger]="dtTrigger" class="row-border hover">
               <thead>
                 <tr>
                   <th>Disease ID</th>
                   <th>Disease Name</th>
+                  <th>OMIM Number</th>
+                  <th>ABBRV Name</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let meta_dis of meta_dis">
-                  <td>{{meta_dis.dis_id}}</td>
-                  <td><a>{{meta_dis.dis_name}}</a></td>
+                <tr *ngFor="let dis_meta_table of dis_meta_table">
+                  <td>{{dis_meta_table.dis_id}}</td>
+                  <td><a href="https://www.omim.org/entry/{{dis_meta_table.dis_oid}}" target="_blank">{{dis_meta_table.dis_name}}</a></td>
+                  <td><a href="https://www.omim.org/entry/{{dis_meta_table.dis_oid}}" target="_blank">{{dis_meta_table.dis_oid}}</a></td>
+                  <td><a href="https://www.uniprot.org/diseases/?query={{dis_meta_table.dis_uab}}&sort=score" target="_blank">{{dis_meta_table.dis_uab}}</a></td>
                 </tr>
               </tbody>
             </table>
