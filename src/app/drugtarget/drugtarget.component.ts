@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import html2canvas from 'html2canvas';
 
 type Plant_m = { id: string, name: string };
 type Disease_m = { id: string, name: string };
@@ -14,6 +15,22 @@ type Disease_m = { id: string, name: string };
 })
 export class DrugtargetComponent implements OnInit {
 
+// for download images
+  @ViewChild('screen',{static: false}) screen: ElementRef;
+  @ViewChild('canvas',{static: false}) canvas: ElementRef;
+  @ViewChild('downloadLink',{static: false}) downloadLink: ElementRef;
+
+  downloadImage(){
+    window.scrollTo(0,0);
+    html2canvas(this.screen.nativeElement).then(canvas => {
+      this.canvas.nativeElement.src = canvas.toDataURL();
+      this.downloadLink.nativeElement.href = canvas.toDataURL('image/png');
+      this.downloadLink.nativeElement.download = 'drugTarget_graph.png';
+      this.downloadLink.nativeElement.click();
+    });
+    window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+  }
+  //end for download images
 
   constructor(private http: HttpClient) {
   }
@@ -155,8 +172,8 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://localhost:8000/plant_meta", httpOptions).toPromise().then(data => {
-      this.plant_new = data.data;
+    this.http.get<any>("http://localhost:8000/plant_json", httpOptions).toPromise().then(data => {
+      this.plant_new = data[0].data;
       console.log(this.plant_new);
       if (this.plant_new) {
         var t2 = performance.now();
@@ -183,8 +200,8 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/compound", httpOptions).toPromise().then(data => {
-      this.compound = data.data;
+    this.http.get<any>("http://localhost:8000/compound_json", httpOptions).toPromise().then(data => {
+      this.compound = data[0].data;
       if (this.compound) {
         var t2 = performance.now();
         const nilai = this.compound;
@@ -217,8 +234,8 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/disease", httpOptions).toPromise().then(data => {
-      this.disease = data.data;
+    this.http.get<any>("http://localhost:8000/disease_json", httpOptions).toPromise().then(data => {
+      this.disease = data[0].data;
       if (this.disease) {
         var nilai = this.disease;
         this.disease_arr = Object.keys(this.disease).map(
@@ -242,8 +259,8 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/protein", httpOptions).toPromise().then(data => {
-      this.protein = data.data;
+    this.http.get<any>("http://localhost:8000/protein_json", httpOptions).toPromise().then(data => {
+      this.protein = data[0].data;
       if (this.protein) {
         var nilai = this.protein;
         this.protein_arr = Object.keys(this.protein).map(
@@ -306,9 +323,9 @@ export class DrugtargetComponent implements OnInit {
   dtOptions: any = {};
   ngOnInit() {
     this.getPlantNewMeta();
-    // this.getDiseaseMeta();
-    // this.getProteinMeta();
-    // this.getCompoundMeta();
+    this.getDiseaseMeta();
+    this.getProteinMeta();
+    this.getCompoundMeta();
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -383,7 +400,7 @@ export class DrugtargetComponent implements OnInit {
           this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
         }
       }
-      this.disPostMsgJSON = JSON.stringify(this.drug_side);
+      this.disPostMsgJSON = JSON.stringify(this.temp_meta_com);
       this.getPlaCom();
     }
     if (this.tsInput == true) {
@@ -448,6 +465,8 @@ export class DrugtargetComponent implements OnInit {
             { index: 2, value : 'PRO00000261'},
             { index: 3, value : 'PRO00001836'}];
   disPostMsgJSON: any;
+  placom_con_table: any;
+  pla_meta_table:any;
   getPlaCom() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -466,11 +485,35 @@ export class DrugtargetComponent implements OnInit {
         const temp_com = this.compound; //temp_com[key.com_id].npub
         this.sankey_plaCom = this.con_plaCom.map(
           function(key) {
-            return [key.pla_id,
-            key.com_id,
+            return [temp_pla[key.pla_id].nlat,
+            temp_com[key.com_id].npub,
             Number(key.weight)]
           }
         );
+        //connectivity Table
+        this.placom_con_table = this.con_plaCom.map(
+          function(key) {
+            return {
+              pla_id: key.pla_id,
+              pla_nlat: temp_pla[key.pla_id].nlat,
+              pla_nidr: temp_pla[key.pla_id].nidr,
+              weight: Number(key.weight),
+              com_id: key.com_id,
+              com_name: temp_com[key.com_id].npub,
+              com_npac: temp_com[key.com_id].npac
+            }
+          }
+        );
+        //meta table
+        this.pla_meta_table = this.con_plaCom.map(
+          function(key) {
+            return{
+              pla_id: key.pla_id,
+              pla_nlat: temp_pla[key.pla_id].nlat,
+              pla_nidr: temp_pla[key.pla_id].nidr
+            }
+          }
+        )
         // let x = (names) => names.filter((v,i) => names.indexOf(v) === i)
         console.log(this.sankey_plaCom);
         console.log(this.con_com_arr);
@@ -494,7 +537,7 @@ export class DrugtargetComponent implements OnInit {
       this.getComPro();
     }
   }
-    getComId(){
+  getComId(){
       const temp_plaCom = this.con_plaCom;
       this.temp_comId = this.con_plaCom.map(
         function(key) { return { comId: key.com_id } }
@@ -505,6 +548,7 @@ export class DrugtargetComponent implements OnInit {
   con_pro_arr: any = [];
   sankey_comPro: any;
   disPostComProJSON: any;
+  compro_con_table:any;
   getComPro() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -519,11 +563,26 @@ export class DrugtargetComponent implements OnInit {
 
         const temp_com = this.compound; //temp_pla[key.pla_id].nlat
         const temp_pro = this.protein; //temp_com[key.com_id].npub
+
         this.sankey_comPro = this.con_comPro.map(
           function(key) { return [
-            key.com_id,
+            temp_com[key.com_id].npub,
             key.pro_id,
             Number(key.weight)]
+          }
+        );
+
+        this.compro_con_table = this.con_comPro.map(
+          function(key) {
+            return {
+              com_id: key.com_id,
+              com_name: temp_com[key.com_id].npub,
+              com_npac:  temp_com[key.com_id].npac,
+              weight: Number(key.weight),
+              pro_id: key.pro_id,
+              pro_name: temp_pro[key.pro_id].name,
+              pro_uab: temp_pro[key.pro_id].uab
+            }
           }
         );
 
@@ -774,7 +833,7 @@ export class DrugtargetComponent implements OnInit {
     // size of output
     this.len = this.sankey_Data.length;
     if ((this.len / 2) * 30 > 2500) {
-      this.len = 2500;
+      this.len = 2700;
     } else {
       this.len = (this.len / 2) * 30;
     }
@@ -830,7 +889,8 @@ export class DrugtargetComponent implements OnInit {
     });
     var comNotPro = [];
     for (var i in compro2) {
-      this.sankey_Data.push([compro2[i].comId, "PRO", 0.0000000000000001]);
+      this.sankey_Data.push([this.compound[compro2[i].comId].npub, "PRO", 0.0000000000000001]);
+      // console.log()
     }
     var t5 = performance.now();
     console.log("Took: " + (t5 - t2) + "msecs");
@@ -893,7 +953,7 @@ export class DrugtargetComponent implements OnInit {
     console.log(compro);
     console.log(compro2);
     for (var i in compro2) {
-      this.sankey_Data.push(["PLA", compro2[i].value, 0.0000000000000001]);
+      this.sankey_Data.push(["PLA", this.compound[compro2[i].value].npub, 0.0000000000000001]);
       console.log(compro2[i].value);
     }
     var t5 = performance.now();

@@ -180,13 +180,18 @@
       </ngb-tab>
       <ngb-tab title="Connectivity Graph">
         <ng-template ngbTabContent>
+          <div class="btn btn-primary" (click)="downloadImage()">DL</div>
+          <div id="download">
+            <img #canvas>
+            <a #downloadLink></a>
+          </div>
           <div class="legendgraph">
           <p>Plant</p>
           <p>Compound</p>
           <p>Protein</p>
           <p>Disease</p>
           </div>
-          <div class="chartnya">
+          <div  #screen class="chartnya">
             <google-chart *ngIf="showChart"
                #chart
                [title]="title"
@@ -217,16 +222,24 @@
             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_plaCom" class="row-border hover">
               <thead>
                 <tr>
-                  <th>Plant Name</th>
+                  <!-- <th>Plant Id</th> -->
+                  <th>Plant Latin</th>
+                  <th>Plant Indonesia</th>
                   <th>Connectivity Weight</th>
+                  <!-- <th>Compound Id</th> -->
                   <th>Compound Name</th>
+                  <th>Compound IUPAC</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let con_plaCom of con_plaCom">
-                  <td>{{con_plaCom.pla_id}}</td>
-                  <td>{{con_plaCom.weight}}</td>
-                  <td>{{con_plaCom.com_id}}</td>
+                <tr *ngFor="let placom_con_table of placom_con_table">
+                  <!-- <td>{{placom_con_table.pla_id}}</td> -->
+                  <td><a href="javascript:void(0)" (click)="generateLink(placom_con_table.pla_nlat)">{{placom_con_table.pla_nlat}}</a></td>
+                  <td>{{placom_con_table.pla_nidr}}</td>
+                  <td>{{placom_con_table.weight}}</td>
+                  <!-- <td>{{placom_con_table.com_id}}</td> -->
+                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{placom_con_table.com_name}}" target="_blank">{{placom_con_table.com_name}}</a></td>
+                  <td>{{placom_con_table.com_npac}}</td>
                 </tr>
               </tbody>
             </table>
@@ -235,16 +248,24 @@
             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_comPro" class="row-border hover">
               <thead>
                 <tr>
+                  <!-- <th>Compound Id</th> -->
                   <th>Compound Name</th>
+                  <th>Compound IUPAC</th>
                   <th>Connectivity Weight</th>
+                  <!-- <th>Protein Id</th> -->
                   <th>Protein Name</th>
+                  <th>Protein Uniprot ABBRV</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let con_comPro of con_comPro">
-                  <td>{{con_comPro.com_id}}</td>
-                  <td>{{con_comPro.weight}}</td>
-                  <td>{{con_comPro.pro_id}}</td>
+                <tr *ngFor="let compro_con_table of compro_con_table">
+                  <!-- <td>{{compro_con_table.com_id}}</td> -->
+                  <td>{{compro_con_table.com_name}}</td>
+                  <td>{{compro_con_table.com_npac}}</td>
+                  <td>{{compro_con_table.weight}}</td>
+                  <!-- <td>{{compro_con_table.pro_id}}</td> -->
+                  <td>{{compro_con_table.pro_name}}</td>
+                  <td>{{compro_con_table.pro_uab}}</td>
                 </tr>
               </tbody>
             </table>
@@ -286,17 +307,19 @@
                       (click)="dis_on()">Disease</button>
           </div>
           <div class="meta_table" *ngIf="pla_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="pla_meta_table" [dtTrigger]="dtTrigger" class="row-border hover">
               <thead>
                 <tr>
                   <th>Plant ID</th>
-                  <th>Plant Name</th>
+                  <th>Plant Latin</th>
+                  <th>Plant Indonesia</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let meta_pla of meta_pla">
-                  <td>{{meta_pla.pla_id}}</td>
-                  <td><a href="javascript:void(0)" (click)="generateLink(meta_pla.pla_name)">{{meta_pla.pla_name}}</a></td>
+                <tr *ngFor="let pla_meta_table of pla_meta_table">
+                  <td>{{pla_meta_table.pla_id}}</td>
+                  <td><a href="javascript:void(0)" (click)="generateLink(pla_meta_table.pla_nlat)">{{pla_meta_table.pla_nlat}}</a></td>
+                  <td>{{pla_meta_table.pla_nidr}}</td>
                 </tr>
               </tbody>
             </table>

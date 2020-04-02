@@ -115,3 +115,5 @@ thead th{
 #s-result #DataTables_Table_0_wrapper {
   z-index: 500 !important;
 }
+
+.html2canvas-container { height: 3000px !important; }

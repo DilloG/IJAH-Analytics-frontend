@@ -27,6 +27,7 @@
     "datatables.net-buttons": "^1.6.1",
     "datatables.net-buttons-dt": "^1.6.1",
     "datatables.net-dt": "^1.10.20",
+    "html2canvas": "^1.0.0-rc.5",
     "jquery": "^3.4.1",
     "json-server": "^0.16.1",
     "jszip": "^3.2.2",
