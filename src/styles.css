@@ -117,3 +117,41 @@ thead th{
 }
 
 .html2canvas-container { height: 3000px !important; }
+
+
+#c-input ngb-typeahead-window#ngb-typeahead-4 {
+    max-height: 350px !important;
+    overflow-y: auto !important;
+}
+
+#loading{
+    position: fixed;
+    z-index: 10000000;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading h5{
+  color: white;
+}
+
+.loader {
+  border: 20px solid white; /* Light grey */
+  border-top: 20px solid #4CAF50; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

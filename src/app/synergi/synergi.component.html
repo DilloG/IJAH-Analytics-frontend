@@ -6,19 +6,19 @@
 
 <div id="s-input">
   <div class="container">
+    <form #dtInputForm="ngForm"  (ngSubmit)="predict()" ngNativeValidate>
     <div class="si-container">
       <h1>Disease Name</h1>
         <input id="typeahead-target" type="text" class="form-control"
         [ngModelOptions]="{standalone: true}"
         [ngbTypeahead]="searchDisease"
         [(ngModel)]="modelDis"
-        [inputFormatter]="formatterDis"
-        [resultFormatter]="formatterDis"
-        [editable]='false' />
+        [editable]='false' required/>
       <div class="si-form">
-        <button (click)="predict()">Search</button>
+        <button type="submit">Search</button>
       </div>
     </div>
+    </form>
   </div>
 </div>
 
@@ -30,7 +30,7 @@
 <div id="s-result" *ngIf='showresult'>
   <div class="container">
     <h1>Synergi Result</h1>
-    <p>Table of Synergis Compound of {{model_parse}}</p>
+    <p>Table of Synergis Compound of <b>{{model_parse}} disease</b></p>
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
       <thead>
         <tr>
@@ -43,11 +43,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let synergi of synergi">
-          <td>{{synergi.compound1}}</td>
-          <td>{{synergi.compound2}}</td>
-          <td>{{synergi.aScore}}</td>
-          <td>{{synergi.tScore}}</td>
-          <td>{{synergi.sScore}}</td>
+          <td><b>{{synergi[0]}}</b></td>
+          <td><b>{{synergi[1]}}</b></td>
+          <td>{{synergi[2]}}</td>
+          <td>{{synergi[3]}}</td>
+          <td [style.background]="'#8cff92'"><b>{{synergi[4]}}</b></td>
         </tr>
       </tbody>
     </table>
