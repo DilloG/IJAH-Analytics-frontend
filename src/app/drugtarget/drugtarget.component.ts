@@ -114,6 +114,33 @@ export class DrugtargetComponent implements OnInit {
   }
   // end of input dynamic
 
+  //button for drugtarget side
+  dsInput: boolean = true;
+  tsInput: boolean = false;
+  dstsInput: boolean = false;
+  ds_input_btn() {
+    this.dsInput = true;
+    this.tsInput = false;
+    this.dstsInput = false;
+    this.disease_input();
+    this.protein_input();
+  }
+  ts_input_btn() {
+    this.dsInput = false;
+    this.tsInput = true;
+    this.dstsInput = false;
+    this.compound_input();
+    this.plant_input();
+  }
+  dsts_input_btn() {
+    this.dsInput = false;
+    this.tsInput = false;
+    this.dstsInput = true;
+    this.disease_input();
+    this.compound_input();
+    this.plant_input();
+    this.protein_input();
+  }
 
   //show input
   public pla_input_btn = true;
@@ -185,7 +212,6 @@ export class DrugtargetComponent implements OnInit {
         console.log(this.plant_new_arr);
         var t3 = performance.now();
         console.log("Took: " + (t3 - t2) + "msecs");
-        this.showloadFirst = false;
       }
     });
 
@@ -223,11 +249,7 @@ export class DrugtargetComponent implements OnInit {
 
   // disease meta
   disease: Object;
-  disease_arr: any = ['DIS00000470 | 601665 | Obesity', 'DIS00001061 | 600807 | Asthma',
-                      'DIS00000900 | 610551 | Herpes simplex encephalitis 1',
-                      'DIS00000900 | 156610 | Skin creases, congenital symmetric circumferential, 1',
-                      'DIS00003892 | 166710 | Osteoporosis',
-                      'DIS00000008 | 616570 | Cerebro-oculo-facio-skeletal syndrome 3'];
+  disease_arr: any = [];
   getDiseaseMeta() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -249,10 +271,7 @@ export class DrugtargetComponent implements OnInit {
 
   // protein meta
   protein: any;
-  protein_arr: any = ['PRO00002168 | P37231 | PPARG_HUMAN | Peroxisome proliferator-activated receptor gamma',
-'PRO00000061 | P01189 | COLI_HUMAN | Pro-opiomelanocortin', 'PRO00000261 | P02452 | CO1A1_HUMAN | Collagen alpha-1(I) chain',
-'PRO00001836 | Q9UHD2 | TBK1_HUMAN | Serine/threonine-protein kinase TBK1',
-'PRO00000025 | DUMMY | COLB_DUMMY | Lactase-phlorizin hydrolase'];
+  protein_arr: any = [];
   getProteinMeta() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -281,14 +300,14 @@ export class DrugtargetComponent implements OnInit {
     distinctUntilChanged(),
     map(term => term.length < 1 ? []
       : this.plant_new_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-  )
+  );
 
   public modelCom: any;
   searchCompound = (text$: Observable<string>) => text$.pipe( //typeahead drug
     debounceTime(200),
     distinctUntilChanged(),
     map(term => term.length < 1 ? []
-      : this.compound_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)))
+      : this.compound_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)));
 
   public modelPro: any;
   searchProtein = (text$: Observable<string>) => text$.pipe( //typeahead drug
@@ -296,7 +315,7 @@ export class DrugtargetComponent implements OnInit {
     distinctUntilChanged(),
     map(term => term.length < 1 ? []
       : this.protein_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-  )
+  );
 
   public modelDis: any;
   searchDisease = (text$: Observable<string>) => text$.pipe( //typeahead drug
@@ -304,7 +323,7 @@ export class DrugtargetComponent implements OnInit {
     distinctUntilChanged(),
     map(term => term.length < 1 ? []
       : this.disease_arr.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-  )
+  );
   //end of ngbTypeahead
 
 
@@ -359,27 +378,6 @@ export class DrugtargetComponent implements OnInit {
   }
 
   // get result
-
-  //button for drugtarget side
-  dsInput: boolean = true;
-  tsInput: boolean = false;
-  dstsInput: boolean = false;
-  ds_input_btn() {
-    this.dsInput = true;
-    this.tsInput = false;
-    this.dstsInput = false;
-  }
-  ts_input_btn() {
-    this.dsInput = false;
-    this.tsInput = true;
-    this.dstsInput = false;
-  }
-  dsts_input_btn() {
-    this.dsInput = false;
-    this.tsInput = false;
-    this.dstsInput = true;
-  }
-
   //get result
   drug_side: any = [];
   target_side: any = [];
@@ -439,10 +437,11 @@ export class DrugtargetComponent implements OnInit {
           this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
         }
       }
-      this.disPostMsgJSON = JSON.stringify(this.temp_meta_com);
-      this.getPlaCom();
-      this.disPostProJSON = JSON.stringify(this.temp_meta_pro);
-      this.getProDis();
+      this.disPostMsgJSON = JSON.stringify(this.drug_side);
+      this.disPostProJSON = JSON.stringify(this.target_side);
+      // this.getPlaCom();
+      // this.getProDis();
+      console.log(this.disPostMsgJSON, this.disPostProJSON);
     }
   }
 

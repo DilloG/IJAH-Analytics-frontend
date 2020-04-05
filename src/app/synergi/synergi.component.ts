@@ -33,11 +33,18 @@ constructor(private http:HttpClient) { }
   synergi: any;
   synergy_arr: any;
   getSynergiResult(){
-    this.http.get<any>("http://localhost:8000/synergy_result").toPromise().then(data => {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Requested-With": "XMLHttpRequest"
+      })
+    };
+    var postmsgsynergi = JSON.stringify({disease: this.modelDis.substring(this.modelDis.length - 11)});
+    //tinggal dipost
+    this.http.get<any>("http://localhost:8000/synergy_result", httpOptions).toPromise().then(data => {
       this.synergi = data[0].data;
       console.log(this.synergi);
       if(this.synergi){
-        var temp_modelDis= this.modelDis.substring(0,11);
+        var temp_modelDis= this.modelDis.substring(this.modelDis.length - 11);
         this.model_parse = this.disease[temp_modelDis].name;
         this.showload = false;
         this.showresult = true;
@@ -94,9 +101,9 @@ constructor(private http:HttpClient) { }
         var temp_disease = this.disease;
         this.disease_arr = Object.values(this.diseaseSyn).map(
           function(values){
-            return values +" | "+
-            temp_disease[values].name +" | "+
-            temp_disease[values].oid;
+            return temp_disease[values].name +" | "+
+            temp_disease[values].oid +" | "+
+            values;
           }
         );
         console.log(this.disease_arr);

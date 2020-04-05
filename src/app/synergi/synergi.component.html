@@ -9,7 +9,9 @@
     <form #dtInputForm="ngForm"  (ngSubmit)="predict()" ngNativeValidate>
     <div class="si-container">
       <h1>Disease Name</h1>
-        <input id="typeahead-target" type="text" class="form-control"
+        <input id="typeahead-target"
+        placeholder="OMIM Name/OMIM ID"
+        type="text" class="form-control"
         [ngModelOptions]="{standalone: true}"
         [ngbTypeahead]="searchDisease"
         [(ngModel)]="modelDis"
@@ -43,8 +45,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let synergi of synergi">
-          <td><b>{{synergi[0]}}</b></td>
-          <td><b>{{synergi[1]}}</b></td>
+          <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{synergi[0]}}" target="_blank"><b>{{synergi[0]}}</b></a></td>
+          <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{synergi[1]}}" target="_blank"><b>{{synergi[1]}}</b></a></td>
           <td>{{synergi[2]}}</td>
           <td>{{synergi[3]}}</td>
           <td [style.background]="'#8cff92'"><b>{{synergi[4]}}</b></td>

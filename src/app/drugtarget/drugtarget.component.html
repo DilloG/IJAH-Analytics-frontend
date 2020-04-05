@@ -18,8 +18,8 @@
     <div class="di-container" *ngIf="dsInput || dstsInput">
       <h1 class="dic-title">Drug Side</h1>
       <div class="dic-button">
-        <button type="reset" [style.background]="pla_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="plant_input()">Plant Input</button>
-        <button type="reset" [style.background]="com_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="compound_input()">Compound Input</button>
+        <button type="button" [style.background]="pla_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="plant_input()">Plant Input</button>
+        <button type="button" [style.background]="com_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="compound_input()">Compound Input</button>
       </div>
 
       <div *ngIf="pla_input_btn">
@@ -64,8 +64,8 @@
     <div class="di-container" *ngIf="tsInput || dstsInput">
       <h1 class="dic-title">Target Side</h1>
       <div class="dic-button">
-        <button type="reset" [style.background]="pro_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="protein_input()">Protein Input</button>
-        <button type="reset" [style.background]="dis_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="disease_input()">Disease Input</button>
+        <button type="button" [style.background]="pro_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="protein_input()">Protein Input</button>
+        <button type="button" [style.background]="dis_input_btn ? '#4CAF50' : '#3E4B3E'" (click)="disease_input()">Disease Input</button>
       </div>
 
       <div *ngIf="pro_input_btn">

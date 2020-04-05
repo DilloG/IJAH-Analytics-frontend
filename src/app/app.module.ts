@@ -15,6 +15,7 @@ import { DrugtargetComponent } from './drugtarget/drugtarget.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ContactusComponent } from './contactus/contactus.component';
 import { ComsimilarComponent } from './comsimilar/comsimilar.component';
+import { DocsComponent } from './docs/docs.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ComsimilarComponent } from './comsimilar/comsimilar.component';
     ClusterComponent,
     DrugtargetComponent,
     ContactusComponent,
-    ComsimilarComponent
+    ComsimilarComponent,
+    DocsComponent
   ],
   imports: [
     BrowserModule,

@@ -54,11 +54,27 @@
   font-weight: 400;
 }
 
-#c-input .cic-drug .cicd, #c-input .cic-target .cict{
+#c-input .cic-drug .cicd{
   width: 33%;
 }
 
-#c-input input, #c-input input{
+#c-input .cic-target .cict-efficacy{
+  width: 17%;
+}
+#c-input .cic-target .cict-activity{
+  width: 23%;
+}
+#c-input .cic-target .cict-target{
+  width: 60%;
+}
+
+#c-input .cic-drug input{
+  width: 96%;
+  height: 30px;
+  border-radius: 50px;
+  margin-bottom: 25px;
+}
+#c-input input{
   width: 90%;
   height: 30px;
   border-radius: 50px;
@@ -193,4 +209,30 @@
     color: white;
     font-weight: 700;
     margin: 0;
+  }
+
+  #c-result .ct_button{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+
+  #c-result .ct_button button{
+    margin-right: 10px;
+    outline: none;
+  }
+
+  #c-result .ct_button button{
+    background-color: #C9C6C6; /* Green */
+    border: none;
+    border-radius: 50px;
+    color: black;
+    padding: 6px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
   }
