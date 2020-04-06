@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, merge } from 'rxjs';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-cluster',
@@ -13,6 +14,23 @@ import { Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from 
 })
 export class ClusterComponent implements OnInit {
 
+  // for download images
+    @ViewChild('screen',{static: false}) screen: ElementRef;
+    @ViewChild('canvas',{static: false}) canvas: ElementRef;
+    @ViewChild('downloadLink',{static: false}) downloadLink: ElementRef;
+
+    downloadImage(){
+      window.scrollTo(0,0);
+      html2canvas(this.screen.nativeElement).then(canvas => {
+        this.canvas.nativeElement.src = canvas.toDataURL();
+        this.downloadLink.nativeElement.href = canvas.toDataURL('image/png');
+        this.downloadLink.nativeElement.download = 'drugTarget_graph.png';
+        this.downloadLink.nativeElement.click();
+      });
+      window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+    }
+    //end for download images
+
   // typeahead
   public modelAnalg: any;
   public modelBacteri: any;
@@ -20,7 +38,7 @@ export class ClusterComponent implements OnInit {
   public modelActivity: any;
   public modelEfficacy: any;
   public modelTarget: any;
-
+  public selectedValue:any;
   searchInflam = (text$: Observable<string>) => text$.pipe( //typeahead drug
     debounceTime(200),
     distinctUntilChanged(),
@@ -161,6 +179,7 @@ export class ClusterComponent implements OnInit {
   compound_group: any = [];
   compound_target: any = [];
 
+  // efficacy meta
   getEfficacy() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -173,7 +192,7 @@ export class ClusterComponent implements OnInit {
       if (this.efficacy) {
 
         this.compound_group = Object.keys(this.efficacy.group).map(
-          function(key) {
+          function(key:string) {
             return key;
           });
         console.log(this.compound_group);
@@ -181,15 +200,16 @@ export class ClusterComponent implements OnInit {
         this.getAnalgesic();
         this.getAntiinflamatory();
         this.getAntibacterial();
+        window.scrollTo(0,0);
+        this.showloadfirst = false;
       }
     });
     // console.log(this.compound_arr);
   }
-
   getAntiinflamatory() {
     var temp_compound = this.compound;
     this.compound_Infl = Object.values(this.efficacy.antiinflamatory).map(
-      function(values) {
+      function(values: string) {
         var text = "";
         if(temp_compound[values].ccid !== null){
           text += (temp_compound[values].ccid) +" | ";
@@ -209,7 +229,7 @@ export class ClusterComponent implements OnInit {
   getAntibacterial() {
     var temp_compound = this.compound;
     this.compound_Bact = Object.values(this.efficacy.antibacterial).map(
-      function(values) {
+      function(values:string) {
         var text = "";
         if(temp_compound[values].ccid !== null){
           text += (temp_compound[values].ccid) +" | ";
@@ -229,7 +249,7 @@ export class ClusterComponent implements OnInit {
   getAnalgesic() {
     var temp_compound = this.compound;
     this.compound_Anal = Object.values(this.efficacy.analgesic).map(
-      function(values) {
+      function(values:string) {
         var text = "";
         if(temp_compound[values].ccid !== null){
           text += (temp_compound[values].ccid) +" | ";
@@ -261,10 +281,8 @@ export class ClusterComponent implements OnInit {
       this.plant_new = data[0].data;
       console.log(this.plant_new);
       if (this.plant_new) {
-
       }
     });
-
   }
 
   // compound meta
@@ -321,11 +339,12 @@ export class ClusterComponent implements OnInit {
   // end of getinput meta
   //end of get metadata
 
+// predict function
   public showload = false;
-  public showresult = true;
+  public showresult = false;
+  showloadfirst:boolean = true;
   async predict() {
-    // this.showload = true;
-    // this.getDrugTargetResult();
+    this.showload = true;
     this.getResultMeta();
   }
 
@@ -365,20 +384,154 @@ export class ClusterComponent implements OnInit {
       console.log(this.result);
       if (this.result) {
         console.log(this.result);
+        // mapping
         this.getSankey();
+        this.getConnectivityTable();
       }
     });
   }
 
 
   private sankeyData:any;
+  plavscom_table:any;
+  comvscom_table:any;
+  comvspro_table:any;
+  provsdis_table:any;
+  len:any;
+  showChart: boolean = false;
   getSankey(){
-    this.sankeyData = this.result;
+    console.log(this.result.plant_vs_compound[0]);
+    const plavscom = Object.values(this.result.plant_vs_compound).map(
+      function(values:any){
+        return [values[0], values[1], values[2]];
+      }
+    );
+    console.log(plavscom);
+    const comvscom = Object.values(this.result.compound_similarity).map(
+      function(values:any){
+        return [values[0], values[1], values[2]];
+      }
+    );
+    console.log(comvscom);
+    const comvspro = Object.values(this.result.compound_vs_protein).map(
+      function(values:any){
+        return [values[0], values[1], values[2]];
+      }
+    );
+    const com2vspro = Object.values(this.result.compound_vs_protein).map(
+      function(values:any){
+        return ["COM ", values[1], 0.00000000000000000000000000001];
+      }
+    );
+    console.log(comvspro);
+    const provsdis = Object.values(this.result.protein_vs_disease_temp).map(
+      function(values:any){
+        return [values[0], values[1], values[2]];
+      }
+    );
+    console.log(provsdis);
+    this.sankeyData = plavscom.concat(comvscom,comvspro,com2vspro,provsdis);
+    this.sankeyData.push(["PLA","COM",0.0000000000000001]);
+    this.sankeyData.push(["COM","COM ",0.0000000000000001]);
+    this.sankeyData.push(["COM ","PRO",0.0000000000000001]);
+    this.sankeyData.push(["PRO","DIS",0.0000000000000001]);
+    console.log(this.sankeyData);
+
+    this.len = this.sankeyData.length;
+    if ((this.len / 2) * 30 > 2500) {
+      this.len = 2700;
+    } else {
+      this.len = (this.len / 2) * 30;
+    }
+    // sankey diagram options
+    var colors = ['#fcba03', '#fc0303', '#4afc03', '#03fcc2', '#03fcc2', '#03fcc2',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#03fcc2',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#03fcc2',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#80fc03',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#03fcc2',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#03fcc2', '#fc036f',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#4afc03',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#33a02c',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#4afc03',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#03fcc2', '#03fcad',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#e7fc03',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#a903fc',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#030ffc',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#030ffc',
+      '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#030ffc',
+      '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#030ffc'];
+    this.options = {
+      sankey: {
+        node: {
+          colors: colors,
+          width: 20,
+          label: {
+            fontSize: 10,
+            color: '#000000',
+            bold: true,
+          },
+          interactivity: true
+        },
+        link: {
+          colorMode: 'source'
+        }
+      },
+      width: $(window).width() * 0.80,
+      height: this.len
+    };
+    this.showChart = true;
   }
-
-
-  sankey_Data() {
-    // console.log(this.pla_com);
+  getConnectivityTable(){
+    const temp_pla = this.plant_new;
+    const temp_com = this.compound;
+    const temp_pro = this.protein;
+    const temp_dis = this.disease
+    this.plavscom_table = Object.values(this.result.plant_vs_compound).map(
+      function(values:any){
+        return {
+          pla_id: values[0],
+          pla_nlat: temp_pla[values[0]].nlat,
+          weight: values[2],
+          com_id: values[1],
+          com_npub: temp_com[values[1]].npub
+        };
+      }
+    );
+    this.comvscom_table = Object.values(this.result.compound_similarity).map(
+      function(values:any){
+        return {
+          com_id: values[0],
+          com_npub: temp_com[values[0]].npub,
+          weight: values[2],
+          com_id2: values[1],
+          com_npub2: temp_com[values[1]].npub,
+        };
+      }
+    );
+    this.comvspro_table = Object.values(this.result.compound_vs_protein).map(
+      function(values:any){
+        return {
+          com_id: values[0],
+          com_npub: temp_com[values[0]].npub,
+          weight: values[2],
+          pro_id: values[1],
+          pro_name: temp_pro[values[1]].name
+        };
+      }
+    );
+    this.provsdis_table = Object.values(this.result.protein_vs_disease_temp).map(
+      function(values:any){
+        return {
+          pro_id: values[0],
+          pro_name: temp_pro[values[0]].name,
+          weight: values[2],
+          dis_id: values[1],
+          dis_name: temp_dis[values[1]].name
+        };
+      }
+    );
+    this.showload = false;
+    this.showresult = true;
   }
 
   clickedEfficacy: any;
@@ -389,12 +542,11 @@ export class ClusterComponent implements OnInit {
 
     // jalanin fungsi
     this.compound_subgroup = Object.keys(this.efficacy.group[this.clickedEfficacy]).map(
-      function(key) {
+      function(key:string) {
         return key;
       });
     console.log(this.compound_subgroup);
   }
-
   clickedActivity: any;
   selectedActivity(item) {
     this.clickedActivity = item.item;
@@ -403,7 +555,7 @@ export class ClusterComponent implements OnInit {
     var temp_Activity = this.efficacy.group[this.clickedEfficacy][this.clickedActivity];
     var temp_compound = this.compound;
     this.compound_target = Object.values(temp_Activity).map(
-      function(values) {
+      function(values:string) {
         var text = "";
         if(temp_compound[values].ccid !== null){
           text += (temp_compound[values].ccid) +" | ";
@@ -425,22 +577,7 @@ export class ClusterComponent implements OnInit {
   title = '';
   type = 'Sankey';
   columnNames = ['From', 'To', 'Weight'];
-  options = {
-    sankey: {
-      node: {
-        width: 15,
-        label: {
-          fontSize: 11,
-          color: '#000000',
-          bold: true,
-        },
-        interactivity: true
-      },
-      link: {
-        colorMode: 'source'
-      }
-    },
-    width: $(window).width() * 0.80,
-    height: 2100
-  };
+  options;
+  // end of sankey diagram
+
 }

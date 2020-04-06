@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -37,7 +38,8 @@ import { DocsComponent } from './docs/docs.component';
     NgbModule,
     DataTablesModule,
     GoogleChartsModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ScrollToModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

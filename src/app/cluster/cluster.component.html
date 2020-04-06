@@ -95,11 +95,18 @@
 
       <div class="ci-form">
         <button type="reset" class="reset">Reset</button>
-        <button type="submit" class="search">Search</button>
+        <button type="submit" [ngx-scroll-to]="'#destination'" class="search">Search</button>
       </div>
     </form>
     </div>
   </div>
+  <div id="destination">
+  </div>
+</div>
+
+<div id="loading" *ngIf='showloadfirst'>
+  <div class="loader"></div>
+  <h5>loading..</h5>
 </div>
 
 <div id="loading" *ngIf='showload'>
@@ -110,6 +117,7 @@
 <div id="c-result" *ngIf='showresult'>
   <div class="container">
     <h1>Cluster Result</h1>
+    <p>The result based your input</p>
     <ngb-tabset [destroyOnHide]="false">
       <ngb-tab title="Summary">
         <ng-template ngbTabContent>
@@ -160,14 +168,21 @@
       </ngb-tab>
       <ngb-tab title="Connectivity Graph">
         <ng-template ngbTabContent>
+          <div class="btn btn-primary" (click)="downloadImage()">DL</div>
+          <div id="download">
+            <img #canvas>
+            <a #downloadLink></a>
+          </div>
           <div class="legendgraph">
           <p>Plant</p>
+          <p>Compound</p>
           <p>Compound</p>
           <p>Protein</p>
           <p>Disease</p>
           </div>
-          <div class="chartnya">
-            <google-chart #chart
+          <div #screen class="chartnya">
+            <google-chart *ngIf="showChart"
+               #chart
                [title]="title"
                [type]="type"
                [data]="sankeyData"
@@ -184,10 +199,10 @@
           <div class="ct_button">
               <button [style.background]="pla_com_btn ? '#2ECC71' : '#C9C6C6'"
                       [style.color]="pla_com_btn ? '#ffffff' : '#000000'"
-                      (click)="pla_com_on()">Plant - Herbs Compound</button>
+                      (click)="pla_com_on()">Plant - Compound</button>
               <button [style.background]="com_com_btn ? '#2ECC71' : '#C9C6C6'"
                       [style.color]="com_com_btn ? '#ffffff' : '#000000'"
-                      (click)="com_com_on()">Herbs Compound - Compound</button>
+                      (click)="com_com_on()">Compound Similarity</button>
               <button [style.background]="com_pro_btn ? '#2ECC71' : '#C9C6C6'"
                       [style.color]="com_pro_btn ? '#ffffff' : '#000000'"
                       (click)="com_pro_on()">Compound - Protein</button>
@@ -196,7 +211,7 @@
                       (click)="pro_dis_on()">Protein - Disease</button>
           </div>
           <div class="ct_table" *ngIf="pla_com_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_plaCom" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="plavscom_table" class="row-border hover">
               <thead>
                 <tr>
                   <th>Plant Id</th>
@@ -209,20 +224,20 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let placom_con_table of placom_con_table">
+                <tr *ngFor="let placom_con_table of plavscom_table">
                   <td>{{placom_con_table.pla_id}}</td>
                   <td><a href="javascript:void(0)" (click)="generateLink(placom_con_table.pla_nlat)">{{placom_con_table.pla_nlat}}</a></td>
                   <!-- <td>{{placom_con_table.pla_nidr}}</td> -->
                   <td [style.width]="'40px'" [style.background]="'#8cff92'">{{placom_con_table.weight}}</td>
                   <td>{{placom_con_table.com_id}}</td>
-                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{placom_con_table.com_name}}" target="_blank">{{placom_con_table.com_name}}</a></td>
+                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{placom_con_table.com_npub}}" target="_blank">{{placom_con_table.com_npub}}</a></td>
                   <!-- <td>{{placom_con_table.com_npac}}</td> -->
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="ct_table" *ngIf="com_com_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_comPro" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="comvscom_table" class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound Id</th>
@@ -235,20 +250,20 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let compro_con_table of compro_con_table">
+                <tr *ngFor="let compro_con_table of comvscom_table">
                   <td>{{compro_con_table.com_id}}</td>
-                  <td>{{compro_con_table.com_name}}</td>
+                  <td>{{compro_con_table.com_npub}}</td>
                   <!-- <td>{{compro_con_table.com_npac}}</td> -->
                   <td [style.width]="'40px'" [style.background]="'#8cff92'">{{compro_con_table.weight}}</td>
-                  <td>{{compro_con_table.pro_id}}</td>
-                  <td>{{compro_con_table.pro_name}}</td>
+                  <td>{{compro_con_table.com_id2}}</td>
+                  <td>{{compro_con_table.com_npub2}}</td>
                   <!-- <td>{{compro_con_table.pro_uab}}</td> -->
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="ct_table" *ngIf="com_pro_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_comPro" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="comvspro_table" class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound Id</th>
@@ -261,32 +276,36 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let compro_con_table of compro_con_table">
+                <tr *ngFor="let compro_con_table of comvspro_table">
                   <td>{{compro_con_table.com_id}}</td>
-                  <td>{{compro_con_table.com_name}}</td>
+                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{compro_con_table.com_npub}}" target="_blank">{{compro_con_table.com_npub}}</a></td>
                   <!-- <td>{{compro_con_table.com_npac}}</td> -->
                   <td [style.width]="'40px'" [style.background]="'#8cff92'">{{compro_con_table.weight}}</td>
                   <td>{{compro_con_table.pro_id}}</td>
-                  <td>{{compro_con_table.pro_name}}</td>
+                  <td><a href="https://www.uniprot.org/uniprot/{{compro_con_table.pro_name}}" target="_blank">{{compro_con_table.pro_name}}</a></td>
                   <!-- <td>{{compro_con_table.pro_uab}}</td> -->
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="ct_table" *ngIf="pro_dis_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="con_proDis" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="provsdis_table" class="row-border hover">
               <thead>
                 <tr>
+                  <th>Protein Id</th>
                   <th>Protein Name</th>
                   <th>Connectivity Weight</th>
+                  <th>Disease Id</th>
                   <th>Disease Name</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let con_proDis of con_proDis">
+                <tr *ngFor="let con_proDis of provsdis_table">
                   <td>{{con_proDis.pro_id}}</td>
-                  <td>{{con_proDis.weight}}</td>
+                  <td>{{con_proDis.pro_name}}</td>
+                  <td [style.width]="'40px'" [style.background]="'#8cff92'">{{con_proDis.weight}}</td>
                   <td>{{con_proDis.dis_id}}</td>
+                  <td>{{con_proDis.dis_name}}</td>
                 </tr>
               </tbody>
             </table>

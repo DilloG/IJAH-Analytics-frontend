@@ -4,6 +4,10 @@
     margin: 0 auto;
 }
 
+
+#download {
+  display: none;
+}
 /* title */
 #c-title{
   width: 100%;
@@ -129,6 +133,7 @@
   #c-result h1{
     font-size: 25px;
     font-weight: 400;
+    margin-bottom: 0;
     color:#505050
   }
 
