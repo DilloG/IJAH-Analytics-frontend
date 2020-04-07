@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
+import { DataTableDirective } from 'angular-datatables';
 
 type Disease_m = {id: string, name: string};
 
@@ -19,6 +20,7 @@ constructor(private http:HttpClient) { }
 
 // table design
   public showload: boolean = false;
+  public showloadfirst: boolean = true;
   public showresult: boolean = false;
   public buttonName: any = 'Show';
   public model_parse: any;
@@ -40,21 +42,36 @@ constructor(private http:HttpClient) { }
     };
     var postmsgsynergi = JSON.stringify({disease: this.modelDis.substring(this.modelDis.length - 11)});
     //tinggal dipost
-    this.http.get<any>("http://localhost:8000/synergy_result", httpOptions).toPromise().then(data => {
-      this.synergi = data[0].data;
+    this.http.post<any>("http://api.vidner.engineer/sinergy_from_disease", postmsgsynergi, httpOptions).toPromise().then(data => {
+      this.synergi = data.data;
       console.log(this.synergi);
       if(this.synergi){
-        var temp_modelDis= this.modelDis.substring(this.modelDis.length - 11);
+        const temp_modelDis= this.modelDis.substring(this.modelDis.length - 11);
         this.model_parse = this.disease[temp_modelDis].name;
+        this.synergi = Object.values(this.synergi).map(
+          function(values:any){
+            return {
+              com1: values[0],
+              com2: values[1],
+              as: values[2],
+              ts: values[3],
+              ss: values[4]
+            }
+          }
+        );
         this.showload = false;
         this.showresult = true;
       }
     });
   }
-  // end of get syenrgi function
 
+  // end of get syenrgi function
   dtOptions: any = {};
+
   ngOnInit() {
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    }
     this.getDiseaseMeta();
     // oninit datatables
     this.dtOptions = {
@@ -78,8 +95,8 @@ constructor(private http:HttpClient) { }
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://localhost:8000/disease_json", httpOptions).toPromise().then(data => {
-      this.disease = data[0].data;
+    this.http.get<any>("http://api.vidner.engineer/disease", httpOptions).toPromise().then(data => {
+      this.disease = data.data;
       console.log(this.disease);
       if (this.disease) {
         this.getDiseaseSynergy();
@@ -94,8 +111,8 @@ constructor(private http:HttpClient) { }
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://localhost:8000/synergy_meta", httpOptions).toPromise().then(data => {
-      this.diseaseSyn = data[0].data;
+    this.http.get<any>("http://api.vidner.engineer/sinergy", httpOptions).toPromise().then(data => {
+      this.diseaseSyn = data.data;
       console.log(this.diseaseSyn);
       if (this.diseaseSyn) {
         var temp_disease = this.disease;
@@ -107,10 +124,13 @@ constructor(private http:HttpClient) { }
           }
         );
         console.log(this.disease_arr);
+        this.showloadfirst = false;
       }
     });
   }
 // end Get Meta
+
+
 
 // typeahead
   modelDis: any;

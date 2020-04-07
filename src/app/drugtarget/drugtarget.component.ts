@@ -334,8 +334,6 @@ export class DrugtargetComponent implements OnInit {
   async predict() {
     this.showresult = true;
     this.getDrugTargetResult();
-    console.log(this.proteinFor);
-    console.log(this.diseaseFor);
   }
   // END OF BAGIAN INPUT!
 
@@ -357,25 +355,6 @@ export class DrugtargetComponent implements OnInit {
   }
 
   private data_sankey = [];
-  postId;
-  postDrugTarget() {
-    // Simple POST request with a JSON body and response type <any>
-    const httpOptions = {
-      headers: new HttpHeaders({
-        "X-Requested-With": "XMLHttpRequest"
-      })
-    };
-    this.http.post<any>('https://cors-anywhere.herokuapp.com/http://8718c92d.ngrok.io/api/graph', { "id": "PLA00000260" }, httpOptions).subscribe(data => {
-      this.postId = data.data;
-      if (this.postId) {
-        console.log(this.postId);
-        for (let i in this.postId) {
-          this.data_sankey.push([this.postId[i][0], this.postId[i][1], parseFloat(this.postId[i][2])])
-        }
-      }
-
-    })
-  }
 
   // get result
   //get result

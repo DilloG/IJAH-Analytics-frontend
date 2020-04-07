@@ -17,11 +17,18 @@
         [(ngModel)]="modelDis"
         [editable]='false' required/>
       <div class="si-form">
-        <button type="submit">Search</button>
+        <button type="submit" [ngx-scroll-to]="'#destination'">Search</button>
       </div>
     </div>
     </form>
   </div>
+  <div id="destination">
+  </div>
+</div>
+
+<div id="loading" *ngIf='showloadfirst'>
+  <div class="loader"></div>
+  <h5>loading..</h5>
 </div>
 
 <div id="loading" *ngIf='showload'>
@@ -33,7 +40,7 @@
   <div class="container">
     <h1>Synergi Result</h1>
     <p>Table of Synergis Compound of <b>{{model_parse}} disease</b></p>
-    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="!showload" class="row-border hover">
       <thead>
         <tr>
           <th>Compound 1</th>
@@ -45,11 +52,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let synergi of synergi">
-          <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{synergi[0]}}" target="_blank"><b>{{synergi[0]}}</b></a></td>
-          <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{synergi[1]}}" target="_blank"><b>{{synergi[1]}}</b></a></td>
-          <td>{{synergi[2]}}</td>
-          <td>{{synergi[3]}}</td>
-          <td [style.background]="'#8cff92'"><b>{{synergi[4]}}</b></td>
+          <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{synergi.com1}}" target="_blank">{{synergi.com1}}</a></td>
+          <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{synergi.com2}}" target="_blank">{{synergi.com2}}</a></td>
+          <td>{{synergi.as}}</td>
+          <td>{{synergi.ts}}</td>
+          <td [style.background]="'#8cff92'"><b>{{synergi.ss}}</b></td>
         </tr>
       </tbody>
     </table>

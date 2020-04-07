@@ -8,96 +8,49 @@
   <div class="container">
     <div class="ci-container">
       <form #dtInputForm="ngForm" (ngSubmit)="predict()" ngNativeValidate>
-      <h1>Drug Side</h1>
-      <div class="cic-drug">
-        <div class="cicd cicd-analgesic">
-          <h1>Analgesic Compound</h1>
-          <input id="typeahead-analg"
-          placeholder="CAS ID/Pubchem Name/IUPAC Name"
-          type="text" class="form-control" [(ngModel)]="modelAnalg" [ngModelOptions]="{standalone: true}"
-          [ngbTypeahead]="searchAnalg" required/>
+        <h1>Drug Side</h1>
+        <div class="cic-drug">
+          <div class="cicd cicd-analgesic">
+            <h1>Analgesic Compound</h1>
+            <input id="typeahead-analg" placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" class="form-control" [(ngModel)]="modelAnalg" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchAnalg" required />
+          </div>
+          <div class="cicd cicd-bacteri">
+            <h1>Antibacterial Compound</h1>
+            <input id="typeahead-bacteri" placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" class="form-control" [(ngModel)]="modelBacteri" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchBacteri" required />
+          </div>
+          <div class="cicd cicd-inflam">
+            <h1>Antiinflamatory Compound</h1>
+            <input id="typeahead-inflam" placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" class="form-control" [(ngModel)]="modelInflam" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchInflam" required />
+          </div>
         </div>
-        <div class="cicd cicd-bacteri">
-          <h1>Antibacterial Compound</h1>
-          <input id="typeahead-bacteri"
-          placeholder="CAS ID/Pubchem Name/IUPAC Name"
-          type="text" class="form-control"
-          [(ngModel)]="modelBacteri"
-          [ngModelOptions]="{standalone: true}"
-          [ngbTypeahead]="searchBacteri" required/>
-        </div>
-        <div class="cicd cicd-inflam">
-          <h1>Antiinflamatory Compound</h1>
-          <input id="typeahead-inflam" placeholder="CAS ID/Pubchem Name/IUPAC Name"
-          type="text" class="form-control"
-          [(ngModel)]="modelInflam"
-          [ngModelOptions]="{standalone: true}"
-          [ngbTypeahead]="searchInflam" required/>
-        </div>
-      </div>
 
-      <h1>Target Side</h1>
-      <div class="cic-target">
-        <div class="cict cict-efficacy">
-          <h1>Efficacy</h1>
-          <input
-            id="typeahead-focus"
-            placeholder="Disease Group"
-            type="text"
-            class="form-control"
-            [(ngModel)]="modelEfficacy"
-            [ngModelOptions]="{standalone: true}"
-            [ngbTypeahead]="searchEfficacy"
-            (focus)="focusEfficacy$.next($any($event).target.value)"
-            (click)="clickEfficacy$.next($any($event).target.value)"
-            (selectItem)="selectedEfficacy($event)"
-            [editable]="false"
-            #instanceEfficacy="ngbTypeahead"
-          required/>
+        <h1>Target Side</h1>
+        <div class="cic-target">
+          <div class="cict cict-efficacy">
+            <h1>Efficacy</h1>
+            <input id="typeahead-focus" placeholder="Disease Group" type="text" class="form-control" [(ngModel)]="modelEfficacy" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchEfficacy"
+              (focus)="focusEfficacy$.next($any($event).target.value)" (click)="clickEfficacy$.next($any($event).target.value)" (selectItem)="selectedEfficacy($event)" [editable]="false" #instanceEfficacy="ngbTypeahead" required />
+          </div>
+          <div class="cict cict-activity">
+            <h1>Activity</h1>
+            <h6 [style.display]="clickedEfficacy == '' ? 'inline' : 'none'" [style.color]="'#F1F1F1'">Choose Efficacy First</h6>
+            <input [style.display]="clickedEfficacy == '' ? 'none' : 'inline'" id="typeahead-focus" placeholder="Disease Subgroup" type="text" class="form-control" [(ngModel)]="modelActivity" [ngModelOptions]="{standalone: true}"
+              [ngbTypeahead]="searchActivity" (focus)="focusActiviy$.next($any($event).target.value)" (click)="clickActiviy$.next($any($event).target.value)" (selectItem)="selectedActivity($event)" [editable]="false" #instanceActivity="ngbTypeahead"
+              required />
+          </div>
+          <div class="cict cict-target">
+            <h1>Target</h1>
+            <h6 [style.display]="clickedEfficacy && clickedActivity ? 'none' : 'inline'" [style.color]="'#F1F1F1'">Choose Efficacy & Activity First</h6>
+            <input [style.display]="clickedEfficacy && clickedActivity ? 'inline' : 'none'" id="typeahead-target" type="text" placeholder="CAS ID/Pubchem Name/IUPAC Name" class="form-control" [(ngModel)]="modelTarget"
+              [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchTarget" required />
+          </div>
         </div>
-        <div class="cict cict-activity">
-          <h1>Activity</h1>
-          <h6 [style.display]="clickedEfficacy ? 'none' : 'inline'"
-          [style.color]="'#F1F1F1'"
-          >Choose Efficacy First</h6>
-          <input
-            [style.display]="clickedEfficacy ? 'inline' : 'none'"
-            id="typeahead-focus"
-            placeholder="Disease Subgroup"
-            type="text"
-            class="form-control"
-            [(ngModel)]="modelActivity"
-            [ngModelOptions]="{standalone: true}"
-            [ngbTypeahead]="searchActivity"
-            (focus)="focusActiviy$.next($any($event).target.value)"
-            (click)="clickActiviy$.next($any($event).target.value)"
-            (selectItem)="selectedActivity($event)"
-            [editable]="false"
-            #instanceActivity="ngbTypeahead"
-          required/>
-        </div>
-        <div class="cict cict-target">
-          <h1>Target</h1>
-          <h6 [style.display]="clickedEfficacy && clickedActivity ? 'none' : 'inline'"
-          [style.color]="'#F1F1F1'"
-          >Choose Efficacy & Activity First</h6>
-          <input
-          [style.display]="clickedEfficacy && clickedActivity ? 'inline' : 'none'"
-          id="typeahead-target"
-          type="text"
-          placeholder="CAS ID/Pubchem Name/IUPAC Name"
-          class="form-control"
-          [(ngModel)]="modelTarget"
-          [ngModelOptions]="{standalone: true}"
-          [ngbTypeahead]="searchTarget" required/>
-        </div>
-      </div>
 
-      <div class="ci-form">
-        <button type="reset" class="reset">Reset</button>
-        <button type="submit" [ngx-scroll-to]="'#destination'" class="search">Search</button>
-      </div>
-    </form>
+        <div class="ci-form">
+          <button type="reset" class="reset" (click)="resetulang()">Reset</button>
+          <button type="submit" [ngx-scroll-to]="'#destination'" class="search">Search</button>
+        </div>
+      </form>
     </div>
   </div>
   <div id="destination">
@@ -174,22 +127,14 @@
             <a #downloadLink></a>
           </div>
           <div class="legendgraph">
-          <p>Plant</p>
-          <p>Compound</p>
-          <p>Compound</p>
-          <p>Protein</p>
-          <p>Disease</p>
+            <p>Plant</p>
+            <p>Compound</p>
+            <p>Compound</p>
+            <p>Protein</p>
+            <p>Disease</p>
           </div>
           <div #screen class="chartnya">
-            <google-chart *ngIf="showChart"
-               #chart
-               [title]="title"
-               [type]="type"
-               [data]="sankeyData"
-               [columnNames]="columnNames"
-               [options]="options"
-               [width]="width"
-               [height]="height">
+            <google-chart *ngIf="showChart" #chart [title]="title" [type]="type" [data]="sankeyData" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
             </google-chart>
           </div>
         </ng-template>
@@ -197,18 +142,10 @@
       <ngb-tab title="Connectivity Table">
         <ng-template ngbTabContent>
           <div class="ct_button">
-              <button [style.background]="pla_com_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="pla_com_btn ? '#ffffff' : '#000000'"
-                      (click)="pla_com_on()">Plant - Compound</button>
-              <button [style.background]="com_com_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="com_com_btn ? '#ffffff' : '#000000'"
-                      (click)="com_com_on()">Compound Similarity</button>
-              <button [style.background]="com_pro_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="com_pro_btn ? '#ffffff' : '#000000'"
-                      (click)="com_pro_on()">Compound - Protein</button>
-              <button [style.background]="pro_dis_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="pro_dis_btn ? '#ffffff' : '#000000'"
-                      (click)="pro_dis_on()">Protein - Disease</button>
+            <button [style.background]="pla_com_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="pla_com_btn ? '#ffffff' : '#000000'" (click)="pla_com_on()">Plant - Compound</button>
+            <button [style.background]="com_com_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="com_com_btn ? '#ffffff' : '#000000'" (click)="com_com_on()">Compound Similarity</button>
+            <button [style.background]="com_pro_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="com_pro_btn ? '#ffffff' : '#000000'" (click)="com_pro_on()">Compound - Protein</button>
+            <button [style.background]="pro_dis_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="pro_dis_btn ? '#ffffff' : '#000000'" (click)="pro_dis_on()">Protein - Disease</button>
           </div>
           <div class="ct_table" *ngIf="pla_com_btn">
             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="plavscom_table" class="row-border hover">
@@ -315,21 +252,13 @@
       <ngb-tab title="Metadata">
         <ng-template ngbTabContent>
           <div class="ct_button">
-              <button [style.background]="pla_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="pla_btn ? '#ffffff' : '#000000'"
-                      (click)="pla_on()">Plant</button>
-              <button [style.background]="com_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="com_btn ? '#ffffff' : '#000000'"
-                      (click)="com_on()">Compound</button>
-              <button [style.background]="pro_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="pro_btn ? '#ffffff' : '#000000'"
-                      (click)="pro_on()">Protein</button>
-              <button [style.background]="dis_btn ? '#2ECC71' : '#C9C6C6'"
-                      [style.color]="dis_btn ? '#ffffff' : '#000000'"
-                      (click)="dis_on()">Disease</button>
+            <button [style.background]="pla_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="pla_btn ? '#ffffff' : '#000000'" (click)="pla_on()">Plant</button>
+            <button [style.background]="com_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="com_btn ? '#ffffff' : '#000000'" (click)="com_on()">Compound</button>
+            <button [style.background]="pro_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="pro_btn ? '#ffffff' : '#000000'" (click)="pro_on()">Protein</button>
+            <button [style.background]="dis_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="dis_btn ? '#ffffff' : '#000000'" (click)="dis_on()">Disease</button>
           </div>
           <div class="meta_table" *ngIf="pla_btn">
-            <table datatable [dtOptions]="dtOptions" *ngIf="pla_meta_table" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="plaMeta_table" [dtTrigger]="dtTrigger" class="row-border hover">
               <thead>
                 <tr>
                   <th>Plant ID</th>
@@ -338,7 +267,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pla_meta_table of pla_meta_table">
+                <tr *ngFor="let pla_meta_table of plaMeta_table">
                   <td>{{pla_meta_table.pla_id}}</td>
                   <td><a href="javascript:void(0)" (click)="generateLink(pla_meta_table.pla_nlat)">{{pla_meta_table.pla_nlat}}</a></td>
                   <td>{{pla_meta_table.pla_nidr}}</td>
@@ -347,25 +276,27 @@
             </table>
           </div>
           <div class="meta_table" *ngIf="com_btn">
-            <table datatable [dtOptions]="dtOptions" *ngIf="com_meta_table" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="comMeta_table" [dtTrigger]="dtTrigger" class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound ID</th>
                   <th>Pubchem Name</th>
+                  <th>CASR Number</th>
                   <th>IUPAC Name</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let com_meta_table of com_meta_table">
+                <tr *ngFor="let com_meta_table of comMeta_table">
                   <td>{{com_meta_table.com_id}}</td>
                   <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{com_meta_table.com_name}}" target="_blank">{{com_meta_table.com_name}}</a></td>
+                  <td><a href="http://www.molbase.com/cas/{{com_meta_table.com_ccid}}.html" target="_blank">{{com_meta_table.com_ccid}}</a></td>
                   <td>{{com_meta_table.com_npac}}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="meta_table" *ngIf="pro_btn">
-            <table datatable [dtOptions]="dtOptions" *ngIf="pro_meta_table" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="proMeta_table" [dtTrigger]="dtTrigger" class="row-border hover">
               <thead>
                 <tr>
                   <th>Protein ID</th>
@@ -374,7 +305,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pro_meta_table of pro_meta_table">
+                <tr *ngFor="let pro_meta_table of proMeta_table">
                   <td>{{pro_meta_table.pro_id}}</td>
                   <td><a href="https://www.uniprot.org/uniprot/{{pro_meta_table.pro_uab}}" target="_blank">{{pro_meta_table.pro_name}}</a></td>
                   <td><a href="https://www.uniprot.org/uniprot/{{pro_meta_table.pro_uab}}" target="_blank">{{pro_meta_table.pro_uab}}</a></td>
@@ -383,7 +314,7 @@
             </table>
           </div>
           <div class="meta_table" *ngIf="dis_btn">
-            <table datatable [dtOptions]="dtOptions" *ngIf="dis_meta_table" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="disMeta_table" [dtTrigger]="dtTrigger" class="row-border hover">
               <thead>
                 <tr>
                   <th>Disease ID</th>
@@ -393,7 +324,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let dis_meta_table of dis_meta_table">
+                <tr *ngFor="let dis_meta_table of disMeta_table">
                   <td>{{dis_meta_table.dis_id}}</td>
                   <td><a href="https://www.omim.org/entry/{{dis_meta_table.dis_oid}}" target="_blank">{{dis_meta_table.dis_name}}</a></td>
                   <td><a href="https://www.omim.org/entry/{{dis_meta_table.dis_oid}}" target="_blank">{{dis_meta_table.dis_oid}}</a></td>

@@ -23,6 +23,7 @@
     "@nicky-lenaers/ngx-scroll-to": "^3.0.1",
     "angular-datatables": "^8.0.0",
     "angular-google-charts": "^0.1.6",
+    "aos": "^2.3.4",
     "bootstrap": "^4.4.1",
     "datatables.net": "^1.10.20",
     "datatables.net-buttons": "^1.6.1",

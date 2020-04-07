@@ -8,8 +8,4 @@ export class HttpService {
 
   constructor(private http: HttpClient) { }
 
-  getPlant(){
-    this.http.get("http://localhost:3000/plant");
-  }
-
 }
