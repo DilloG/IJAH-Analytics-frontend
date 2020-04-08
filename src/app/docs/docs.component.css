@@ -1,0 +1,29 @@
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* title */
+#ab-title{
+  width: 100%;
+  background: #6AE173;
+  padding: 1.5em 0;
+  margin-top: 85px;
+}
+
+#ab-title h1{
+  color: white;
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+#ab-detail{
+  padding-top: 30px;
+  padding-bottom: 30px;
+  /* background: grey; */
+}
+
+#ab-detail p{
+  font-size: 17px
+}

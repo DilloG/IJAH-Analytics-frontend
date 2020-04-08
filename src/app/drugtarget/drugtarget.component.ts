@@ -332,7 +332,7 @@ export class DrugtargetComponent implements OnInit {
   showload: boolean = false;
 
   async predict() {
-    this.showresult = true;
+    this.showresult = false;
     this.getDrugTargetResult();
   }
   // END OF BAGIAN INPUT!
@@ -360,399 +360,89 @@ export class DrugtargetComponent implements OnInit {
   //get result
   drug_side: any = [];
   target_side: any = [];
+  sendmsgjson:any = {}
   pla_com: any;
   com_pro: any;
   pro_dis: any;
   getDrugTargetResult() {
-    this.drug_side.splice(0, this.drug_side.length);
-    this.target_side.splice(0, this.target_side.length);
+    this.sendmsgjson.length = 0;
+    this.drug_side.length = 0;
+    this.target_side.length = 0;
     if (this.dsInput == true) {
       if (this.pla_input_btn == true) {
         for (let i in this.plantFor) {
-          this.drug_side.push({ index: i, value: this.plantFor[i].name.substring(0, 11) });
+          this.drug_side.push(this.plantFor[i].name.substring(0, 11));
         }
+        this.sendmsgjson = {plant: this.drug_side};
       }
       else {
         for (let i in this.compoundFor) {
-          this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
+          this.drug_side.push(this.compoundFor[i].name.substring(0, 11));
         }
+        this.sendmsgjson = {compound: this.drug_side};
       }
-      this.disPostMsgJSON = JSON.stringify(this.drug_side);
-      this.getPlaCom();
+      console.log(this.sendmsgjson);
+      this.getResult();
     }
     if (this.tsInput == true) {
       if (this.pro_input_btn == true) {
         for (let i in this.proteinFor) {
-          this.target_side.push({ index: i, value: this.proteinFor[i].name.substring(0, 11) });
+          this.target_side.push(this.proteinFor[i].name.substring(0, 11));
         }
+        this.sendmsgjson = {protein: this.target_side};
       }
       else {
         for (let i in this.diseaseFor) {
-          this.target_side.push({ index: i, value: this.diseaseFor[i].name.substring(0, 11) });
+          this.target_side.push(this.diseaseFor[i].name.substring(0, 11));
         }
+        this.sendmsgjson = {disease: this.target_side};
       }
-      this.disPostProJSON = JSON.stringify(this.temp_meta_pro);
-      this.getProDis();
+      this.getResult();
     }
-    if (this.dstsInput == true) {
-      if (this.pro_input_btn == true) {
-        for (let i in this.proteinFor) {
-          this.target_side.push({ index: i, value: this.proteinFor[i].name.substring(0, 11) });
-        }
-      }
-      else {
-        for (let i in this.diseaseFor) {
-          this.target_side.push({ index: i, value: this.diseaseFor[i].name.substring(0, 11) });
-        }
-      }
-
-      if (this.pla_input_btn == true) {
-        for (let i in this.plantFor) {
-          this.drug_side.push({ index: i, value: this.plantFor[i].name.substring(0, 11) });
-        }
-      }
-      else {
-        for (let i in this.compoundFor) {
-          this.drug_side.push({ index: i, value: this.compoundFor[i].name.substring(0, 11) });
-        }
-      }
-      this.disPostMsgJSON = JSON.stringify(this.drug_side);
-      this.disPostProJSON = JSON.stringify(this.target_side);
-      // this.getPlaCom();
-      // this.getProDis();
-      console.log(this.disPostMsgJSON, this.disPostProJSON);
-    }
+    // if (this.dstsInput == true) {
+    //   if (this.pla_input_btn == true) {
+    //     for (let i in this.plantFor) {
+    //       plant.push(this.plantFor[i].name.substring(0, 11));
+    //     }
+    //   }
+    //   else {
+    //     for (let i in this.compoundFor) {
+    //       compound.push(this.compoundFor[i].name.substring(0, 11));
+    //     }
+    //   }
+    //   if (this.pla_input_btn == true) {
+    //     for (let i in this.plantFor) {
+    //       protein.push(this.proteinFor[i].name.substring(0, 11));
+    //     }
+    //   }
+    //   else {
+    //     for (let i in this.compoundFor) {
+    //       disease.push(this.diseaseFor[i].name.substring(0, 11));
+    //     }
+    //   }
+    //   this.getResult();
+    // }
   }
 
-
-  con_plaCom: any;
-  con_com_arr: any = [];
-  temp_comId: any;
-  sankey_plaCom: any;
-  temp_meta_com = [{ index: 1, value: 'COM00008027' },
-  { index: 2, value: 'COM00021005' },
-  { index: 3, value: 'COM00009696' },
-  { index: 4, value: 'COM00020511' }];
-  temp_meta_pla = [{ index: 0, value: 'PLA00000007' },
-  { index: 1, value: 'PLA00001504' },
-  { index: 2, value: 'PLA00001838' },
-  { index: 3, value: 'PLA00004093' },
-  { index: 4, value: 'PLA00001600' }];
-  temp_meta_pro = [{ index: 0, value : 'PRO00002168'},
-            { index: 1, value : 'PRO00000061'},
-            { index: 2, value : 'PRO00000261'},
-            { index: 3, value : 'PRO00001836'}];
-  disPostMsgJSON: any;
-  placom_con_table: any;
-  pla_meta_table:any;
-  getPlaCom() {
+  result: any;
+  getResult(){
     const httpOptions = {
       headers: new HttpHeaders({
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', this.disPostMsgJSON, httpOptions).subscribe(data => {
-      this.con_plaCom = data;
-      console.log(this.con_plaCom);
-      if (this.con_plaCom) {
-
-        // sankey graph
-        const temp_pla = this.plant_new; //temp_pla[key.pla_id].nlat
-        const temp_com = this.compound; //temp_com[key.com_id].npub
-        this.sankey_plaCom = this.con_plaCom.map(
-          function(key) {
-            return [temp_pla[key.pla_id].nlat,
-            temp_com[key.com_id].npub,
-            Number(key.weight)]
-          }
-        );
-
-        //connectivity Table
-        this.placom_con_table = this.con_plaCom.map(
-          function(key) {
-            return {
-              pla_id: key.pla_id,
-              pla_nlat: temp_pla[key.pla_id].nlat,
-              pla_nidr: temp_pla[key.pla_id].nidr,
-              weight: Number(key.weight),
-              com_id: key.com_id,
-              com_name: temp_com[key.com_id].npub,
-              com_npac: temp_com[key.com_id].npac
-            }
-          }
-        );
-
-        //meta table
-        var temp_conplaCom = this.con_plaCom.map(function (key) {
-          return key.pla_id;
-        });
-        var temp_conplaCom_unique = temp_conplaCom.filter(function(item, index){
-          return temp_conplaCom.indexOf(item) >= index;
-        });
-        this.pla_meta_table = temp_conplaCom_unique.map(
-          function(key) {
-            return{
-              pla_id: key,
-              pla_nlat: temp_pla[key].nlat,
-              pla_nidr: temp_pla[key].nidr
-            }
-          }
-        )
-
-        console.log(this.sankey_plaCom);
-        console.log(this.con_com_arr);
-
-        this.getComId();
-        this.switcherPlaCom();
+    const parseJson = JSON.stringify(this.sendmsgjson);
+    console.log(parseJson);
+    this.http.post<any>("http://api.vidner.engineer/graph_from_all", parseJson, httpOptions).toPromise().then(data => {
+      this.result = data.data;
+      console.log(this.result);
+      if (this.result){
+        this.getSankey();
+        this.getConnectivityTable();
+        this.getMetaTable();
       }
     })
-  }
 
-  switcherPlaCom(){
-    if(this.dsInput == true){
-      this.disPostComProJSON = JSON.stringify(this.temp_comId);
-      this.getComPro();
-    }
-    if(this.tsInput == true){
-      this.sankeyData();
-    }
-    if(this.dstsInput == true){
-      this.disPostComProJSON = JSON.stringify(this.temp_comId);
-      this.getComPro();
-    }
-  }
-  getComId(){
-      const temp_plaCom = this.con_plaCom;
-      this.temp_comId = this.con_plaCom.map(
-        function(key) { return { comId: key.com_id } }
-      );
-    }
-
-  con_comPro: any;
-  con_pro_arr: any = [];
-  sankey_comPro: any;
-  disPostComProJSON: any;
-  compro_con_table:any;
-  com_meta_table:any;
-  pro_meta_table:any;
-  getComPro() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        "X-Requested-With": "XMLHttpRequest"
-      })
-    };
-
-    console.log(this.disPostComProJSON);
-    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', this.disPostComProJSON, httpOptions).subscribe(data => {
-      this.con_comPro = data;
-      if (this.con_comPro) {
-
-        const temp_com = this.compound; //temp_pla[key.pla_id].nlat
-        const temp_pro = this.protein; //temp_com[key.com_id].npub
-
-        this.sankey_comPro = this.con_comPro.map(
-          function(key) { return [
-            temp_com[key.com_id].npub,
-            key.pro_id,
-            Number(key.weight)]
-          }
-        );
-
-        this.compro_con_table = this.con_comPro.map(
-          function(key) {
-            return {
-              com_id: key.com_id,
-              com_name: temp_com[key.com_id].npub,
-              com_npac:  temp_com[key.com_id].npac,
-              weight: Number(key.weight),
-              pro_id: key.pro_id,
-              pro_name: temp_pro[key.pro_id].name,
-              pro_uab: temp_pro[key.pro_id].uab
-            }
-          }
-        );
-
-        this.getcommeta();
-        this.getprometa();
-        this.getProValue();
-        this.getComValue();
-        this.switcherComPro();
-      }
-    })
-  }
-
-  switcherComPro(){
-    if(this.dsInput == true){
-      this.disPostProJSON = JSON.stringify(this.con_pro_arr);
-      this.getProDis();
-    }
-    if(this.tsInput == true){
-      this.disPostMsgJSON = JSON.stringify(this.con_com_arr);
-      this.getPlaCom();
-    }
-  }
-  getcommeta(){
-    const temp_com = this.compound;
-    if(this.dsInput == true){
-      var temp_concomPro1 = this.con_plaCom.map(function (key) {
-        return key.com_id;
-      });
-      var temp_concomPro1_unique = temp_concomPro1.filter(function(item, index){
-        return temp_concomPro1.indexOf(item) >= index;
-      });
-      this.com_meta_table = temp_concomPro1_unique.map(
-        function(key) {
-          return{
-            com_id: key,
-            com_name: temp_com[key].npub,
-            com_npac:  temp_com[key].npac
-          }
-        }
-      );
-    }
-    if(this.tsInput == true){
-      var temp_concomPro1 = this.con_comPro.map(function (key) {
-        return key.com_id;
-      });
-      var temp_concomPro1_unique = temp_concomPro1.filter(function(item, index){
-        return temp_concomPro1.indexOf(item) >= index;
-      });
-      this.com_meta_table = temp_concomPro1_unique.map(
-        function(key) {
-          return{
-            com_id: key,
-            com_name: temp_com[key].npub,
-            com_npac:  temp_com[key].npac
-          }
-        }
-      );
-    }
-  }
-  getprometa(){
-    const temp_pro = this.protein;
-    if(this.tsInput == true){
-      var temp_concomPro2 = this.con_proDis.map(function (key) {
-        return key.pro_id;
-      });
-      var temp_concomPro2_unique = temp_concomPro2.filter(function(item, index){
-        return temp_concomPro2.indexOf(item) >= index;
-      });
-      this.pro_meta_table = temp_concomPro2_unique.map(
-        function(key) {
-          return{
-            pro_id: key,
-            pro_name: temp_pro[key].name,
-            pro_uab: temp_pro[key].uab
-          }
-        }
-      );
-    }
-    if(this.dsInput == true){
-      var temp_concomPro2 = this.con_comPro.map(function (key) {
-        return key.pro_id;
-      });
-      var temp_concomPro2_unique = temp_concomPro2.filter(function(item, index){
-        return temp_concomPro2.indexOf(item) >= index;
-      });
-      this.pro_meta_table = temp_concomPro2_unique.map(
-        function(key) {
-          return{
-            pro_id: key,
-            pro_name: temp_pro[key].name,
-            pro_uab: temp_pro[key].uab
-          }
-        }
-      );
-    }
-  }
-  getProValue(){
-    const temp_comPro = this.con_comPro;
-    this.con_pro_arr = this.con_comPro.map(
-      function(key) { return { value: key.pro_id } }
-    );
-    console.log(this.con_pro_arr);
-  }
-  getComValue(){
-    const temp_comPro = this.con_comPro;
-    this.con_com_arr = this.con_comPro.map(
-      function(key) { return { value: key.com_id } }
-    );
-    console.log(this.con_com_arr);
-  }
-
-  con_proDis: any;
-  sankey_proDis: any;
-  disPostProJSON: any;
-  dis_meta_table:any;
-  getProDis() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        "X-Requested-With": "XMLHttpRequest"
-      })
-    };
-    console.log(this.disPostProJSON);
-    this.http.post<any>('http://ijah.apps.cs.ipb.ac.id/api/connectivity.php', this.disPostProJSON, httpOptions).subscribe(data => {
-      this.con_proDis = data;
-      if (this.con_proDis) {
-        console.log(this.con_proDis);
-
-        const temp_pro = this.protein; //temp_pla[key.pla_id].nlat
-        const temp_dis = this.disease; //temp_com[key.com_id].npub
-        this.sankey_proDis = this.con_proDis.map(
-          function(key) {
-            return [key.pro_id,
-            key.dis_id,
-            Number(key.weight)]
-          }
-        );
-
-
-        var temp_conproDis = this.con_proDis.map(function (key) {
-        	return key.dis_id;
-        });
-        var temp_conproDis_unique = temp_conproDis.filter(function(item, index){
-        	return temp_conproDis.indexOf(item) >= index;
-        });
-        this.dis_meta_table = temp_conproDis_unique.map(
-          function(key) {
-            return{
-              dis_id: key,
-              dis_name: temp_dis[key].name,
-              dis_uab: temp_dis[key].uab,
-              dis_oid: temp_dis[key].oid
-            }
-          }
-        )
-
-        console.log(temp_conproDis_unique);
-
-        this.getProId()
-        this.switcherProDis();
-      }
-    })
-  }
-
-  switcherProDis(){
-    if(this.dsInput == true){
-      this.sankeyData();
-    }
-    if(this.tsInput == true){
-      this.disPostComProJSON = JSON.stringify(this.temp_proId);
-      this.getComPro();
-    }
-    if(this.dstsInput == true){
-      this.disPostComProJSON = JSON.stringify(this.temp_proId);
-      this.getComPro();
-    }
-  }
-
-  temp_proId: any;
-  getProId(){
-    const temp_proDis = this.con_proDis;
-    this.temp_proId = this.con_proDis.map(
-      function(key) { return { proId: key.pro_id } }
-    );
-    console.log(this.con_pro_arr);
   }
   // end of get result
 
@@ -811,67 +501,6 @@ export class DrugtargetComponent implements OnInit {
   }
   // end of show table ngIF for Metadata
 
-  //remove duplicates in result
-  private meta_pla = [];
-  private meta_com = [];
-  private meta_pro = [];
-  private meta_dis = [];
-
-  removeDuplicates() {
-    this.meta_pla.splice(0, this.meta_pla.length);
-    this.meta_com.splice(0, this.meta_com.length);
-    this.meta_pro.splice(0, this.meta_pro.length);
-    this.meta_dis.splice(0, this.meta_dis.length);
-
-    let pla_unique = {};
-    let com_unique = {};
-    let pro_unique = {};
-    let dis_unique = {};
-
-    let i_pla;
-    let i_com;
-    let i_pro;
-    let i_dis;
-
-    // plant remove duplicate
-    for (i_pla in this.pla_com) {
-      let objTitle = this.pla_com[i_pla]['pla_name'];
-      pla_unique[objTitle] = this.pla_com[i_pla];
-    }
-    for (i_pla in pla_unique) {
-      this.meta_pla.push(pla_unique[i_pla]);
-    }
-    console.log(this.meta_pla);
-    // compound remove duplicates
-    for (i_com in this.pla_com) {
-      let objTitle = this.pla_com[i_com]['com_pubchem_name'];
-      com_unique[objTitle] = this.pla_com[i_com];
-    }
-    for (i_com in com_unique) {
-      this.meta_com.push(com_unique[i_com]);
-    }
-    console.log(this.meta_com);
-    // protein remove duplicates
-    for (i_pro in this.pro_dis) {
-      let objTitle = this.pro_dis[i_pro]['pro_name'];
-      pro_unique[objTitle] = this.pro_dis[i_pro];
-    }
-    for (i_pro in pro_unique) {
-      this.meta_pro.push(pro_unique[i_pro]);
-    }
-    console.log(this.meta_pro);
-    // compound remove duplicates
-    for (i_dis in this.pro_dis) {
-      let objTitle = this.pro_dis[i_dis]['dis_name'];
-      dis_unique[objTitle] = this.pro_dis[i_dis];
-    }
-    for (i_dis in dis_unique) {
-      this.meta_dis.push(dis_unique[i_dis]);
-    }
-    console.log(this.meta_dis);
-  }
-  //end of remove duplicates in result
-
 
   //links to gbif plant databases
   generateLink(a: string) {
@@ -894,26 +523,28 @@ export class DrugtargetComponent implements OnInit {
   private com_pro_score: any = 0;
   private pro_dis_score: any = 0;
 
-  private sankey_Data = [];
-  len;
+  private sankeyData: any;
+  plaMeta_table:any;
+  comMeta_table:any;
+  proMeta_table:any;
+  disMeta_table:any;
+  plavscom_table: any;
+  comvscom_table: any;
+  comvspro_table: any;
+  provsdis_table: any;
+  len: any;
   showChart: boolean = false;
-  sankeyData() {
-    console.log(this.sankey_Data.length);
-    this.sankey_Data = this.sankey_proDis.concat(this.sankey_comPro, this.sankey_plaCom);
-    if(this.dsInput == true){
-      this.comNotPro();
-      this.proNotDis();
-    }
-    if(this.tsInput == true){
-      this.proNotCom();
-      this.comNotPla();
-    }
-    this.sankey_Data.push(["PRO", "DIS", 0.0000000000000001]);
-    this.sankey_Data.push(["COM", "PRO", 0.0000000000000001]);
-    this.sankey_Data.push(["PLA", "COM", 0.0000000000000001]);
-    console.log(this.sankey_Data);
-    // size of output
-    this.len = this.sankey_Data.length;
+  // sankey function
+  getSankey() {
+
+    this.getSankeyData();
+    this.sankeyData.push(["PLA", "COM", 0.0000000000000001]);
+    this.sankeyData.push(["COM", "COM ", 0.0000000000000001]);
+    this.sankeyData.push(["COM ", "PRO", 0.0000000000000001]);
+    this.sankeyData.push(["PRO", "DIS", 0.0000000000000001]);
+    console.log(this.sankeyData);
+
+    this.len = this.sankeyData.length;
     if ((this.len / 2) * 30 > 2500) {
       this.len = 2700;
     } else {
@@ -957,90 +588,194 @@ export class DrugtargetComponent implements OnInit {
     };
     this.showChart = true;
   }
+  getSankeyData(){
+    const temp_pla = this.plant_new;
+    const temp_com = this.compound;
+    const temp_pro = this.protein;
+    const temp_dis = this.disease;
 
-  comNotPro() {
-    // fungsi untuk mencari com yang tidak punya link ke prot
-    var t2 = performance.now();
-    var compro = [];
-    compro = this.con_comPro.map(
-      function(key) { return key.com_id }
+    console.log(this.result.plant_vs_compound[0]);
+    const plavscom = Object.values(this.result.plant_vs_compound).map(
+      function(values: any) {
+        // const pla_side = values[0] +" | "+ temp_pla[values[0]].nlat;
+        return [
+          values[0] +" | "+ temp_pla[values[0]].nlat,
+          values[1] +" | "+ temp_com[values[1]].npub,
+          values[2]
+       ];
+      }
     );
-    var compro2 = [];
-    compro2 = this.temp_comId.filter(function(item) {
-      return !compro.includes(item[0]);
-    });
-    var comNotPro = [];
-    for (var i in compro2) {
-      this.sankey_Data.push([this.compound[compro2[i].comId].npub, "PRO", 0.0000000000000001]);
-      // console.log()
-    }
-    var t5 = performance.now();
-    console.log("Took: " + (t5 - t2) + "msecs");
+    console.log(plavscom);
+    const comvscom = Object.values(this.result.compound_similarity).map(
+      function(values: any) {
+        return [
+          values[0] +" | "+ temp_com[values[0]].npub,
+          values[1] +" | "+ temp_com[values[1]].npub,
+          values[2]];
+      }
+    );
+    console.log(comvscom);
+    const comvspro = Object.values(this.result.compound_vs_protein).map(
+      function(values: any) {
+        return [
+          values[0] +" | "+ temp_com[values[0]].npub,
+          values[1],
+          values[2]
+        ];
+      }
+    );
+    const provsdis = Object.values(this.result.protein_vs_disease).map(
+      function(values: any) {
+        return [values[0], values[1], values[2]];
+      }
+    );
+    console.log(provsdis);
 
-    console.log(this.con_comPro);
-    console.log(compro);
-    console.log(compro2);
+
+    this.sankeyData = plavscom.concat(
+      comvscom,
+      comvspro,
+      provsdis
+    );
+
   }
-  proNotDis() {
-    // fungsi untuk mencari com yang tidak punya link ke prot
-        var t2 = performance.now();
-        var compro = [];
-        compro = this.con_proDis.map(
-          function(key) { return key.pro_id }
-        );
-        var compro2 = [];
-        compro2 = this.con_pro_arr.filter(function(item) {
-          return !compro.includes(item[0]);
-        });
-        console.log(compro);
-        console.log(compro2);
-        for (var i in compro2) {
-          this.sankey_Data.push([compro2[i].value, "DIS", 0.0000000000000001]);
-          console.log(compro2[i].value);
+  // meta Table
+  getMetaTable(){
+    const temp_pla = this.plant_new;
+    const temp_com = this.compound;
+    const temp_pro = this.protein;
+    const temp_dis = this.disease;
+    // plant meta
+    const temp_placom = Object.values(this.result.plant_vs_compound).map(function (values:any) {
+      return values[0];
+    });
+    const temp_placom_unique = temp_placom.filter(function(item, index){
+      return temp_placom.indexOf(item) >= index;
+    });
+    console.log(temp_placom_unique);
+    this.plaMeta_table = temp_placom_unique.map(
+      function(key) {
+        return{
+          pla_id: key,
+          pla_nlat: temp_pla[key].nlat,
+          pla_nidr: temp_pla[key].nidr
         }
-        var t5 = performance.now();
-        console.log("Took: " + (t5 - t2) + "msecs");
-  }
-  proNotCom() {
-    // fungsi untuk mencari com yang tidak punya link ke prot
-    var t2 = performance.now();
-    var compro = [];
-    compro = this.con_comPro.map(
-      function(key) { return key.pro_id }
+      }
     );
-    var compro2 = [];
-    compro2 = this.temp_proId.filter(function(item) {
-      return !compro.includes(item[0]);
+
+    //compund meta
+    const temp_compro_1 = Object.values(this.result.compound_vs_protein).map(function (values:any) {
+      return values[0];
     });
-    for (var i in compro2) {
-      this.sankey_Data.push(["COM", compro2[i].proId, 0.0000000000000001]);
-      console.log(compro2[i].proId);
-    }
-    var t5 = performance.now();
-    console.log("Took: " + (t5 - t2) + "msecs");
-
-  }
-  comNotPla() {
-    // this.con_com_arr
-
-    var t2 = performance.now();
-    var compro = [];
-    compro = this.con_plaCom.map(
-      function(key) { return key.com_id }
+    const temp_placom_1 = Object.values(this.result.plant_vs_compound).map(function (values:any) {
+      return values[1];
+    });
+    const temp_mix_com = temp_compro_1.concat(temp_placom_1);
+    console.log(temp_mix_com);
+    const temp_com_unique = temp_mix_com.filter(function(item, index){
+      return temp_mix_com.indexOf(item) >= index;
+    });
+    this.comMeta_table = temp_com_unique.map(
+      function(key){
+        return {
+          com_id: key,
+          com_name: temp_com[key].npub,
+          com_ccid: temp_com[key].ccid,
+          com_npac: temp_com[key].npac
+        }
+      }
     );
-    var compro2 = [];
-    compro2 = this.con_com_arr.filter(function(item) {
-      return !compro.includes(item[0]);
-    });
-    console.log(compro);
-    console.log(compro2);
-    for (var i in compro2) {
-      this.sankey_Data.push(["PLA", this.compound[compro2[i].value].npub, 0.0000000000000001]);
-      console.log(compro2[i].value);
-    }
-    var t5 = performance.now();
-    console.log("Took: " + (t5 - t2) + "msecs");
 
+    // protein meta
+    const temp_compro = Object.values(this.result.compound_vs_protein).map(function (values:any) {
+      return values[1];
+    });
+    const temp_compro_unique = temp_compro.filter(function(item, index){
+      return temp_compro.indexOf(item) >= index;
+    });
+    console.log(temp_compro_unique);
+    this.proMeta_table = temp_compro_unique.map(
+      function(key) {
+        return {
+          pro_id: key,
+          pro_name: temp_pro[key].name,
+          pro_uab: temp_pro[key].uab
+        }
+      }
+    );
+
+
+    // disease meta
+    const temp_prodis = Object.values(this.result.protein_vs_disease).map(function (values:any) {
+      return values[1];
+    });
+    const temp_prodis_unique = temp_prodis.filter(function(item, index){
+      return temp_prodis.indexOf(item) >= index;
+    });
+    console.log(temp_prodis_unique);
+    this.disMeta_table = temp_prodis_unique.map(
+      function(key) {
+        return{
+          dis_id: key,
+          dis_name: temp_dis[key].name,
+          dis_oid: temp_dis[key].oid,
+          dis_uab: temp_dis[key].uab
+        }
+      }
+    );
+  }
+  // connectivity table function
+  getConnectivityTable() {
+    const temp_pla = this.plant_new;
+    const temp_com = this.compound;
+    const temp_pro = this.protein;
+    const temp_dis = this.disease
+    this.plavscom_table = Object.values(this.result.plant_vs_compound).map(
+      function(values: any) {
+        return {
+          pla_id: values[0],
+          pla_nlat: temp_pla[values[0]].nlat,
+          weight: values[2],
+          com_id: values[1],
+          com_npub: temp_com[values[1]].npub
+        };
+      }
+    );
+    this.comvscom_table = Object.values(this.result.compound_similarity).map(
+      function(values: any) {
+        return {
+          com_id: values[0],
+          com_npub: temp_com[values[0]].npub,
+          weight: values[2],
+          com_id2: values[1],
+          com_npub2: temp_com[values[1]].npub,
+        };
+      }
+    );
+    this.comvspro_table = Object.values(this.result.compound_vs_protein).map(
+      function(values: any) {
+        return {
+          com_id: values[0],
+          com_npub: temp_com[values[0]].npub,
+          weight: values[2],
+          pro_id: values[1],
+          pro_name: temp_pro[values[1]].name
+        };
+      }
+    );
+    this.provsdis_table = Object.values(this.result.protein_vs_disease).map(
+      function(values: any) {
+        return {
+          pro_id: values[0],
+          pro_name: temp_pro[values[0]].name,
+          weight: values[2],
+          dis_id: values[1],
+          dis_name: temp_dis[values[1]].name
+        };
+      }
+    );
+    this.showload = false;
+    this.showresult = true;
   }
   //end of summary score function & sankey diagram data
 

@@ -158,19 +158,19 @@
             <div class="drsp-bawah">
               <div class="drspb-kiri">
                 <div>
-                  <h6 class="score">{{meta_pla.length}}</h6>
+                  <h6 class="score">{{plaMeta_table.length}}</h6>
                   <h6>Plants</h6>
                 </div>
                 <div>
-                  <h6 class="score">{{meta_com.length}}</h6>
+                  <h6 class="score">{{comMeta_table.length}}</h6>
                   <h6>Compounds</h6>
                 </div>
                 <div>
-                  <h6 class="score">{{meta_pro.length}}</h6>
+                  <h6 class="score">{{proMeta_table.length}}</h6>
                   <h6>Proteins</h6>
                 </div>
                 <div>
-                  <h6 class="score">{{meta_dis.length}}</h6>
+                  <h6 class="score">{{disMeta_table.length}}</h6>
                   <h6>Diseases</h6>
                 </div>
               </div>
@@ -186,21 +186,14 @@
             <a #downloadLink></a>
           </div>
           <div class="legendgraph">
-          <p>Plant</p>
-          <p>Compound</p>
-          <p>Protein</p>
-          <p>Disease</p>
+            <p>Plant</p>
+            <p>Compound</p>
+            <p>Compound</p>
+            <p>Protein</p>
+            <p>Disease</p>
           </div>
-          <div  #screen class="chartnya">
-            <google-chart *ngIf="showChart"
-               #chart
-               [title]="title"
-               [type]="type"
-               [data]="sankey_Data"
-               [columnNames]="columnNames"
-               [options]="options"
-               [width]="width"
-               [height]="height">
+          <div #screen class="chartnya">
+            <google-chart *ngIf="showChart" #chart [title]="title" [type]="type" [data]="sankeyData" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
             </google-chart>
           </div>
         </ng-template>

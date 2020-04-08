@@ -471,7 +471,7 @@ export class ClusterComponent implements OnInit {
     console.log(this.result.plant_vs_compound[0]);
     const plavscom = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
-        const pla_side = values[0] +" | "+ temp_pla[values[0]].nlat;
+        // const pla_side = values[0] +" | "+ temp_pla[values[0]].nlat;
         return [
           values[0] +" | "+ temp_pla[values[0]].nlat,
           values[1] +" | "+ temp_com[values[1]].npub,
@@ -479,16 +479,33 @@ export class ClusterComponent implements OnInit {
        ];
       }
     );
+    const plavscom2 = Object.values(this.result.compound_similarity).map(
+      function(values: any) {
+        // const pla_side = values[0] +" | "+ temp_pla[values[0]].nlat;
+        return [
+          "COM",
+          values[0] +" | "+ temp_com[values[0]].npub,
+          0.00000000000000000000000000001
+        ];
+      }
+    );
     console.log(plavscom);
     const comvscom = Object.values(this.result.compound_similarity).map(
       function(values: any) {
-        return [values[0], values[1], values[2]];
+        return [
+          values[1] +" | "+ temp_com[values[1]].npub,
+          values[0] +" | "+ temp_com[values[0]].npub,
+          values[2]];
       }
     );
     console.log(comvscom);
     const comvspro = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
-        return [values[0], values[1], values[2]];
+        return [
+          values[0] +" | "+ temp_com[values[0]].npub,
+          values[1],
+          values[2]
+        ];
       }
     );
     const com2vspro = Object.values(this.result.compound_vs_protein).map(
@@ -503,7 +520,13 @@ export class ClusterComponent implements OnInit {
       }
     );
     console.log(provsdis);
-    this.sankeyData = plavscom.concat(comvscom, comvspro, com2vspro, provsdis);
+    this.sankeyData = plavscom.concat(
+      comvscom,
+      comvspro,
+      com2vspro,
+      provsdis,
+      plavscom2
+    );
 
   }
   // meta Table

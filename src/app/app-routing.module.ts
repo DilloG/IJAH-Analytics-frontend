@@ -7,6 +7,7 @@ import { ClusterComponent } from './cluster/cluster.component';
 import { DrugtargetComponent } from './drugtarget/drugtarget.component';
 import { ContactusComponent } from './contactus/contactus.component';
 import { ComsimilarComponent } from './comsimilar/comsimilar.component';
+import { DocsComponent } from './docs/docs.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'cluster', component: ClusterComponent, pathMatch: 'full' },
   { path: 'drugtarget', component: DrugtargetComponent, pathMatch: 'full' },
   { path: 'contactus', component: ContactusComponent, pathMatch: 'full' },
-  { path: 'comsimilar', component: ComsimilarComponent, pathMatch: 'full' }
+  { path: 'comsimilar', component: ComsimilarComponent, pathMatch: 'full' },
+  { path: 'docs', component: DocsComponent, pathMatch: 'full' }
 ];
 
 @NgModule({
