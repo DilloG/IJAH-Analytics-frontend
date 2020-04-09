@@ -4,19 +4,19 @@
     <p>Find connectivity between plant-compound and protein-disease, for jamu formula</p>
   </div>
   <div class="hb-feature" data-aos="fade-down" data-aos-once="true">
-    <div class="hbf-select">
+    <div href="#" routerLink="/drugtarget" class="hbf-select">
       <img src="assets/img/molecular.png" />
       <h5>Drug-target</h5>
     </div>
-    <div class="hbf-select">
+    <div href="#" routerLink="/cluster" class="hbf-select">
       <img src="assets/img/herbs.png" />
-      <h5>Cluster</h5>
+      <h5>Classification</h5>
     </div>
     <div href="#" routerLink="/synergi" class="hbf-select">
       <img src="assets/img/metabolism.png" />
       <h5>Compound Synergi</h5>
     </div>
-    <div class="hbf-select">
+    <div href="#" class="hbf-select">
       <img src="assets/img/conntribute.png" />
       <h5>Contribute</h5>
     </div>
@@ -38,45 +38,37 @@
       <img src="assets/img/feautre1.png" />
       <div class="hfs-drugtarget">
         <h4>Drug-Target Connectivity</h4>
-        <p>Contrary to popular belief, Lorem Ipsum is not simply
-          random text. It has roots in a piece of classical Latin
-          literature from 45 BC, making it over 2000 years old.
-          Richard McClintock, a Latin professor at Hampden-Sydney
-          College in Virginia, looked up one of the more obscure Latin
-          words, consectetur, from a Lorem Ipsum passage, and going
-          through the cites of the word in classical literature,
-          discovered the undoubtable source.</p>
-        <button>Predict Drug-Target</button>
+        <p>The drug targeting formulation focuses on the types of plants that contain
+          compounds and then targets proteins that have a role in a disease. using input
+          from the drug side or target side including plants, compounds, proteins, and diseases,
+          using k-partite graph visualization as a result of input output. so the user can
+          Validate / cross check whether some plant compositions, namely the Herbal formula,
+          have certain properties</p>
+        <button type="button" href="#" routerLink="/drugtarget">Predict Drug-Target</button>
       </div>
     </div>
     <div class="hf-select" data-aos="fade-down" data-aos-once="true">
       <img src="assets/img/feature2.png" />
       <div class="hfs-cluster">
-        <h4>Cluster Connectivity</h4>
-        <p>Contrary to popular belief, Lorem Ipsum is not simply
-          random text. It has roots in a piece of classical Latin
-          literature from 45 BC, making it over 2000 years old.
-          Richard McClintock, a Latin professor at Hampden-Sydney
-          College in Virginia, looked up one of the more obscure Latin
-          words, consectetur, from a Lorem Ipsum passage, and going
-          through the cites of the word in classical literature,
-          discovered the undoubtable source.</p>
-        <button>Predict Cluster</button>
+        <h4>Classification Connectivity</h4>
+        <p>Molecular new herbal formulations are produced by focusing on compounds that
+          target certain diseases. Through the four properties of plants that are the basic
+          ingredients of herbal medicine with the main properties
+          which targets certain diseases, with compound input with four
+          properties, analgesics, anti-inflammatory, antibacterial, and compounds with activity
+          certain efficacy. The data used is taken from the IJAHAnalytics database</p>
+        <button type="button" href="#" routerLink="/cluster">Predict Cluster</button>
       </div>
     </div>
     <div class="hf-select" data-aos="fade-down" data-aos-once="true">
       <img src="assets/img/feature3.png" />
       <div class="hfs-synergi">
         <h4>Compound Synergi</h4>
-        <p>Contrary to popular belief, Lorem Ipsum is not simply
-          random text. It has roots in a piece of classical Latin
-          literature from 45 BC, making it over 2000 years old.
-          Richard McClintock, a Latin professor at Hampden-Sydney
-          College in Virginia, looked up one of the more obscure Latin
-          words, consectetur, from a Lorem Ipsum passage, and going
-          through the cites of the word in classical literature,
-          discovered the undoubtable source.</p>
-        <button>Predict Synergi</button>
+        <p>Analysis of the synergistic effect on the constituents of drugs needs to be done to
+          regulating the obtained herbal formula has a positive synergy effect from the composition
+          compiler of herbal formula. General Effects done conventionally in the laboratory
+          case by case.</p>
+        <button type="button" href="#" routerLink="/synergi">Predict Synergi</button>
       </div>
     </div>
   </div>
@@ -94,7 +86,7 @@
       <button>Contribute Now</button>
     </div>
     <div class="hc-right">
-      <img src="assets/img/contribute.png"/>
+      <img src="assets/img/contribute.png" />
     </div>
   </div>
 </div>
@@ -102,12 +94,19 @@
 <div id="h-sitasi">
   <div class="container" data-aos="fade-down" data-aos-once="true">
     <div class="hs-left">
-        <img src="assets/img/citate.png"/>
+      <img src="assets/img/citate.png" />
     </div>
     <div class="hs-right">
       <h1>Citing IJAH Analytics ?</h1>
       <p>You can citing IJAH Analytics, for your documentation or your publication</p>
       <button>Citing IJAH Analytics</button>
     </div>
+  </div>
+</div>
+
+<div id="modal-cite" [style.display]="'none'">
+<h1>Citing IJAH Analytics</h1>
+  <div>
+
   </div>
 </div>

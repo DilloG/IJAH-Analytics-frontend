@@ -17,7 +17,8 @@
         [(ngModel)]="modelDis"
         [editable]='false' required/>
       <div class="si-form">
-        <button type="submit" [ngx-scroll-to]="'#destination'">Search</button>
+        <button type="reset" class="reset" (click)="resetinput()">Reset</button>
+        <button type="submit" class="submit" [ngx-scroll-to]="'#destination'">Search</button>
       </div>
     </div>
     </form>
@@ -39,7 +40,7 @@
 <div id="s-result" *ngIf='showresult'>
   <div class="container">
     <h1>Synergi Result</h1>
-    <p>Table of Synergis Compound of <b>{{model_parse}} disease</b></p>
+    <p>Table of Synergis Compound of <b><a href="https://www.omim.org/entry/{{model_link}}" target="_blank">{{model_parse}}</a> disease</b></p>
     <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="!showload" class="row-border hover">
       <thead>
         <tr>

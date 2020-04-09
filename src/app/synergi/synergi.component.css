@@ -44,20 +44,6 @@
   border-radius: 50px;
 }
 
-#s-input button{
-  background-color: #4CAF50; /* Green */
-  border: none;
-  border-radius: 50px;
-  color: white;
-  padding: 6px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-  cursor: pointer;
-  margin: 15px 0 0 0;
-}
-
 #s-input .si-form{
   width: 100%;
   display: flex;
@@ -82,4 +68,40 @@
   font-size: 15px;
   font-weight: 400;
   color:#505050
+}
+
+
+#s-input button{
+  margin-top: 30px;
+}
+
+.si-form .submit{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.si-form .reset{
+  background-color: #FF6464;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.si-form button:hover{
+  transform: scale(1.05);
 }

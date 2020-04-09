@@ -241,3 +241,27 @@
     font-size: 15px;
     cursor: pointer;
   }
+
+.drspb-kiri{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.buttondownload{
+  background-color: #337AB7; /* Green */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 18px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.buttondownload:hover{
+  transform: scale(1.05);
+}

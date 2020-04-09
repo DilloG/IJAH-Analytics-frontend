@@ -1,6 +1,6 @@
 <div id="c-title">
   <div class="container">
-    <h1>Cluster Connectivity</h1>
+    <h1>Classification Connectivity</h1>
   </div>
 </div>
 
@@ -69,7 +69,7 @@
 
 <div id="c-result" *ngIf='showresult'>
   <div class="container">
-    <h1>Cluster Result</h1>
+    <h1>Classification Result</h1>
     <p>The result based your input</p>
     <ngb-tabset [destroyOnHide]="false">
       <ngb-tab title="Summary">
@@ -86,6 +86,10 @@
                   <h6 class="scoreName">Plant-Compound Connectivity Score</h6>
                 </div>
                 <div>
+                  <h6 class="score" [style.color]="'#94AE27'">{{com_com_score}}</h6>
+                  <h6 class="scoreName">Compound-Compound Similarity Score</h6>
+                </div>
+                <div>
                   <h6 class="score" [style.color]="'#94AE27'">{{com_pro_score}}</h6>
                   <h6 class="scoreName">Compound-Protein Connectivity Score</h6>
                 </div>
@@ -99,19 +103,19 @@
             <div class="drsp-bawah">
               <div class="drspb-kiri">
                 <div>
-                  <h6 class="score">{{meta_pla}}</h6>
+                  <h6 class="score">{{plaMeta_table.length}}</h6>
                   <h6>Plants</h6>
                 </div>
                 <div>
-                  <h6 class="score">{{meta_com}}</h6>
+                  <h6 class="score">{{comMeta_table.length}}</h6>
                   <h6>Compounds</h6>
                 </div>
                 <div>
-                  <h6 class="score">{{meta_pro}}</h6>
+                  <h6 class="score">{{proMeta_table.length}}</h6>
                   <h6>Proteins</h6>
                 </div>
                 <div>
-                  <h6 class="score">{{meta_dis}}</h6>
+                  <h6 class="score">{{disMeta_table.length}}</h6>
                   <h6>Diseases</h6>
                 </div>
               </div>
@@ -121,7 +125,7 @@
       </ngb-tab>
       <ngb-tab title="Connectivity Graph">
         <ng-template ngbTabContent>
-          <div class="btn btn-primary" (click)="downloadImage()">Download Graph</div>
+          <div class="buttondownload" (click)="downloadImage()">Download Graph</div>
           <div id="download">
             <img #canvas>
             <a #downloadLink></a>
@@ -134,7 +138,7 @@
             <p>Disease</p>
           </div>
           <div #screen class="chartnya">
-            <google-chart *ngIf="showChart" #chart [title]="title" [type]="type" [data]="sankeyData" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
+            <google-chart *ngIf="showChart"  #chart [title]="title" [type]="type" [data]="sankeyData" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
             </google-chart>
           </div>
         </ng-template>
@@ -189,12 +193,12 @@
               <tbody>
                 <tr *ngFor="let compro_con_table of comvscom_table">
                   <td>{{compro_con_table.com_id}}</td>
-                  <td>{{compro_con_table.com_npub}}</td>
+                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{compro_con_table.com_npub}}" target="_blank">{{compro_con_table.com_npub}}</a></td>
                   <!-- <td>{{compro_con_table.com_npac}}</td> -->
                   <td [style.width]="'40px'" [style.background]="'#8cff92'">{{compro_con_table.weight}}</td>
                   <td>{{compro_con_table.com_id2}}</td>
-                  <td>{{compro_con_table.com_npub2}}</td>
-                  <!-- <td>{{compro_con_table.pro_uab}}</td> -->
+                  <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{compro_con_table.com_npub2}}" target="_blank">{{compro_con_table.com_npub2}}</a></td>
+                    <!-- <td>{{compro_con_table.pro_uab}}</td> -->
                 </tr>
               </tbody>
             </table>
@@ -219,7 +223,7 @@
                   <!-- <td>{{compro_con_table.com_npac}}</td> -->
                   <td [style.width]="'40px'" [style.background]="'#8cff92'">{{compro_con_table.weight}}</td>
                   <td>{{compro_con_table.pro_id}}</td>
-                  <td><a href="https://www.uniprot.org/uniprot/{{compro_con_table.pro_name}}" target="_blank">{{compro_con_table.pro_name}}</a></td>
+                  <td><a href="https://www.uniprot.org/uniprot/{{compro_con_table.pro_uab}}" target="_blank">{{compro_con_table.pro_name}}</a></td>
                   <!-- <td>{{compro_con_table.pro_uab}}</td> -->
                 </tr>
               </tbody>
@@ -239,10 +243,10 @@
               <tbody>
                 <tr *ngFor="let con_proDis of provsdis_table">
                   <td>{{con_proDis.pro_id}}</td>
-                  <td>{{con_proDis.pro_name}}</td>
+                  <td><a href="https://www.uniprot.org/uniprot/{{con_proDis.pro_uab}}" target="_blank">{{con_proDis.pro_name}}</a></td>
                   <td [style.width]="'40px'" [style.background]="'#8cff92'">{{con_proDis.weight}}</td>
                   <td>{{con_proDis.dis_id}}</td>
-                  <td>{{con_proDis.dis_name}}</td>
+                  <td><a href="https://www.omim.org/entry/{{con_proDis.dis_oid}}" target="_blank">{{con_proDis.dis_name}}</a></td>
                 </tr>
               </tbody>
             </table>

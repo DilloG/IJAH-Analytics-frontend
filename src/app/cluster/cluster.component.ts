@@ -101,11 +101,6 @@ export class ClusterComponent implements OnInit {
   private com_btn: boolean = false;
   private pro_btn: boolean = false;
   private dis_btn: boolean = false;
-  com_meta_table = [];
-  pro_meta_table = [];
-  pla_meta_table = [];
-  herb_meta_table = [];
-  dis_meta_table = [];
 
   pla_on() {
     this.pla_btn = true;
@@ -137,9 +132,6 @@ export class ClusterComponent implements OnInit {
   private com_pro_btn: boolean = false;
   private pro_dis_btn: boolean = false;
   private com_com_btn: boolean = false;
-  con_plaCom = true;
-  con_comPro = true;
-  con_proDis = true;
 
   pla_com_on() {
     this.pla_com_btn = true;
@@ -419,8 +411,8 @@ export class ClusterComponent implements OnInit {
     console.log(this.sankeyData);
 
     this.len = this.sankeyData.length;
-    if ((this.len / 2) * 30 > 2500) {
-      this.len = 2700;
+    if ((this.len / 2) * 30 > 4000) {
+      this.len = 4000;
     } else {
       this.len = (this.len / 2) * 30;
     }
@@ -442,6 +434,7 @@ export class ClusterComponent implements OnInit {
       '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#030ffc',
       '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#030ffc'];
     this.options = {
+      tooltip: { isHtml: true },
       sankey: {
         node: {
           colors: colors,
@@ -471,54 +464,61 @@ export class ClusterComponent implements OnInit {
     console.log(this.result.plant_vs_compound[0]);
     const plavscom = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
-        // const pla_side = values[0] +" | "+ temp_pla[values[0]].nlat;
         return [
-          values[0] +" | "+ temp_pla[values[0]].nlat,
-          values[1] +" | "+ temp_com[values[1]].npub,
+          values[0] +" | "+ temp_pla[values[0]].nlat.substr(0, 10)+"..",
+          values[1] +" | "+ temp_com[values[1]].npub.substr(0, 10)+"..",
           values[2]
        ];
-      }
-    );
-    const plavscom2 = Object.values(this.result.compound_similarity).map(
-      function(values: any) {
-        // const pla_side = values[0] +" | "+ temp_pla[values[0]].nlat;
-        return [
-          "COM",
-          values[0] +" | "+ temp_com[values[0]].npub,
-          0.00000000000000000000000000001
-        ];
       }
     );
     console.log(plavscom);
     const comvscom = Object.values(this.result.compound_similarity).map(
       function(values: any) {
         return [
-          values[1] +" | "+ temp_com[values[1]].npub,
-          values[0] +" | "+ temp_com[values[0]].npub,
-          values[2]];
+          values[1] +" | "+ temp_com[values[1]].npub.substr(0, 10)+"..",
+          values[0] +" | "+ temp_com[values[0]].npub.substr(0, 10)+"..",
+          values[2]
+        ];
       }
     );
     console.log(comvscom);
     const comvspro = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
         return [
-          values[0] +" | "+ temp_com[values[0]].npub,
-          values[1],
+          values[0] +" | "+ temp_com[values[0]].npub.substr(0, 10)+"..",
+          values[1] +" | "+ temp_pro[values[1]].name.substr(0, 10)+"..",
           values[2]
         ];
       }
     );
+    console.log(comvspro);
+    const provsdis = Object.values(this.result.protein_vs_disease).map(
+      function(values: any) {
+        return [
+          values[0] +" | "+ temp_pro[values[0]].name.substr(0, 10)+"..",
+          values[1] +" | "+ temp_dis[values[1]].name.substr(0, 10)+"..",
+          values[2]
+        ];
+      }
+    );
+
     const com2vspro = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
-        return ["COM ", values[1], 0.00000000000000000000000000001];
+        return ["COM ",
+        values[1] +" | "+ temp_pro[values[1]].name.substr(0, 10)+"..",
+        0.00000000000000000000000000001];
       }
     );
-    console.log(comvspro);
-    const provsdis = Object.values(this.result.protein_vs_disease_temp).map(
+    const plavscom2 = Object.values(this.result.compound_similarity).map(
       function(values: any) {
-        return [values[0], values[1], values[2]];
+        return [
+          "COM",
+          values[0] +" | "+ temp_com[values[0]].npub.substr(0, 10)+"..",
+          0.00000000000000000000000000001
+        ];
       }
     );
+
     console.log(provsdis);
     this.sankeyData = plavscom.concat(
       comvscom,
@@ -596,7 +596,7 @@ export class ClusterComponent implements OnInit {
 
 
     // disease meta
-    const temp_prodis = Object.values(this.result.protein_vs_disease_temp).map(function (values:any) {
+    const temp_prodis = Object.values(this.result.protein_vs_disease).map(function (values:any) {
       return values[1];
     });
     const temp_prodis_unique = temp_prodis.filter(function(item, index){
@@ -615,11 +615,22 @@ export class ClusterComponent implements OnInit {
     );
   }
   // connectivity table function
+  pla_com_score:any;
+  com_com_score:any;
+  com_pro_score:any;
+  pro_dis_score:any;
+  totalScore:any;
   getConnectivityTable() {
     const temp_pla = this.plant_new;
     const temp_com = this.compound;
     const temp_pro = this.protein;
-    const temp_dis = this.disease
+    const temp_dis = this.disease;
+
+    let number0 = 0;
+    let number1 = 0;
+    let number2 = 0;
+    let number3 = 0;
+
     this.plavscom_table = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
         return {
@@ -649,21 +660,51 @@ export class ClusterComponent implements OnInit {
           com_npub: temp_com[values[0]].npub,
           weight: values[2],
           pro_id: values[1],
-          pro_name: temp_pro[values[1]].name
+          pro_name: temp_pro[values[1]].name,
+          pro_uab: temp_pro[values[1]].uab
         };
       }
     );
-    this.provsdis_table = Object.values(this.result.protein_vs_disease_temp).map(
+    this.provsdis_table = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
         return {
           pro_id: values[0],
           pro_name: temp_pro[values[0]].name,
+          pro_uab: temp_pro[values[0]].uab,
           weight: values[2],
           dis_id: values[1],
-          dis_name: temp_dis[values[1]].name
+          dis_name: temp_dis[values[1]].name,
+          dis_oid: temp_dis[values[1]].oid
         };
       }
     );
+
+    for(let i in this.plavscom_table){
+       number0 += parseFloat(this.plavscom_table[i].weight);
+    }
+    this.pla_com_score = number0.toFixed(4);
+    console.log(this.pla_com_score);
+
+    for(let i in this.comvscom_table){
+    number1 += parseFloat(this.comvscom_table[i].weight);
+    }
+    this.com_com_score = number1.toFixed(4);
+    console.log(this.com_com_score);
+
+    for(let i in this.comvspro_table){
+      number2 += parseFloat(this.comvspro_table[i].weight);
+    }
+    this.com_pro_score = number2.toFixed(4);
+    console.log(this.com_pro_score);
+
+    for(let i in this.provsdis_table){
+      number3 += parseFloat(this.provsdis_table[i].weight);
+    }
+    this.pro_dis_score = number3.toFixed(4);
+
+    this.totalScore = (number0 + number1 + number2 + number3).toFixed(4);
+    console.log(this.pro_dis_score);
+
     this.showload = false;
     this.showresult = true;
   }
@@ -681,8 +722,10 @@ export class ClusterComponent implements OnInit {
       });
     console.log(this.compound_subgroup);
   }
+
   clickedActivity: any = "";
   selectedActivity(item) {
+    this.modelTarget = "";
     this.clickedActivity = item.item;
     console.log(this.efficacy.group[this.clickedEfficacy][this.clickedActivity]);
 
@@ -717,6 +760,21 @@ export class ClusterComponent implements OnInit {
     this.modelEfficacy = "";
     this.modelTarget = "";
   }
+
+  //links to gbif plant databases
+  generateLink(a: string) {
+    var links = "";
+    var newurl = "";
+    this.http.get<any>("http://api.gbif.org/v1/species/match?verbose=false&kingdom=Plantae&name=" + a).toPromise().then(data => {
+      links = data.usageKey;
+      if (links) {
+        var newurl = "https://www.gbif.org/species/" + links;
+        window.open(newurl, "_blank")
+      }
+    });
+  }
+  //end of links to gbif plant databases
+
 
   // sankey diagram
   title = '';

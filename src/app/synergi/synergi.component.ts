@@ -24,13 +24,16 @@ constructor(private http:HttpClient) { }
   public showresult: boolean = false;
   public buttonName: any = 'Show';
   public model_parse: any;
+  public model_link:any;
 
 // prediction function
   async predict() {
     this.showload = true;
     this.getSynergiResult();
   }
-
+  resetinput(){
+    this.modelDis = "";
+  }
   // get syenrgi function
   synergi: any;
   synergy_arr: any;
@@ -48,6 +51,7 @@ constructor(private http:HttpClient) { }
       if(this.synergi){
         const temp_modelDis= this.modelDis.substring(this.modelDis.length - 11);
         this.model_parse = this.disease[temp_modelDis].name;
+        this.model_link = this.disease[temp_modelDis].oid;
         this.synergi = Object.values(this.synergi).map(
           function(values:any){
             return {

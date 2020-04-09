@@ -127,7 +127,7 @@ thead th{
 
 #loading{
     position: fixed;
-    z-index: 10000000;
+    z-index: 1000;
     height: 100%;
     width: 100%;
     top: 0;
@@ -156,3 +156,16 @@ thead th{
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+header{
+  padding: 1em;
+  background: white;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 2000 !important;
+}
+
+/* footer{
+  z-index: 2000 !important;
+} */

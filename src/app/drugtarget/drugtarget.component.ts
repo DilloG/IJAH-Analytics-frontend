@@ -1,12 +1,11 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
+import { Observable, Subject, merge } from 'rxjs';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
+import { Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import html2canvas from 'html2canvas';
-
-type Plant_m = { id: string, name: string };
-type Disease_m = { id: string, name: string };
 
 @Component({
   selector: 'app-drugtarget',
@@ -186,7 +185,9 @@ export class DrugtargetComponent implements OnInit {
   }
   //endof show input
 
+  resetinput(){
 
+  }
   // getinput meta
   showloadFirst: boolean = true;
 
@@ -199,8 +200,8 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://localhost:8000/plant_json", httpOptions).toPromise().then(data => {
-      this.plant_new = data[0].data;
+    this.http.get<any>("http://api.vidner.engineer/plant", httpOptions).toPromise().then(data => {
+      this.plant_new = data.data;
       console.log(this.plant_new);
       if (this.plant_new) {
         var t2 = performance.now();
@@ -226,8 +227,8 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://localhost:8000/compound_json", httpOptions).toPromise().then(data => {
-      this.compound = data[0].data;
+    this.http.get<any>("http://api.vidner.engineer/compound", httpOptions).toPromise().then(data => {
+      this.compound = data.data;
       if (this.compound) {
         var t2 = performance.now();
         const nilai = this.compound;
@@ -256,8 +257,8 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://localhost:8000/disease_json", httpOptions).toPromise().then(data => {
-      this.disease = data[0].data;
+    this.http.get<any>("http://api.vidner.engineer/disease", httpOptions).toPromise().then(data => {
+      this.disease = data.data;
       if (this.disease) {
         var nilai = this.disease;
         this.disease_arr = Object.keys(this.disease).map(
@@ -278,8 +279,8 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://localhost:8000/protein_json", httpOptions).toPromise().then(data => {
-      this.protein = data[0].data;
+    this.http.get<any>("http://api.vidner.engineer/protein", httpOptions).toPromise().then(data => {
+      this.protein = data.data;
       if (this.protein) {
         var nilai = this.protein;
         this.protein_arr = Object.keys(this.protein).map(
@@ -339,6 +340,9 @@ export class DrugtargetComponent implements OnInit {
 
   dtOptions: any = {};
   ngOnInit() {
+    window.onbeforeunload = function() {
+      window.scrollTo(0, 0);
+    }
     this.getPlantNewMeta();
     this.getDiseaseMeta();
     this.getProteinMeta();
@@ -399,29 +403,36 @@ export class DrugtargetComponent implements OnInit {
       }
       this.getResult();
     }
-    // if (this.dstsInput == true) {
-    //   if (this.pla_input_btn == true) {
-    //     for (let i in this.plantFor) {
-    //       plant.push(this.plantFor[i].name.substring(0, 11));
-    //     }
-    //   }
-    //   else {
-    //     for (let i in this.compoundFor) {
-    //       compound.push(this.compoundFor[i].name.substring(0, 11));
-    //     }
-    //   }
-    //   if (this.pla_input_btn == true) {
-    //     for (let i in this.plantFor) {
-    //       protein.push(this.proteinFor[i].name.substring(0, 11));
-    //     }
-    //   }
-    //   else {
-    //     for (let i in this.compoundFor) {
-    //       disease.push(this.diseaseFor[i].name.substring(0, 11));
-    //     }
-    //   }
-    //   this.getResult();
-    // }
+    if (this.dstsInput == true) {
+      let helper_drug;
+      let helper_target;
+      if (this.pla_input_btn == true) {
+        for (let i in this.plantFor) {
+          this.drug_side.push(this.plantFor[i].name.substring(0, 11));
+        }
+        helper_drug = {plant: this.drug_side};
+      }
+      else {
+        for (let i in this.compoundFor) {
+          this.drug_side.push(this.compoundFor[i].name.substring(0, 11));
+        }
+        helper_drug = {compound: this.drug_side};
+      }
+      if (this.pro_input_btn == true) {
+        for (let i in this.proteinFor) {
+          this.target_side.push(this.proteinFor[i].name.substring(0, 11));
+        }
+        helper_target = {protein: this.target_side};
+      }
+      else {
+        for (let i in this.diseaseFor) {
+          this.target_side.push(this.diseaseFor[i].name.substring(0, 11));
+        }
+        helper_target = {disease: this.target_side};
+      }
+      this.sendmsgjson = {...helper_drug,...helper_target};
+      this.getResult();
+    }
   }
 
   result: any;
@@ -450,55 +461,67 @@ export class DrugtargetComponent implements OnInit {
   private pla_com_btn: boolean = true;
   private com_pro_btn: boolean = false;
   private pro_dis_btn: boolean = false;
+  private com_com_btn: boolean = false;
 
   pla_com_on() {
     this.pla_com_btn = true;
     this.com_pro_btn = false;
     this.pro_dis_btn = false;
+    this.com_com_btn = false;
+  }
+  com_com_on() {
+    this.pla_com_btn = false;
+    this.com_pro_btn = false;
+    this.pro_dis_btn = false;
+    this.com_com_btn = true;
   }
   com_pro_on() {
     this.pla_com_btn = false;
+    this.com_com_btn = false;
     this.com_pro_btn = true;
     this.pro_dis_btn = false;
   }
   pro_dis_on() {
     this.pla_com_btn = false;
+    this.com_com_btn = false;
     this.com_pro_btn = false;
     this.pro_dis_btn = true;
   }
   // end of show table ngIf
+  // end of show table ngIf
 
 
   // show table ngIF for Metadata
-  private pla_btn: boolean = true;
-  private com_btn: boolean = false;
-  private pro_btn: boolean = false;
-  private dis_btn: boolean = false;
 
-  pla_on() {
-    this.pla_btn = true;
-    this.com_btn = false;
-    this.pro_btn = false;
-    this.dis_btn = false;
-  }
-  com_on() {
-    this.pla_btn = false;
-    this.com_btn = true;
-    this.pro_btn = false;
-    this.dis_btn = false;
-  }
-  pro_on() {
-    this.pla_btn = false;
-    this.com_btn = false;
-    this.pro_btn = true;
-    this.dis_btn = false;
-  }
-  dis_on() {
-    this.pla_btn = false;
-    this.com_btn = false;
-    this.pro_btn = false;
-    this.dis_btn = true;
-  }
+    private pla_btn: boolean = true;
+    private com_btn: boolean = false;
+    private pro_btn: boolean = false;
+    private dis_btn: boolean = false;
+
+    pla_on() {
+      this.pla_btn = true;
+      this.com_btn = false;
+      this.pro_btn = false;
+      this.dis_btn = false;
+    }
+    com_on() {
+      this.pla_btn = false;
+      this.com_btn = true;
+      this.pro_btn = false;
+      this.dis_btn = false;
+    }
+    pro_on() {
+      this.pla_btn = false;
+      this.com_btn = false;
+      this.pro_btn = true;
+      this.dis_btn = false;
+    }
+    dis_on() {
+      this.pla_btn = false;
+      this.com_btn = false;
+      this.pro_btn = false;
+      this.dis_btn = true;
+    }
   // end of show table ngIF for Metadata
 
 
@@ -518,10 +541,6 @@ export class DrugtargetComponent implements OnInit {
 
 
   //summary score function & sankey diagram data
-  private totalScore: any = 0;
-  private pla_com_score: any = 0;
-  private com_pro_score: any = 0;
-  private pro_dis_score: any = 0;
 
   private sankeyData: any;
   plaMeta_table:any;
@@ -545,8 +564,8 @@ export class DrugtargetComponent implements OnInit {
     console.log(this.sankeyData);
 
     this.len = this.sankeyData.length;
-    if ((this.len / 2) * 30 > 2500) {
-      this.len = 2700;
+    if ((this.len / 2) * 30 > 4000) {
+      this.len = 4000;
     } else {
       this.len = (this.len / 2) * 30;
     }
@@ -599,7 +618,7 @@ export class DrugtargetComponent implements OnInit {
       function(values: any) {
         // const pla_side = values[0] +" | "+ temp_pla[values[0]].nlat;
         return [
-          values[0] +" | "+ temp_pla[values[0]].nlat,
+          values[0] +" | "+ temp_pla[values[0]].nlat.substr(0, 10)+"..",
           values[1] +" | "+ temp_com[values[1]].npub,
           values[2]
        ];
@@ -619,23 +638,44 @@ export class DrugtargetComponent implements OnInit {
       function(values: any) {
         return [
           values[0] +" | "+ temp_com[values[0]].npub,
-          values[1],
+          values[1] +" | "+ temp_pro[values[1]].name,
           values[2]
         ];
       }
     );
     const provsdis = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
-        return [values[0], values[1], values[2]];
+        return [
+          values[0] +" | "+ temp_pro[values[0]].name,
+          values[1] +" | "+ temp_dis[values[1]].name,
+          values[2]];
       }
     );
     console.log(provsdis);
 
-
+    const provsdis2 = Object.values(this.result.protein_vs_disease).map(
+      function(values: any) {
+        return ["COM ", values[0] +" | "+ temp_pro[values[0]].name, 0.000000000000000001];
+      }
+    );
+    const comvscom2 = Object.values(this.result.compound_similarity).map(
+      function(values: any) {
+        return ["PLA", values[0] +" | "+ temp_com[values[0]].npub, 0.0000000000000000001];
+      }
+    );
+    const comvscom3 = Object.values(this.result.compound_similarity).map(
+      function(values: any) {
+        return [values[1] +" | "+ temp_com[values[1]].npub, "PRO", 0.0000000000000000001];
+      }
+    );
+    console.log(provsdis);
     this.sankeyData = plavscom.concat(
       comvscom,
       comvspro,
-      provsdis
+      provsdis,
+      provsdis2,
+      comvscom2,
+      comvscom3
     );
 
   }
@@ -725,11 +765,23 @@ export class DrugtargetComponent implements OnInit {
     );
   }
   // connectivity table function
+  pla_com_score:any;
+  com_com_score:any;
+  com_pro_score:any;
+  pro_dis_score:any;
+  totalScore:any;
+
   getConnectivityTable() {
     const temp_pla = this.plant_new;
     const temp_com = this.compound;
     const temp_pro = this.protein;
-    const temp_dis = this.disease
+    const temp_dis = this.disease;
+
+    let number0 = 0;
+    let number1 = 0;
+    let number2 = 0;
+    let number3 = 0;
+
     this.plavscom_table = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
         return {
@@ -774,6 +826,33 @@ export class DrugtargetComponent implements OnInit {
         };
       }
     );
+
+    for(let i in this.plavscom_table){
+       number0 += parseFloat(this.plavscom_table[i].weight);
+    }
+    this.pla_com_score = number0.toFixed(4);
+    console.log(this.pla_com_score);
+
+    for(let i in this.comvscom_table){
+    number1 += parseFloat(this.comvscom_table[i].weight);
+    }
+    this.com_com_score = number1.toFixed(4);
+    console.log(this.com_com_score);
+
+    for(let i in this.comvspro_table){
+      number2 += parseFloat(this.comvspro_table[i].weight);
+    }
+    this.com_pro_score = number2.toFixed(4);
+    console.log(this.com_pro_score);
+
+    for(let i in this.provsdis_table){
+      number3 += parseFloat(this.provsdis_table[i].weight);
+    }
+    this.pro_dis_score = number3.toFixed(4);
+
+    this.totalScore = (number0 + number1 + number2 + number3).toFixed(4);
+    console.log(this.pro_dis_score);
+
     this.showload = false;
     this.showresult = true;
   }
