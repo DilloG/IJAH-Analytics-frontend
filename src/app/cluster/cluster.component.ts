@@ -177,14 +177,14 @@ export class ClusterComponent implements OnInit {
     };
     this.http.get<any>("http://api.vidner.engineer/efficacy", httpOptions).toPromise().then(data => {
       this.efficacy = data.data;
-      console.log(this.efficacy);
+      //console.log(this.efficacy);
       if (this.efficacy) {
 
         this.compound_group = Object.keys(this.efficacy.group).map(
           function(key: string) {
             return key;
           });
-        console.log(this.compound_group);
+        //console.log(this.compound_group);
 
         this.getAnalgesic();
         this.getAntiinflamatory();
@@ -193,7 +193,7 @@ export class ClusterComponent implements OnInit {
         this.showloadfirst = false;
       }
     });
-    // console.log(this.compound_arr);
+    // //console.log(this.compound_arr);
   }
   getAntiinflamatory() {
     var temp_compound = this.compound;
@@ -213,7 +213,7 @@ export class ClusterComponent implements OnInit {
         return text;
       }
     );
-    console.log(this.compound_Infl);
+    //console.log(this.compound_Infl);
   }
   getAntibacterial() {
     var temp_compound = this.compound;
@@ -233,7 +233,7 @@ export class ClusterComponent implements OnInit {
         return text;
       }
     );
-    console.log(this.compound_Bact);
+    //console.log(this.compound_Bact);
   }
   getAnalgesic() {
     var temp_compound = this.compound;
@@ -253,7 +253,7 @@ export class ClusterComponent implements OnInit {
         return text;
       }
     );
-    console.log(this.compound_Anal);
+    //console.log(this.compound_Anal);
   }
 
   // get meta data
@@ -268,7 +268,7 @@ export class ClusterComponent implements OnInit {
     };
     this.http.get<any>("http://api.vidner.engineer/plant", httpOptions).toPromise().then(data => {
       this.plant_new = data.data;
-      console.log(this.plant_new);
+      //console.log(this.plant_new);
       if (this.plant_new) {
       }
     });
@@ -285,7 +285,7 @@ export class ClusterComponent implements OnInit {
     };
     this.http.get<any>("http://api.vidner.engineer/compound", httpOptions).toPromise().then(data => {
       this.compound = data.data;
-      console.log(this.compound["COM00021005"].npub);
+      //console.log(this.compound["COM00021005"].npub);
       if (this.compound) {
         this.getEfficacy();
       }
@@ -303,7 +303,7 @@ export class ClusterComponent implements OnInit {
     };
     this.http.get<any>("http://api.vidner.engineer/disease", httpOptions).toPromise().then(data => {
       this.disease = data.data;
-      console.log(this.disease);
+      //console.log(this.disease);
       if (this.disease) {
 
       }
@@ -321,7 +321,7 @@ export class ClusterComponent implements OnInit {
     };
     this.http.get<any>("http://api.vidner.engineer/protein", httpOptions).toPromise().then(data => {
       this.protein = data.data;
-      console.log(this.protein);
+      //console.log(this.protein);
       if (this.protein) {
 
       }
@@ -374,20 +374,36 @@ export class ClusterComponent implements OnInit {
         target: this.modelTarget.substring(this.modelTarget.length - 11)
       }
   );
-    console.log(postmsgcluster);
+    //console.log(postmsgcluster);
     this.http.post<any>("http://api.vidner.engineer/graph_from_compound", postmsgcluster, httpOptions).toPromise().then(data => {
       this.result = data.data;
-      console.log(this.result);
+      //console.log(this.result);
       if (this.result) {
-        console.log(this.result);
+        //console.log(this.result);
         // mapping
+        // this.filter();
         this.getSankey();
         this.getConnectivityTable();
         this.getMetaTable();
       }
     });
   }
-
+  // 
+  // filter(){
+  //   const fil = 0.5;
+  //   const temp_resultcomsim = Object.values(this.result.compound_similarity).map(
+  //     function(values: any) {
+  //       if(values[2] > fil){
+  //         return [
+  //           values[1] +" | "+ temp_com[values[1]].npub.substr(0, 10)+"..",
+  //           values[0] +" | "+ temp_com[values[0]].npub.substr(0, 10)+"..",
+  //           values[2]
+  //         ];
+  //       }
+  //     }
+  //   );
+  //   console.log(temp_resultcomsim);
+  // }
 
   private sankeyData: any;
   plaMeta_table:any;
@@ -408,7 +424,7 @@ export class ClusterComponent implements OnInit {
     this.sankeyData.push(["COM", "COM ", 0.0000000000000001]);
     this.sankeyData.push(["COM ", "PRO", 0.0000000000000001]);
     this.sankeyData.push(["PRO", "DIS", 0.0000000000000001]);
-    console.log(this.sankeyData);
+    ////console.log(this.sankeyData);
 
     this.len = this.sankeyData.length;
     if ((this.len / 2) * 30 > 4000) {
@@ -461,7 +477,7 @@ export class ClusterComponent implements OnInit {
     const temp_pro = this.protein;
     const temp_dis = this.disease;
 
-    console.log(this.result.plant_vs_compound[0]);
+    ////console.log(this.result.plant_vs_compound[0]);
     const plavscom = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
         return [
@@ -471,7 +487,7 @@ export class ClusterComponent implements OnInit {
        ];
       }
     );
-    console.log(plavscom);
+    ////console.log(plavscom);
     const comvscom = Object.values(this.result.compound_similarity).map(
       function(values: any) {
         return [
@@ -481,7 +497,7 @@ export class ClusterComponent implements OnInit {
         ];
       }
     );
-    console.log(comvscom);
+    ////console.log(comvscom);
     const comvspro = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
         return [
@@ -491,7 +507,7 @@ export class ClusterComponent implements OnInit {
         ];
       }
     );
-    console.log(comvspro);
+    ////console.log(comvspro);
     const provsdis = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
         return [
@@ -519,7 +535,7 @@ export class ClusterComponent implements OnInit {
       }
     );
 
-    console.log(provsdis);
+    ////console.log(provsdis);
     this.sankeyData = plavscom.concat(
       comvscom,
       comvspro,
@@ -542,7 +558,7 @@ export class ClusterComponent implements OnInit {
     const temp_placom_unique = temp_placom.filter(function(item, index){
       return temp_placom.indexOf(item) >= index;
     });
-    console.log(temp_placom_unique);
+    //console.log(temp_placom_unique);
     this.plaMeta_table = temp_placom_unique.map(
       function(key) {
         return{
@@ -561,7 +577,7 @@ export class ClusterComponent implements OnInit {
       return values[1];
     });
     const temp_mix_com = temp_compro_1.concat(temp_placom_1);
-    console.log(temp_mix_com);
+    //console.log(temp_mix_com);
     const temp_com_unique = temp_mix_com.filter(function(item, index){
       return temp_mix_com.indexOf(item) >= index;
     });
@@ -583,7 +599,7 @@ export class ClusterComponent implements OnInit {
     const temp_compro_unique = temp_compro.filter(function(item, index){
       return temp_compro.indexOf(item) >= index;
     });
-    console.log(temp_compro_unique);
+    //console.log(temp_compro_unique);
     this.proMeta_table = temp_compro_unique.map(
       function(key) {
         return {
@@ -602,7 +618,7 @@ export class ClusterComponent implements OnInit {
     const temp_prodis_unique = temp_prodis.filter(function(item, index){
       return temp_prodis.indexOf(item) >= index;
     });
-    console.log(temp_prodis_unique);
+    //console.log(temp_prodis_unique);
     this.disMeta_table = temp_prodis_unique.map(
       function(key) {
         return{
@@ -683,19 +699,19 @@ export class ClusterComponent implements OnInit {
        number0 += parseFloat(this.plavscom_table[i].weight);
     }
     this.pla_com_score = number0.toFixed(4);
-    console.log(this.pla_com_score);
+    //console.log(this.pla_com_score);
 
     for(let i in this.comvscom_table){
     number1 += parseFloat(this.comvscom_table[i].weight);
     }
     this.com_com_score = number1.toFixed(4);
-    console.log(this.com_com_score);
+    //console.log(this.com_com_score);
 
     for(let i in this.comvspro_table){
       number2 += parseFloat(this.comvspro_table[i].weight);
     }
     this.com_pro_score = number2.toFixed(4);
-    console.log(this.com_pro_score);
+    //console.log(this.com_pro_score);
 
     for(let i in this.provsdis_table){
       number3 += parseFloat(this.provsdis_table[i].weight);
@@ -703,7 +719,7 @@ export class ClusterComponent implements OnInit {
     this.pro_dis_score = number3.toFixed(4);
 
     this.totalScore = (number0 + number1 + number2 + number3).toFixed(4);
-    console.log(this.pro_dis_score);
+    //console.log(this.pro_dis_score);
 
     this.showload = false;
     this.showresult = true;
@@ -713,21 +729,21 @@ export class ClusterComponent implements OnInit {
   selectedEfficacy(item) {
     this.modelActivity = "";
     this.clickedEfficacy = item.item;
-    console.log(this.efficacy.group[this.clickedEfficacy]);
+    //console.log(this.efficacy.group[this.clickedEfficacy]);
 
     // jalanin fungsi
     this.compound_subgroup = Object.keys(this.efficacy.group[this.clickedEfficacy]).map(
       function(key: string) {
         return key;
       });
-    console.log(this.compound_subgroup);
+    //console.log(this.compound_subgroup);
   }
 
   clickedActivity: any = "";
   selectedActivity(item) {
     this.modelTarget = "";
     this.clickedActivity = item.item;
-    console.log(this.efficacy.group[this.clickedEfficacy][this.clickedActivity]);
+    //console.log(this.efficacy.group[this.clickedEfficacy][this.clickedActivity]);
 
     var temp_Activity = this.efficacy.group[this.clickedEfficacy][this.clickedActivity];
     var temp_compound = this.compound;
@@ -746,7 +762,7 @@ export class ClusterComponent implements OnInit {
         text += values;
         return text;
       });
-    console.log(this.compound_target);
+    //console.log(this.compound_target);
 
   }
 
