@@ -134,7 +134,7 @@
     <div class="ctitle">
       <div class="ctitle-box">
         <h1>Drug-Target Result</h1>
-        <p>The result based your input with minimum connectivity score {{filtermodel}}</p>
+        <p>The result based your input <span [style.display]="showfilter > 0 ? 'inline' : 'none'" >with minimum compound similarity weight <b>{{showfilter}}</b></span></p>
       </div>
       <button type="button" (click)="openfilter()">Filter <i class="fa fa-filter"></i></button>
     </div>
@@ -420,7 +420,7 @@
         <input type="range" [(ngModel)]="filtermodel" min="0.00" max="1.00" value="0" step="0.0001" class="slider" id="myRange">
       </div>
       <p>
-        Minimum Connectivity weight :<br />
+        Minimum Compound Similarity Weight :<br />
         <span>{{filtermodel}}</span>
       </p>
       <div class="btn_div_modal">

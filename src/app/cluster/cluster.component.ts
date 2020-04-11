@@ -335,7 +335,9 @@ export class ClusterComponent implements OnInit {
   public showresult = false;
   showloadfirst: boolean = true;
   async predict() {
+    this.showresult = false;
     this.showload = true;
+    this.filtermodel = 0.0;
     this.getResultMeta();
   }
 
@@ -381,29 +383,102 @@ export class ClusterComponent implements OnInit {
       if (this.result) {
         //console.log(this.result);
         // mapping
-        // this.filter();
+        if(this.filtermodel > 0.001){
+          this.filter();
+        }
+        this.showfilter = this.filtermodel;
         this.getSankey();
         this.getConnectivityTable();
         this.getMetaTable();
       }
     });
   }
-  // 
-  // filter(){
-  //   const fil = 0.5;
-  //   const temp_resultcomsim = Object.values(this.result.compound_similarity).map(
-  //     function(values: any) {
-  //       if(values[2] > fil){
-  //         return [
-  //           values[1] +" | "+ temp_com[values[1]].npub.substr(0, 10)+"..",
-  //           values[0] +" | "+ temp_com[values[0]].npub.substr(0, 10)+"..",
-  //           values[2]
-  //         ];
-  //       }
-  //     }
-  //   );
-  //   console.log(temp_resultcomsim);
-  // }
+  //
+  filtermodel:any = 0.0;
+  showmodals:boolean = false;
+
+  showfilter:any;
+
+  filter(){
+
+    const fil = this.filtermodel;
+    const temp1 = Object.values(this.result.compound_similarity).filter(
+      function(values: any) {
+        return values[2] > fil;
+      }
+    );
+
+    const temp_res_comcom = Object.values(temp1).map(
+      function(values: any) {
+        return values[0];
+      }
+    );
+    const temp_res_comcom2 = Object.values(temp1).map(
+      function(values: any) {
+        return values[1];
+      }
+    );
+    const temp_res_wait = Object.values(this.result.plant_vs_compound).map(
+      function(values: any) {
+        return values[1];
+      }
+    );
+    const temp_res_wait2 = Object.values(this.result.compound_vs_protein).map(
+      function(values: any) {
+        return values[0];
+      }
+    );
+
+    const temp_res_comcom_mix = temp_res_comcom.concat(temp_res_comcom2);
+
+    const temp2 = Object.values(this.result.plant_vs_compound).filter(
+      function(values:any){
+        return temp_res_comcom_mix.includes(values[1]);
+      }
+    );
+    const temp3 = Object.values(this.result.compound_vs_protein).filter(
+      function(values:any){
+        return temp_res_comcom_mix.includes(values[0]);
+      }
+    );
+
+    const temp_res_compro = Object.values(temp3).map(
+      function(values: any) {
+        return values[1];
+      }
+    );
+
+    const temp4 = Object.values(this.result.protein_vs_disease).filter(
+      function(values:any){
+        return temp_res_compro.includes(values[0]);
+      }
+    );
+    console.log(temp3);
+    console.log(temp4);
+    console.log(temp2);
+    console.log(temp1);
+    console.log(temp_res_comcom);
+    console.log(temp_res_comcom2);
+    console.log(temp_res_compro);
+    console.log(this.result.compound_vs_protein);
+
+    this.result.compound_similarity = temp1;
+    this.result.plant_vs_compound = temp2;
+    this.result.compound_vs_protein = temp3;
+    this.result.protein_vs_disease = temp4;
+  }
+
+  filtercallback(){
+    this.openfilter();
+    this.showresult = false;
+    this.showload = true;
+    this.getResultMeta();
+  }
+
+  openfilter(){
+    this.showmodals = !this.showmodals;
+  }
+
 
   private sankeyData: any;
   plaMeta_table:any;

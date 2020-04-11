@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'cluster', component: ClusterComponent, pathMatch: 'full' },
   { path: 'drugtarget', component: DrugtargetComponent, pathMatch: 'full' },
   { path: 'contactus', component: ContactusComponent, pathMatch: 'full' },
-  { path: 'comsimilar', component: ComsimilarComponent, pathMatch: 'full' },
+  { path: 'contribute', component: ComsimilarComponent, pathMatch: 'full' },
   { path: 'docs', component: DocsComponent, pathMatch: 'full' }
 ];
 

@@ -209,7 +209,7 @@ export class DrugtargetComponent implements OnInit {
         const nilai = this.plant_new;
         this.plant_new_arr = Object.keys(this.plant_new).map(
           function(key) {
-            return key + " | " + nilai[key].nlat;
+            return nilai[key].nlat + " | " + key;
           });
         console.log(this.plant_new_arr);
         var t3 = performance.now();
@@ -239,7 +239,7 @@ export class DrugtargetComponent implements OnInit {
           }
         ).map(
           function(key) {
-            return key + " | " + nilai[key].npub + " | " + nilai[key].npac;
+            return nilai[key].npub + " | " + nilai[key].npac + " | " + key;
           });
         console.log(this.compound_arr);
         var t3 = performance.now();
@@ -264,7 +264,7 @@ export class DrugtargetComponent implements OnInit {
         var nilai = this.disease;
         this.disease_arr = Object.keys(this.disease).map(
           function(key) {
-            return key + " | " + nilai[key].oid + " | " + nilai[key].name + " | " + nilai[key].uab;
+            return nilai[key].oid + " | " + nilai[key].name + " | " + nilai[key].uab + " | " + key;
           });
         console.log(this.disease_arr);
       }
@@ -286,7 +286,7 @@ export class DrugtargetComponent implements OnInit {
         var nilai = this.protein;
         this.protein_arr = Object.keys(this.protein).map(
           function(key) {
-            return key + " | " + nilai[key].name + " | " + nilai[key].uid + " | " + nilai[key].uab;
+            return nilai[key].name + " | " + nilai[key].uid + " | " + nilai[key].uab + " | " + key;
           });
         console.log(this.protein_arr);
       }
@@ -378,13 +378,13 @@ export class DrugtargetComponent implements OnInit {
     if (this.dsInput == true) {
       if (this.pla_input_btn == true) {
         for (let i in this.plantFor) {
-          this.drug_side.push(this.plantFor[i].name.substring(0, 11));
+          this.drug_side.push(this.plantFor[i].name.substring(this.plantFor[i].name.length - 11));
         }
         this.sendmsgjson = {plant: this.drug_side};
       }
       else {
         for (let i in this.compoundFor) {
-          this.drug_side.push(this.compoundFor[i].name.substring(0, 11));
+          this.drug_side.push(this.compoundFor[i].name.substring(this.compoundFor[i].name.length - 11));
         }
         this.sendmsgjson = {compound: this.drug_side};
       }
@@ -394,13 +394,13 @@ export class DrugtargetComponent implements OnInit {
     if (this.tsInput == true) {
       if (this.pro_input_btn == true) {
         for (let i in this.proteinFor) {
-          this.target_side.push(this.proteinFor[i].name.substring(0, 11));
+          this.target_side.push(this.proteinFor[i].name.substring(this.proteinFor[i].name.length - 11));
         }
         this.sendmsgjson = {protein: this.target_side};
       }
       else {
         for (let i in this.diseaseFor) {
-          this.target_side.push(this.diseaseFor[i].name.substring(0, 11));
+          this.target_side.push(this.diseaseFor[i].name.substring(this.diseaseFor[i].name.length - 11));
         }
         this.sendmsgjson = {disease: this.target_side};
       }
@@ -411,25 +411,25 @@ export class DrugtargetComponent implements OnInit {
       let helper_target;
       if (this.pla_input_btn == true) {
         for (let i in this.plantFor) {
-          this.drug_side.push(this.plantFor[i].name.substring(0, 11));
+          this.drug_side.push(this.plantFor[i].name.substring(this.plantFor[i].name.length - 11));
         }
         helper_drug = {plant: this.drug_side};
       }
       else {
         for (let i in this.compoundFor) {
-          this.drug_side.push(this.compoundFor[i].name.substring(0, 11));
+          this.drug_side.push(this.compoundFor[i].name.substring(this.compoundFor[i].name.length - 11));
         }
         helper_drug = {compound: this.drug_side};
       }
       if (this.pro_input_btn == true) {
         for (let i in this.proteinFor) {
-          this.target_side.push(this.proteinFor[i].name.substring(0, 11));
+          this.target_side.push(this.proteinFor[i].name.substring(this.proteinFor[i].name.length - 11));
         }
         helper_target = {protein: this.target_side};
       }
       else {
         for (let i in this.diseaseFor) {
-          this.target_side.push(this.diseaseFor[i].name.substring(0, 11));
+          this.target_side.push(this.diseaseFor[i].name.substring(this.diseaseFor[i].name.length - 11));
         }
         helper_target = {disease: this.target_side};
       }
@@ -453,7 +453,10 @@ export class DrugtargetComponent implements OnInit {
       if (this.result){
         console.log(this.result);
 
-        this.filter();
+        if(this.filtermodel > 0.001){
+          this.filter();
+        }
+        this.showfilter = this.filtermodel;
         this.getSankey();
         this.getConnectivityTable();
         this.getMetaTable();
@@ -464,7 +467,7 @@ export class DrugtargetComponent implements OnInit {
   // end of get result
   filtermodel:any = 0.0;
   showmodals:boolean = false;
-
+  showfilter:any;
   filter(){
 
     const fil = this.filtermodel;
@@ -706,10 +709,13 @@ export class DrugtargetComponent implements OnInit {
     console.log(this.result.plant_vs_compound[0]);
     const plavscom = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
-        // const pla_side = values[0] +" | "+ temp_pla[values[0]].nlat;
+        let pla_side;
+        if(temp_com[values[1]].npub != null){
+          pla_side = temp_com[values[1]].npub.substr(0, 10)+".."
+        }
         return [
           values[0] +" | "+ temp_pla[values[0]].nlat.substr(0, 10)+"..",
-          values[1] +" | "+ temp_com[values[1]].npub,
+          values[1] +" | "+ pla_side,
           values[2]
        ];
       }
@@ -717,27 +723,47 @@ export class DrugtargetComponent implements OnInit {
     console.log(plavscom);
     const comvscom = Object.values(this.result.compound_similarity).map(
       function(values: any) {
+        let pla_side;
+        if(temp_com[values[0]].npub != null){
+          pla_side = temp_com[values[0]].npub.substr(0, 10)+".."
+        }
+        let pla_side2;
+        if(temp_com[values[1]].npub != null){
+          pla_side2 = temp_com[values[1]].npub.substr(0, 10)+".."
+        }
         return [
-          values[0] +" | "+ temp_com[values[0]].npub,
-          values[1] +" | "+ temp_com[values[1]].npub,
+          values[0] +" | "+ pla_side,
+          values[1] +" | "+ pla_side2,
           values[2]];
       }
     );
     console.log(comvscom);
     const comvspro = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
+        let pla_side;
+        if(temp_com[values[0]].npub != null){
+          pla_side = temp_com[values[0]].npub.substr(0, 10)+".."
+        }
+        let pro_side;
+        if(temp_pro[values[1]].name != null){
+          pro_side = temp_pro[values[1]].name.substr(0, 10)+".."
+        }
         return [
-          values[0] +" | "+ temp_com[values[0]].npub,
-          values[1] +" | "+ temp_pro[values[1]].name,
+          values[0] +" | "+ pla_side,
+          values[1] +" | "+ pro_side,
           values[2]
         ];
       }
     );
     const provsdis = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
+        let pro_side;
+        if(temp_pro[values[0]].name != null){
+          pro_side = temp_pro[values[0]].name.substr(0, 10)+".."
+        }
         return [
-          values[0] +" | "+ temp_pro[values[0]].name,
-          values[1] +" | "+ temp_dis[values[1]].name,
+          values[0] +" | "+ pro_side,
+          values[1] +" | "+ temp_dis[values[1]].name.substr(0, 10)+"..",
           values[2]];
       }
     );
@@ -745,17 +771,29 @@ export class DrugtargetComponent implements OnInit {
 
     const provsdis2 = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
-        return ["COM ", values[0] +" | "+ temp_pro[values[0]].name, 0.000000000000000001];
+        let pro_side;
+        if(temp_pro[values[0]].name != null){
+          pro_side = temp_pro[values[0]].name.substr(0, 10)+".."
+        }
+        return ["COM ", values[0] +" | "+ pro_side, 0.000000000000000001];
       }
     );
     const comvscom2 = Object.values(this.result.compound_similarity).map(
       function(values: any) {
-        return ["PLA", values[0] +" | "+ temp_com[values[0]].npub, 0.0000000000000000001];
+        let pla_side;
+        if(temp_com[values[0]].npub != null){
+          pla_side = temp_com[values[0]].npub.substr(0, 10)+".."
+        }
+        return ["PLA", values[0] +" | "+ pla_side, 0.0000000000000000001];
       }
     );
     const comvscom3 = Object.values(this.result.compound_similarity).map(
       function(values: any) {
-        return [values[1] +" | "+ temp_com[values[1]].npub, "PRO", 0.0000000000000000001];
+        let pla_side;
+        if(temp_com[values[1]].npub != null){
+          pla_side = temp_com[values[1]].npub.substr(0, 10)+".."
+        }
+        return [values[1] +" | "+ pla_side, "PRO", 0.0000000000000000001];
       }
     );
     console.log(provsdis);
