@@ -40,6 +40,7 @@ header nav ul {
 
 header nav ul li a {
   padding: 1em 1.5em;
+  font-size: 15px !important;
 }
 
 header nav ul li a:hover {
@@ -135,9 +136,98 @@ footer .fr-link ul li a{
 footer .fr-link ul li a:hover{
   color: #19431B;
 }
-/*
-@media only screen and (max-width: 1000px) {
-  footer .container{
-    flex-direction: column;
+
+.hamb{
+  display: none;
+  cursor: pointer;
+}
+.hamb:hover{
+  transform: scale(1.1);
+}
+
+.hambtn{
+  width: 25px;
+  height: 4px;
+  background: #767676;
+  margin: 4px 0;
+}
+
+nav .fa-close{
+  display: none;
+  cursor: pointer;
+}
+nav .fa-close:hover{
+  transform: scale(1.1);
+}
+
+@media only screen and (max-width: 995px) {
+  header nav ul li a {
+    padding: 1em 0.8em !important;
+    font-size: 13px !important;
   }
-} */
+
+  header{
+    padding: 1em 0 !important;
+  }
+}
+
+@media only screen and (max-width: 780px){
+  .container{
+    width: 100% !important;
+    padding: 0 !important;
+  }
+  .hamb{
+    display: inline;
+    margin: 0 10px;
+    margin-left: -20px;
+  }
+
+  nav{
+    display:none;
+    position: fixed;
+    z-index: 10000000;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 40%;
+    height: 100%;
+    background: white;
+  }
+
+  nav .fa-close{
+    display: block;
+    color: #555555;
+    margin-top: 4%;
+    margin-left: 2%;
+    margin-bottom: 20px;
+    font-size: 25px;
+  }
+  header nav ul{
+    display: flex;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start;
+    padding: 0 !important;
+    width: 100%;
+    height: 100%;
+    background: #F4F4F4;
+  }
+  nav li{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
+    height: 30px;
+    padding: 0;
+  }
+
+  nav li a{
+    font-size: 10px !important;
+  }
+
+  .logo{
+      transform: scale(0.8);
+  }
+}

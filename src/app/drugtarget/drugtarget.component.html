@@ -109,7 +109,8 @@
     </div>
   </div>
   <div class="di-button">
-    <button class="reset" (click)="resetinput()">Reset</button>
+    <!-- (click)="resetinput() -->
+    <button class="reset">Reset</button>
     <button type="submit" [ngx-scroll-to]="'#dest'" class="search">Search</button>
   </div>
   </form>
@@ -134,7 +135,7 @@
     <div class="ctitle">
       <div class="ctitle-box">
         <h1>Drug-Target Result</h1>
-        <p>The result based your input <span [style.display]="showfilter > 0 ? 'inline' : 'none'" >with minimum compound similarity weight <b>{{showfilter}}</b></span></p>
+        <p>The result based your input <span [style.display]="showfilter > 0 ? 'inline' : 'none'" >with compound similarity min weight <b>{{showfilter}}</b>, max weight <b>{{showfiltermax}}</b></span></p>
       </div>
       <button type="button" (click)="openfilter()">Filter <i class="fa fa-filter"></i></button>
     </div>
@@ -152,10 +153,10 @@
                   <h6 class="score" [style.color]="'#2ECC43'">{{pla_com_score}}</h6>
                   <h6 class="scoreName">Plant-Compound Connectivity Score</h6>
                 </div>
-                <div>
+                <!-- <div>
                   <h6 class="score" [style.color]="'#94AE27'">{{com_com_score}}</h6>
                   <h6 class="scoreName">Compound-Compound Similarity Score</h6>
-                </div>
+                </div> -->
                 <div>
                   <h6 class="score" [style.color]="'#94AE27'">{{com_pro_score}}</h6>
                   <h6 class="scoreName">Compound-Protein Connectivity Score</h6>
@@ -200,12 +201,14 @@
           <div class="legendgraph">
             <p>Plant</p>
             <p>Compound</p>
-            <p>Compound</p>
             <p>Protein</p>
             <p>Disease</p>
           </div>
           <div #screen class="chartnya">
-            <google-chart *ngIf="showChart" #chart [title]="title" [type]="type" [data]="sankeyData" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
+            <google-chart *ngIf="showChart"
+            #chart [title]="title"
+            [type]="type"
+            [data]="temp_sankey" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
             </google-chart>
           </div>
         </ng-template>
@@ -214,7 +217,7 @@
         <ng-template ngbTabContent>
           <div class="ct_button">
             <button [style.background]="pla_com_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="pla_com_btn ? '#ffffff' : '#000000'" (click)="pla_com_on()">Plant - Compound</button>
-            <button [style.background]="com_com_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="com_com_btn ? '#ffffff' : '#000000'" (click)="com_com_on()">Compound Similarity</button>
+            <!-- <button [style.background]="com_com_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="com_com_btn ? '#ffffff' : '#000000'" (click)="com_com_on()">Compound Similarity</button> -->
             <button [style.background]="com_pro_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="com_pro_btn ? '#ffffff' : '#000000'" (click)="com_pro_on()">Compound - Protein</button>
             <button [style.background]="pro_dis_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="pro_dis_btn ? '#ffffff' : '#000000'" (click)="pro_dis_on()">Protein - Disease</button>
           </div>
@@ -244,32 +247,32 @@
               </tbody>
             </table>
           </div>
-          <div class="ct_table" *ngIf="com_com_btn">
+          <!-- <div class="ct_table" *ngIf="com_com_btn">
             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="comvscom_table" class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound Id</th>
                   <th>Compound Name</th>
-                  <!-- <th>Compound IUPAC</th> -->
+                  <th>Compound IUPAC</th>
                   <th>Connectivity Weight</th>
                   <th>Compound Id</th>
                   <th>Compound Name</th>
-                  <!-- <th>Compound IUPAC</th> -->
+                  <th>Compound IUPAC</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let compro_con_table of comvscom_table">
                   <td>{{compro_con_table.com_id}}</td>
                   <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{compro_con_table.com_npub}}" target="_blank">{{compro_con_table.com_npub}}</a></td>
-                  <!-- <td>{{compro_con_table.com_npac}}</td> -->
+                  <td>{{compro_con_table.com_npac}}</td>
                   <td [style.width]="'40px'" [style.background]="'#8cff92'">{{compro_con_table.weight}}</td>
                   <td>{{compro_con_table.com_id2}}</td>
                   <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{compro_con_table.com_npub2}}" target="_blank">{{compro_con_table.com_npub2}}</a></td>
-                    <!-- <td>{{compro_con_table.pro_uab}}</td> -->
+                    <td>{{compro_con_table.pro_uab}}</td>
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
           <div class="ct_table" *ngIf="com_pro_btn">
             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="comvspro_table" class="row-border hover">
               <thead>
@@ -416,13 +419,25 @@
     <div class="c-containers">
       <i class="fa fa-close" [style.color]="black" (click)="openfilter()"></i>
       <h1>Filter Output</h1>
-      <div class="slidecontainer">
+      <!-- <div class="slidecontainer">
         <input type="range" [(ngModel)]="filtermodel" min="0.00" max="1.00" value="0" step="0.0001" class="slider" id="myRange">
+      </div> -->
+      <p class="information">Minimum input 0 and maximum input 1, <b>minimum input cannot bigger than maximum input</b></p>
+      <div class="inputcontainer">
+        <div class="inner-input-container">
+          <p>Minimum :</p>
+          <input type="text" [(ngModel)]="filtermodel" value="0.0"/>
+        </div>
+
+        <div class="inner-input-container">
+          <p>Maximum :</p>
+          <input type="text" [(ngModel)]="filtermodelMax" value="1.0"/>
+        </div>
       </div>
-      <p>
+      <!-- <p>
         Minimum Compound Similarity Weight :<br />
         <span>{{filtermodel}}</span>
-      </p>
+      </p> -->
       <div class="btn_div_modal">
         <button type="button" (click)="filtercallback()">Apply</button>
       </div>

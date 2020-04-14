@@ -360,6 +360,7 @@ export class ClusterComponent implements OnInit {
   }
 
   // get Result
+  showfiltermax:any;
   result: any;
   result_arr: any = [];
   getResultMeta() {
@@ -381,12 +382,12 @@ export class ClusterComponent implements OnInit {
       this.result = data.data;
       //console.log(this.result);
       if (this.result) {
-        //console.log(this.result);
-        // mapping
-        if(this.filtermodel > 0.001){
+        if(this.filtermodel > 0.000001 || this.filtermodelMax < 0.9999999){
           this.filter();
         }
         this.showfilter = this.filtermodel;
+        this.showfiltermax = this.filtermodelMax;
+
         this.getSankey();
         this.getConnectivityTable();
         this.getMetaTable();
@@ -396,15 +397,17 @@ export class ClusterComponent implements OnInit {
   //
   filtermodel:any = 0.0;
   showmodals:boolean = false;
-
+  filtermodelMax:any = 1.0;
   showfilter:any;
 
   filter(){
 
     const fil = this.filtermodel;
+    const filmax = this.filtermodelMax;
+    console.log(filmax);
     const temp1 = Object.values(this.result.compound_similarity).filter(
       function(values: any) {
-        return values[2] > fil;
+        return values[2] >= fil && values[2] <= filmax;
       }
     );
 
@@ -470,9 +473,17 @@ export class ClusterComponent implements OnInit {
 
   filtercallback(){
     this.openfilter();
-    this.showresult = false;
-    this.showload = true;
-    this.getResultMeta();
+    const scores = this.filtermodelMax - this.filtermodel;
+    const film = parseFloat(this.filtermodel);
+    const filmax = parseFloat(this.filtermodelMax);
+    console.log(this.filtermodel, this.filtermodelMax);
+    if(scores >= 0 && film >= 0 && film <= 1 && filmax >= 0 && filmax <= 1){
+      this.showresult = false;
+      this.showload = true;
+      this.getResultMeta();
+    }else{
+      alert("Your Minimum Value bigger than Maximum Value OR Your Value bigger than 1 / smaller than 0");
+    }
   }
 
   openfilter(){

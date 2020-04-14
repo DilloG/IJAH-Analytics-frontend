@@ -1,8 +1,9 @@
 <header>
   <div class="container">
     <a routerLink="/" class="logo"><img src="assets/img/logo.png" class="img-responsive"></a>
-    <nav>
+    <nav [style.display]="showmenu ? 'inline' : 'none'">
       <ul>
+        <i class="fa fa-close" (click)="showside()"></i>
         <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
           <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown3" role="button">
             Search and Predict
@@ -17,6 +18,11 @@
         <li><a href="#" routerLink="/docs">About Us</a></li>
       </ul>
     </nav>
+    <div class="hamb" (click)="showside()">
+      <div class="hambtn"></div>
+      <div class="hambtn"></div>
+      <div class="hambtn"></div>
+    </div>
   </div>
 </header>
 
