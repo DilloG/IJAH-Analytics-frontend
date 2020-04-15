@@ -135,7 +135,7 @@
     <div class="ctitle">
       <div class="ctitle-box">
         <h1>Drug-Target Result</h1>
-        <p>The result based your input <span [style.display]="showfilter > 0 ? 'inline' : 'none'" >with compound similarity min weight <b>{{showfilter}}</b>, max weight <b>{{showfiltermax}}</b></span></p>
+        <p>The result based your input <span [style.display]="showfilter > 0 ? 'inline' : 'none'" >with compound-protein min weight <b>{{showfilter}}</b>, max weight <b>{{showfiltermax}}</b></span></p>
       </div>
       <button type="button" (click)="openfilter()">Filter <i class="fa fa-filter"></i></button>
     </div>
@@ -208,7 +208,11 @@
             <google-chart *ngIf="showChart"
             #chart [title]="title"
             [type]="type"
-            [data]="temp_sankey" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
+            [data]="temp_sankey"
+            [columnNames]="columnNames"
+            [options]="options"
+            [width]="width"
+            [height]="height">
             </google-chart>
           </div>
         </ng-template>
