@@ -465,13 +465,16 @@ export class DrugtargetComponent implements OnInit {
 
     const fil = this.filtermodel;
     const filmax = this.filtermodelMax;
-    console.log(filmax);
+
+    // find protein compound with similarity one
+    // fltering the compound similarity
     const temp1 = Object.values(this.result.compound_similarity).filter(
       function(values: any) {
         return values[2] >= fil && values[2] <= filmax;
       }
     );
 
+    // split compound values and mix in one array
     const temp_res_comcom = Object.values(temp1).map(
       function(values: any) {
         return values[0];
@@ -482,19 +485,9 @@ export class DrugtargetComponent implements OnInit {
         return values[1];
       }
     );
-    const temp_res_wait = Object.values(this.result.plant_vs_compound).map(
-      function(values: any) {
-        return values[1];
-      }
-    );
-    const temp_res_wait2 = Object.values(this.result.compound_vs_protein).map(
-      function(values: any) {
-        return values[0];
-      }
-    );
-
     const temp_res_comcom_mix = temp_res_comcom.concat(temp_res_comcom2);
 
+    // filtering the plant-compound and compound-protein base on temp1
     const temp2 = Object.values(this.result.plant_vs_compound).filter(
       function(values: any) {
         return temp_res_comcom_mix.includes(values[1]);
@@ -506,25 +499,17 @@ export class DrugtargetComponent implements OnInit {
       }
     );
 
+    // filtering the link to protein
     const temp_res_compro = Object.values(temp3).map(
       function(values: any) {
         return values[1];
       }
     );
-
     const temp4 = Object.values(this.result.protein_vs_disease).filter(
       function(values: any) {
         return temp_res_compro.includes(values[0]);
       }
     );
-    console.log(temp3);
-    console.log(temp4);
-    console.log(temp2);
-    console.log(temp1);
-    console.log(temp_res_comcom);
-    console.log(temp_res_comcom2);
-    console.log(temp_res_compro);
-    console.log(this.result.compound_vs_protein);
 
     this.result.compound_similarity = temp1;
     this.result.plant_vs_compound = temp2;
@@ -650,10 +635,10 @@ export class DrugtargetComponent implements OnInit {
 
     // sankey graph height
     this.len = this.sankeyData.length;
-    if ((this.len / 2) * 30 > 4000) {
+    if ((this.len / 3) * 30 > 4000) {
       this.len = 4000;
     } else {
-      this.len = (this.len / 2) * 30;
+      this.len = (this.len / 3) * 30;
     }
 
     // sankey diagram options
@@ -674,7 +659,9 @@ export class DrugtargetComponent implements OnInit {
       '#030ffc', '#a903fc', '#e7fc03', '#33a02c', '#4afc03', '#030ffc',
       '#fc036f', '#80fc03', '#03fcad', '#fcba03', '#fc0303', '#030ffc'];
     this.options = {
-      tooltip: {isHtml: true},
+      tooltip: {
+        isHtml: true
+      },
       sankey: {
         node: {
           colors: colors,
@@ -710,36 +697,93 @@ export class DrugtargetComponent implements OnInit {
     // ini untuk menggabungkan hasil
     this.comtopro = this.plavscomtopro.concat(this.comvscomtopro);
 
+    //filter to remove lost connection
+    const temp_ = Object.values(this.comtopro).map(
+      function(values: any) {
+        return values[0];
+      }
+    );
+    const temp2 = Object.values(this.result.plant_vs_compound).filter(
+      function(values: any) {
+        return temp_.includes(values[1]);
+      }
+    );
+
+    this.result.plant_vs_compound = temp2;
+
     //mapping hasil ke dalam format data sankey graf
     const plavscom = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
         let com_side;
         if (temp_com[values[1]].npub != null) {
-          com_side = temp_com[values[1]].npub.substr(0, 10) + ".."
+          com_side = temp_com[values[1]].npub;
+        }else if(temp_com[values[1]].ccid != null){
+          com_side = temp_com[values[1]].ccid;
+        }else if(temp_com[values[1]].pbid != null){
+          com_side = temp_com[values[1]].pbid;
+        }else{
+          com_side = "null";
         }
         return [
           values[0] +" | "+ temp_pla[values[0]].nlat.substr(0, 10)+"..",
-          values[1] +" | "+ com_side,
+          values[1] +" | "+ com_side.substr(0, 10) + "..",
           values[2],
-          "Test"
+          values[0] +" | "+ temp_pla[values[0]].nlat +" -> "+
+          values[1] +" | "+ com_side +"<br>Weight :"+
+          values[2]
         ];
       }
     );
     const comvspro = Object.values(this.comtopro).map(
       function(values: any) {
+
+        // compound if
         let com_side;
         if (temp_com[values[0]].npub != null) {
-          com_side = temp_com[values[0]].npub.substr(0, 10) + "..";
+          com_side = temp_com[values[0]].npub;
+        }else if(temp_com[values[0]].ccid != null){
+          com_side = temp_com[values[0]].ccid;
+        }else if(temp_com[values[0]].pbid != null){
+          com_side = temp_com[values[0]].pbid;
+        }else{
+          com_side = "null";
         }
+
+        // protein if
         let pro_side;
         if (temp_pro[values[1]].name != null) {
-          pro_side = temp_pro[values[1]].name.substr(0, 10) + "..";
+          pro_side = temp_pro[values[1]].name;
+        }else{
+          pro_side = "null";
         }
+
+        // values if
+        let scoreval;
+        if(values[2]<1){
+          scoreval = "Compound similarity with"
+        }else{
+          scoreval = "Actual Value"
+        }
+
+        // com similarity source
+        let sim_side;
+        if (temp_com[values[3]].npub != null) {
+          sim_side = temp_com[values[3]].npub;
+        }else if(temp_com[values[3]].ccid != null){
+          sim_side = temp_com[values[3]].ccid;
+        }else if(temp_com[values[3]].pbid != null){
+          sim_side = temp_com[values[3]].pbid;
+        }else{
+          sim_side = "null";
+        }
+
         return [
-          values[0] + " | " + com_side,
-          values[1] + " | " + pro_side,
+          values[0] + " | " + com_side.substr(0, 10) + "..",
+          values[1] + " | " + pro_side.substr(0, 10) + "..",
           values[2],
-          "The value from similarity"
+          values[0] + " | " + com_side +" -> "+
+          values[1] + " | " + pro_side +"<br>Weight :"+
+          values[2] + " *" + scoreval +" "+ values[3] + " | " + sim_side
         ];
       }
     );
@@ -747,13 +791,15 @@ export class DrugtargetComponent implements OnInit {
       function(values: any) {
         let pro_side;
         if (temp_pro[values[0]].name != null) {
-          pro_side = temp_pro[values[0]].name.substr(0, 10) + ".."
+          pro_side = temp_pro[values[0]].name;
         }
         return [
-          values[0] +" | "+ pro_side,
+          values[0] +" | "+ pro_side.substr(0, 10) + "..",
           values[1] +" | "+ temp_dis[values[1]].name.substr(0, 10)+"..",
           values[2],
-          "Test"
+          values[0] +" | "+ pro_side +" -> "+
+          values[1] +" | "+ temp_dis[values[1]].name +"<br>Weight :"+
+          values[2]
         ];
       }
     );
@@ -762,28 +808,60 @@ export class DrugtargetComponent implements OnInit {
     const void_placom = Object.values(this.comtopro).map(
       function(values: any) {
         let com_side;
-        if(temp_com[values[0]].npub != null){
-          com_side = temp_com[values[0]].npub.substr(0, 10)+".."
+        if (temp_com[values[0]].npub != null) {
+          com_side = temp_com[values[0]].npub;
+        }else if(temp_com[values[0]].ccid != null){
+          com_side = temp_com[values[0]].ccid;
+        }else if(temp_com[values[0]].pbid != null){
+          com_side = temp_com[values[0]].pbid;
+        }else{
+          com_side = "null";
         }
         return [
           "PLA",
-          values[0] + " | " + com_side,
+          values[0] + " | " + com_side.substr(0, 10) + "..",
           0.0000000000000000001,
-          "Test"
+          "null"
         ];
       }
     );
     const void_compro = Object.values(this.comtopro).map(
       function(values: any) {
         let com_side;
-        if(temp_com[values[0]].npub != null){
-          com_side = temp_com[values[0]].npub.substr(0, 10)+".."
+        if (temp_com[values[0]].npub != null) {
+          com_side = temp_com[values[0]].npub;
+        }else if(temp_com[values[0]].ccid != null){
+          com_side = temp_com[values[0]].ccid;
+        }else if(temp_com[values[0]].pbid != null){
+          com_side = temp_com[values[0]].pbid;
+        }else{
+          com_side = "null";
         }
         return [
-          values[0] + " | " + com_side,
+          values[0] + " | " + com_side.substr(0, 10) + "..",
           "PRO",
           0.0000000000000000001,
-          "Test"
+          "null"
+        ];
+      }
+    );
+    const void_pla_compro = Object.values(this.result.plant_vs_compound).map(
+      function(values: any) {
+        let com_side;
+        if (temp_com[values[1]].npub != null) {
+          com_side = temp_com[values[1]].npub;
+        }else if(temp_com[values[1]].ccid != null){
+          com_side = temp_com[values[1]].ccid;
+        }else if(temp_com[values[1]].pbid != null){
+          com_side = temp_com[values[1]].pbid;
+        }else{
+          com_side = "null";
+        }
+        return [
+          values[1] + " | " + com_side.substr(0, 10) + "..",
+          "PRO",
+          0.0000000000000000001,
+          "null"
         ];
       }
     );
@@ -793,7 +871,8 @@ export class DrugtargetComponent implements OnInit {
       comvspro,
       provsdis,
       void_placom,
-      void_compro
+      void_compro,
+      void_pla_compro
     );
 
   }
@@ -821,9 +900,9 @@ export class DrugtargetComponent implements OnInit {
     a.forEach((arr1) => {
       b.forEach((arr2) => {
         if (arr2[1] == arr1[0]) {
-          c.push([arr2[0], arr1[1], arr2[2]]);
+          c.push([arr2[0], arr1[1], arr2[2], arr1[0]]);
         } else if (arr2[0] == arr1[0]) {
-          c.push([arr2[1], arr1[1], arr2[2]]);
+          c.push([arr2[1], arr1[1], arr2[2], arr1[0]]);
         }
       });
     });
@@ -841,7 +920,7 @@ export class DrugtargetComponent implements OnInit {
     a.forEach((arr1) => {
       b.forEach((arr2) => {
         if (arr2[0] == arr1[1]) {
-          c.push([arr1[1], arr2[1], arr2[2]]);
+          c.push([arr1[1], arr2[1], arr2[2], arr2[0]]);
         }
       });
     });
@@ -899,7 +978,10 @@ export class DrugtargetComponent implements OnInit {
           com_id: key,
           com_name: temp_com[key].npub,
           com_ccid: temp_com[key].ccid,
-          com_npac: temp_com[key].npac
+          com_npac: temp_com[key].npac,
+          com_ksid: temp_com[key].ksid,
+          com_pbid: temp_com[key].pbid
+
         }
       });
 
@@ -1043,10 +1125,5 @@ export class DrugtargetComponent implements OnInit {
 
 
   //// TEMP:
-  testing = [
-    ["D","A",1,"A"],
-    ["D","B",1,"B"],
-    ["C","B",1,"C"],
-    ["C","A",1,"D"]
-  ];
+
 }
