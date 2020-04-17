@@ -20,25 +20,83 @@
   font-weight: 700;
 }
 
-#upload-input{
-  background: #F6F6F6;
-  padding: 4rem 0;
+#f-input{
+  width: 100%;
+  background-color: #3E4B3E;
 }
 
-.type-title h1{
-  font-size: 25px;
+h5, p, h6{
+  color: white;
 }
 
-.type-title select{
-  width: 50%;
-  padding: 4px 18px;
-  border: solid 1.5px #6AE173;
-  border-radius: 5px;
-  background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right #fff;
-  -webkit-appearance: none;
-  background-position-x: 97%;
+form{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px;
+  /* background: blue; */
 }
 
-.tt-conmet{
-  margin-bottom: 20px;
+.truetype, .subtype-connectivity, .type-connectivity{
+  margin: 20px 0;
+}
+
+.connectivity-data input, .form-contributors input,
+.form-publication input, .metadata-data input{
+  margin-bottom: 5px;
+  border-radius: 50px;
+}
+
+.form-contributors, .form-publication{
+    margin: 20px 0;
+}
+
+.truetype button,
+.subtype-connectivity button,
+.subtype-metadata button{
+  background-color: #3E4B3E;
+  outline: none;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 4px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  border: 2px solid #4CAF50;
+  margin-right: 10px;
+  /* margin-bottom: 20px; */
+}
+
+button:hover{
+  transform: scale(1.05);
+}
+
+.btn_form{
+  width: 100%;
+  position: relative;
+  margin-bottom: 40px;
+}
+.btn_form button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  padding: 6px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+  right: 0;
+  position: absolute;
+}
+
+.metadata-data div{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 0;
 }

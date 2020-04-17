@@ -198,17 +198,16 @@ export class DrugtargetComponent implements OnInit {
     };
     this.http.get<any>("http://api.vidner.engineer/plant", httpOptions).toPromise().then(data => {
       this.plant_new = data.data;
-      console.log(this.plant_new);
       if (this.plant_new) {
-        var t2 = performance.now();
+        // var t2 = performance.now();
         const nilai = this.plant_new;
         this.plant_new_arr = Object.keys(this.plant_new).map(
           function(key) {
             return nilai[key].nlat + " | " + key;
           });
         console.log(this.plant_new_arr);
-        var t3 = performance.now();
-        console.log("Took: " + (t3 - t2) + "msecs");
+        // var t3 = performance.now();
+        // console.log("Took: " + (t3 - t2) + "msecs");
       }
     });
 
@@ -901,8 +900,10 @@ export class DrugtargetComponent implements OnInit {
       b.forEach((arr2) => {
         if (arr2[1] == arr1[0]) {
           c.push([arr2[0], arr1[1], arr2[2], arr1[0]]);
+          c.push([arr1[0], arr1[1], arr1[2], arr1[0]]);
         } else if (arr2[0] == arr1[0]) {
           c.push([arr2[1], arr1[1], arr2[2], arr1[0]]);
+          c.push([arr1[0], arr1[1], arr1[2], arr1[0]]);
         }
       });
     });
@@ -1039,12 +1040,23 @@ export class DrugtargetComponent implements OnInit {
     const temp_platocom = this.removeDuplicate(this.result.plant_vs_compound); //filtering
     this.plavscom_table = Object.values(temp_platocom).map(
       function(values: any) {
+        let com_side;
+        if (temp_com[values[1]].npub != null) {
+          com_side = temp_com[values[1]].npub;
+        }else if(temp_com[values[1]].ccid != null){
+          com_side = temp_com[values[1]].ccid;
+        }else if(temp_com[values[1]].pbid != null){
+          com_side = temp_com[values[1]].pbid;
+        }else{
+          com_side = "null";
+        }
+
         return {
           pla_id: values[0],
           pla_nlat: temp_pla[values[0]].nlat,
           weight: values[2],
           com_id: values[1],
-          com_npub: temp_com[values[1]].npub
+          com_npub: com_side
         };
       }
     ); //mapping
@@ -1053,9 +1065,19 @@ export class DrugtargetComponent implements OnInit {
     const temp_comtopro = this.removeDuplicate(this.comtopro); //filtering
     this.comvspro_table = Object.values(temp_comtopro).map(
       function(values: any) {
+        let com_side;
+        if (temp_com[values[0]].npub != null) {
+          com_side = temp_com[values[0]].npub;
+        }else if(temp_com[values[0]].ccid != null){
+          com_side = temp_com[values[0]].ccid;
+        }else if(temp_com[values[0]].pbid != null){
+          com_side = temp_com[values[0]].pbid;
+        }else{
+          com_side = "null";
+        }
         return {
           com_id: values[0],
-          com_npub: temp_com[values[0]].npub,
+          com_npub: com_side,
           weight: values[2],
           pro_id: values[1],
           pro_name: temp_pro[values[1]].name

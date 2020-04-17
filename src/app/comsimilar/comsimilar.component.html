@@ -4,93 +4,180 @@
   </div>
 </div>
 
-<div id="upload-input">
-  <form #dtInputForm="ngForm" >
+<div id="f-input">
   <div class="container">
-    <div class="select-type">
-      <div class="type-title">
-        <h1>Type</h1>
-        <select class="tt-conmet" [(ngModel)]="types" [ngModelOptions]="{standalone: true}">
-          <option [ngValue]="plan">Connectivity</option>
-        </select>
-        <p>
-          Here: {{types}}
-        </p>
-
-        <div class="tt-uploadtype">
-          <h1>Connectivity Type</h1>
-          <select class="tt-type" >
-            <option value="connectivity">Plant - Compound</option>
-            <option value="connectivity">Compound Similarity</option>
-            <option value="connectivity">Compound - Protein</option>
-            <option value="connectivity">Protein - Disease</option>
-          </select>
-
-          <select class="tt-type">
-            <option value="connectivity">Plant</option>
-            <option value="connectivity">Compound</option>
-            <option value="connectivity" >Protein</option>
-            <option value="connectivity">Disease</option>
-          </select>
-        </div>
+  <form class="forms" #dtInputForm="ngForm"  (ngSubmit)="onUpload()" enctype="multipart/form-data" ngNativeValidate>
+      <div class="form-title">
+        <p>Upload your contribution with enter the information</p>
       </div>
-<!--
-      <div class="type-input">
-        <h1>Add new connectivity</h1>
-        <div class="plantinput">
-          <h6>Plant</h6>
-          <input placeholder="Latin Name" type="text" [ngModelOptions]="{standalone: true}"/>
-          <input placeholder="Indonesian Name" type="text" [ngModelOptions]="{standalone: true}"/>
+      <div class="form-type">
+        <div class="truetype">
+          <h5>Type:</h5>
+          <button [style.background]="openConnectivity ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="typeConnectivity()">Connectivity</button>
+          <button [style.background]="openMetadata ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="typeMetadata()">Metadata</button>
+        </div>
+        <div class="subtype-connectivity" *ngIf="openConnectivity">
+          <h5>Subtype:</h5>
+          <button [style.background]="plaConnectivity ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="placomConnectivity()">Plant-Compound</button>
+          <button [style.background]="com1Connectivity ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="comcomConnectivity()">Compound Similarity</button>
+          <button [style.background]="proConnectivity && comConnectivity ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="comproConnectivity()">Compound-Protein</button>
+          <button [style.background]="disConnectivity ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="prodisConnectivity()">Protein-Disease</button>
+        </div>
+        <div class="subtype-metadata" *ngIf="openMetadata">
+          <h5>Subtype:</h5>
+          <button [style.background]="plaMetadata ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="plaMetadataOpen()">Plant</button>
+          <button [style.background]="comMetadata ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="comMetadataOpen()">Compound</button>
+          <button [style.background]="proMetadata ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="proMetadataOpen()">Protein</button>
+          <button [style.background]="disMetadata ? '#4CAF50':'#3E4B3E'" type="button" name="button" (click)="disMetadataOpen()">Protein</button>
+        </div>
+        <div class="type-connectivity">
+          <div class="connectivity-data" *ngIf="openConnectivity">
+            <h6>Connectivity Data:</h6>
+            <input *ngIf="plaConnectivity" id="typeahead-target" placeholder="Plant Input" type="text" class="form-control"
+            [ngModelOptions]="{standalone: true}"
+            [ngbTypeahead]="searchPlant"
+            [(ngModel)]="modelPla"
+            [value]="modelPla" required/>
+            <input *ngIf="comConnectivity" id="typeahead-target" placeholder="Compound Input" type="text" class="form-control"
+            [ngModelOptions]="{standalone: true}"
+            [ngbTypeahead]="searchCompound"
+            [(ngModel)]="modelCom"
+            [value]="modelCom" required/>
+            <input *ngIf="com1Connectivity" id="typeahead-target" placeholder="Compound Input" type="text" class="form-control"
+            [ngModelOptions]="{standalone: true}"
+            [ngbTypeahead]="searchCompound"
+            [(ngModel)]="modelCom1"
+            [value]="modelCom1" required/>
+            <input *ngIf="proConnectivity" id="typeahead-target" placeholder="Protein Input" type="text" class="form-control"
+            [ngModelOptions]="{standalone: true}"
+            [ngbTypeahead]="searchProtein"
+            [(ngModel)]="modelPro"
+            [value]="modelPro" required/>
+            <input *ngIf="disConnectivity" id="typeahead-target" placeholder="Disease Input" type="text" class="form-control"
+            [ngModelOptions]="{standalone: true}"
+            [ngbTypeahead]="searchDisease"
+            [(ngModel)]="modelDis"
+            [value]="modelDis" required/>
+          </div>
+          <div class="metadata-data" *ngIf="openMetadata">
+            <h6>Metadata Data:</h6>
+            <div class="metadata-plant" *ngIf="plaMetadata">
+              <input  id="typeahead-target" placeholder="New Plant Latin Name (Required)" type="text" class="form-control"
+              name="pla_name"
+              [(ngModel)]="plantMetadata.pla_name"
+              [value]="plantMetadata.pla_name" required/>
+              <input  id="typeahead-target" placeholder="New Plant Indonesian Name (Required)" type="text" class="form-control"
+              name="pla_idr_name"
+              [(ngModel)]="plantMetadata.pla_idr.name"
+              [value]="plantMetadata.pla_idr_name" required/>
+            </div>
+            <div class="metadata-compound" *ngIf="comMetadata">
+              <input  id="typeahead-target" placeholder="New Compound Pubchem ID (Required)" type="text" class="form-control"
+              name="com_pubchem_id"
+              [(ngModel)]="compoundMetadata.com_pubchem_id"
+              [value]="compoundMetadata.com_pubchem_id" required/>
+              <input  id="typeahead-target" placeholder="New Compound Pubchem Name (Required)" type="text" class="form-control"
+              name="com_pubchem_name"
+              [(ngModel)]="compoundMetadata.com_pubchem_name"
+              [value]="compoundMetadata.com_pubchem_name"/>
+              <input  id="typeahead-target" placeholder="New Compound IUPAC Name" type="text" class="form-control"
+            name="com_iupac_name"
+            [(ngModel)]="compoundMetadata.com_iupac_name"
+            [value]="compoundMetadata.com_iupac_name"/>
+              <input  id="typeahead-target" placeholder="New Compound Drugbank ID" type="text" class="form-control"
+              name="com_drugbank_id"
+              [(ngModel)]="compoundMetadata.com_drugbank_id"
+              [value]="compoundMetadata.com_drugbank_id"/>
+              <input  id="typeahead-target" placeholder="New Compound Knapsack ID" type="text" class="form-control"
+              name="com_knapsack_id"
+              [(ngModel)]="compoundMetadata.com_knapsack_id"
+              [value]="compoundMetadata.com_knapsack_id"/>
+              <input  id="typeahead-target" placeholder="New Compound Kegg ID" type="text" class="form-control"
+              name="com_kegg_id"
+              [(ngModel)]="compoundMetadata.com_kegg_id"
+              [value]="compoundMetadata.com_kegg_id"/>
+              <input  id="typeahead-target" placeholder="New Compound CAS ID" type="text" class="form-control"
+              name="com_cas_id"
+              [(ngModel)]="compoundMetadata.com_cas_id"
+              [value]="compoundMetadata.com_cas_id"/>
+              <input  id="typeahead-target" placeholder="New Compound Smiles" type="text" class="form-control"
+              name="com_smiles"
+              [(ngModel)]="compoundMetadata.com_smiles"
+              [value]="compoundMetadata.com_smiles"/>
+              <input  id="typeahead-target" placeholder="New Compound Pubchem Synonym" type="text" class="form-control"
+              name="com_pubchem_synonym"
+              [(ngModel)]="compoundMetadata.com_pubchem_synonym"
+              [value]="compoundMetadata.com_pubchem_synonym"/>
+              <input  id="typeahead-target" placeholder="New Compound Smiles Isomeric" type="text" class="form-control"
+              name="com_smiles_isomeric"
+              [(ngModel)]="compoundMetadata.com_smiles_isomeric"
+              [value]="compoundMetadata.com_smiles_isomeric"/>
+              <input  id="typeahead-target" placeholder="New Compound Smiles Canonical" type="text" class="form-control"
+              name="com_smiles_canonical"
+              [(ngModel)]="compoundMetadata.com_smiles_canonical"
+              [value]="compoundMetadata.com_smiles_canonical"/>
+              <input  id="typeahead-target" placeholder="New Compound Inchikey" type="text" class="form-control"
+              name="com_inchikey"
+              [(ngModel)]="compoundMetadata.com_inchikey"
+              [value]="compoundMetadata.com_inchikey"/>
+            </div>
+            <div class="metadata-protein" *ngIf="proMetadata">
+              <input id="typeahead-target" placeholder="New Protein Uniprot ID (Required)" type="text" class="form-control"
+              name="pro_uniprot_id"
+              [(ngModel)]="proteinMetadata.pro_uniprot_id"
+              [value]="proteinMetadata.pro_uniprot_id" required/>
+              <input id="typeahead-target" placeholder="New Protein Uniprot ABBRV (Required)" type="text" class="form-control"
+              name="pro_uniprot_abbrv"
+              [(ngModel)]="proteinMetadata.pro_uniprot_abbrv"
+              [value]="proteinMetadata.pro_uniprot_abbrv" required/>
+              <input id="typeahead-target" placeholder="New Protein Name (Required)" type="text" class="form-control"
+              name="pro_name"
+              [(ngModel)]="proteinMetadata.pro_name"
+              [value]="proteinMetadata.pro_name" required/>
+              <input id="typeahead-target" placeholder="New Protein PDB ID (Required)" type="text" class="form-control"
+              name="pro_pdb_id"
+              [(ngModel)]="proteinMetadata.pro_pdb_id"
+              [value]="proteinMetadata.pro_pdb_id" required/>
+            </div>
+            <div class="metadata-disease" *ngIf="disMetadata">
+              <input  id="typeahead-target" placeholder="New Disease OMIM ID (Required)" type="text" class="form-control"
+              name="dis_omim_id"
+              [(ngModel)]="diseaseMetadata.dis_omim_id"
+              [value]="diseaseMetadata.dis_omim_id" required/>
+              <input  id="typeahead-target" placeholder="New Disease Uniprot ABBRV (Required)" type="text" class="form-control"
+              name="dis_uniprot_abbrv"
+              [(ngModel)]="diseaseMetadata.dis_uniprot_abbrv"
+              [value]="diseaseMetadata.dis_uniprot_abbrv" required/>
+              <input  id="typeahead-target" placeholder="New Disease Name (Required)" type="text" class="form-control"
+              name="dis_name"
+              [(ngModel)]="diseaseMetadata.dis_name"
+              [value]="diseaseMetadata.dis_name" required/>
+            </div>
+          </div>
         </div>
 
-        <div class="compoundinput">
-          <h6>Compound</h6>
-          <input placeholder="Pubchem Name" type="text" [ngModelOptions]="{standalone: true}"/>
-          <input placeholder="Pubchem Id" type="text" [ngModelOptions]="{standalone: true}"/>
-          <input placeholder="IUPAC Name" type="text" [ngModelOptions]="{standalone: true}"/>
-          <input placeholder="CAS Id" type="text" [ngModelOptions]="{standalone: true}"/>
-          <input placeholder="Drugbank Id" type="text" [ngModelOptions]="{standalone: true}"/>
-        </div>
-
-        <div class="compoundinput2">
-          <h6>Compound</h6>
-          <input placeholder="Pubchem Name" type="text" />
-          <input placeholder="Pubchem Id" type="text" />
-          <input placeholder="IUPAC Name" type="text" />
-          <input placeholder="CAS Id" type="text" />
-          <input placeholder="Drugbank Id" type="text" />
-        </div>
-
-        <div class="proteininput">
-          <h6>Protein</h6>
-          <input placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" />
-          <input placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" />
-        </div>
-
-        <div class="diseaseinput">
-          <h6>Disease</h6>
-          <input placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" />
-          <input placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" />
-        </div>
-      </div> -->
-
-    </div>
-<!--
-    <div class="contributor-detail">
-      <h1>Contributor Details</h1>
-      <input placeholder="Name" type="text" />
-      <input placeholder="Email" type="email" />
-      <input placeholder="Affiliation" type="text" />
-    </div>
-
-    <div class="publication-detail">
-      <h1>Publication Details</h1>
-      <input placeholder="Title" type="text" />
-      <input placeholder="Author" type="text" />
-      <input placeholder="Year" type="text" />
-      <input placeholder="Journal" type="text" />
-      <input placeholder="Link" type="url" />
-    </div> -->
-  </div>
+      </div>
+      <div class="form-contributors">
+        <h5>Contributor Details</h5>
+        <input type="text" id="typeahead-target" placeholder="Your Name" class="form-control" [(ngModel)]="contributor.name" name="name" value="contributor.name" required>
+        <input type="email" id="typeahead-target" placeholder="Your Email" class="form-control" [(ngModel)]="contributor.email" name="email" value="contributor.email" required>
+        <input type="text" id="typeahead-target" placeholder="Your Affiliation/Organization/University" [(ngModel)]="contributor.affiliation" class="form-control" name="affiliation" value="contributor.affiliation" required>
+      </div>
+      <div class="form-publication">
+        <h5>Publication Data</h5>
+        <input type="text" id="typeahead-target" placeholder="Publication Title" class="form-control" [(ngModel)]="publication.title" name="title" value="publication.title" required>
+        <input type="text" id="typeahead-target" placeholder="First Author's Name" class="form-control" [(ngModel)]="publication.author" name="author" value="publication.author" required>
+        <input type="text" id="typeahead-target" placeholder="Publication Year Published" class="form-control" [(ngModel)]="publication.year" name="year" value="publication.year" required>
+        <input type="text" id="typeahead-target" placeholder="Journal or Conference Where Published" class="form-control" [(ngModel)]="publication.journal" name="journal" value="publication.journal" required>
+        <input type="text" id="typeahead-target" placeholder="Url of Publication" class="form-control" [(ngModel)]="publication.link" name="link" value="publication.link" required>
+      </div>
+      <div class="Upload-files">
+        <h5>Upload Publication File</h5>
+        <input type="file" (change)="onFileSelected($event)">
+      </div>
+      <div class="btn_form">
+        <button type="submit" name="button">Submit</button>
+      </div>
   </form>
+  </div>
 </div>
