@@ -39,8 +39,11 @@ export class ContactusComponent implements OnInit {
     this.subject="",
     this.message=""
   }
-
+    result:any;
+    errMsg:any;
+    showload:boolean = false;
   getResult() {
+    this.showload = true;
     const httpOptions = {
       headers: new HttpHeaders({
         "X-Requested-With": "XMLHttpRequest",
@@ -55,6 +58,7 @@ export class ContactusComponent implements OnInit {
       subject: this.subject,
       message: this.message
     }
+
 
     const sendMsgJson = JSON.stringify(fd);
     console.log(sendMsgJson);
