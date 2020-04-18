@@ -540,10 +540,10 @@ export class DrugtargetComponent implements OnInit {
 
 
   // show table ngIf for connectivity table btn
-  private pla_com_btn: boolean = true;
-  private com_pro_btn: boolean = false;
-  private pro_dis_btn: boolean = false;
-  private com_com_btn: boolean = false;
+  public pla_com_btn: boolean = true;
+  public com_pro_btn: boolean = false;
+  public pro_dis_btn: boolean = false;
+  public com_com_btn: boolean = false;
   pla_com_on() {
     this.pla_com_btn = true;
     this.com_pro_btn = false;
@@ -571,10 +571,10 @@ export class DrugtargetComponent implements OnInit {
 
 
   // show table ngIF for Metadata btn
-  private pla_btn: boolean = true;
-  private com_btn: boolean = false;
-  private pro_btn: boolean = false;
-  private dis_btn: boolean = false;
+  public pla_btn: boolean = true;
+  public com_btn: boolean = false;
+  public pro_btn: boolean = false;
+  public dis_btn: boolean = false;
   pla_on() {
     this.pla_btn = true;
     this.com_btn = false;
@@ -614,7 +614,7 @@ export class DrugtargetComponent implements OnInit {
   }
 
   //summary score function & sankey diagram data
-  private sankeyData: any;
+  public sankeyData: any;
   comtopro: any;
   len: any;
   showChart: boolean = false;

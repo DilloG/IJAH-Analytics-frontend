@@ -97,10 +97,10 @@ export class ClusterComponent implements OnInit {
 
   //button fro connectivity Table
   // show table ngIF for Metadata
-  private pla_btn: boolean = true;
-  private com_btn: boolean = false;
-  private pro_btn: boolean = false;
-  private dis_btn: boolean = false;
+  public pla_btn: boolean = true;
+  public com_btn: boolean = false;
+  public pro_btn: boolean = false;
+  public dis_btn: boolean = false;
 
   pla_on() {
     this.pla_btn = true;
@@ -128,10 +128,10 @@ export class ClusterComponent implements OnInit {
   }
 
   // show table ngIf
-  private pla_com_btn: boolean = true;
-  private com_pro_btn: boolean = false;
-  private pro_dis_btn: boolean = false;
-  private com_com_btn: boolean = false;
+  public pla_com_btn: boolean = true;
+  public com_pro_btn: boolean = false;
+  public pro_dis_btn: boolean = false;
+  public com_com_btn: boolean = false;
 
   pla_com_on() {
     this.pla_com_btn = true;
@@ -491,7 +491,7 @@ export class ClusterComponent implements OnInit {
   }
 
 
-  private sankeyData: any;
+  public sankeyData: any;
   plaMeta_table:any;
   comMeta_table:any;
   proMeta_table:any;

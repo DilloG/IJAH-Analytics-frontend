@@ -143,7 +143,7 @@
             <p>Disease</p>
           </div>
           <div #screen class="chartnya">
-            <google-chart *ngIf="showChart"  #chart [title]="title" [type]="type" [data]="sankeyData" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
+            <google-chart *ngIf="showChart"  #chart [title]="title" [type]="type" [data]="sankeyData" [columnNames]="columnNames" [options]="options" [width]="options.width" [height]="options.height">
             </google-chart>
           </div>
         </ng-template>
@@ -157,7 +157,7 @@
             <button [style.background]="pro_dis_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="pro_dis_btn ? '#ffffff' : '#000000'" (click)="pro_dis_on()">Protein - Disease</button>
           </div>
           <div class="ct_table" *ngIf="pla_com_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="plavscom_table" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions"   *ngIf="plavscom_table" class="row-border hover">
               <thead>
                 <tr>
                   <th>Plant Id</th>
@@ -183,7 +183,7 @@
             </table>
           </div>
           <div class="ct_table" *ngIf="com_com_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="comvscom_table" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions"   *ngIf="comvscom_table" class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound Id</th>
@@ -209,7 +209,7 @@
             </table>
           </div>
           <div class="ct_table" *ngIf="com_pro_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="comvspro_table" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions"   *ngIf="comvspro_table" class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound Id</th>
@@ -235,7 +235,7 @@
             </table>
           </div>
           <div class="ct_table" *ngIf="pro_dis_btn">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="provsdis_table" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions"   *ngIf="provsdis_table" class="row-border hover">
               <thead>
                 <tr>
                   <th>Protein Id</th>
@@ -267,7 +267,7 @@
             <button [style.background]="dis_btn ? '#2ECC71' : '#C9C6C6'" [style.color]="dis_btn ? '#ffffff' : '#000000'" (click)="dis_on()">Disease</button>
           </div>
           <div class="meta_table" *ngIf="pla_btn">
-            <table datatable [dtOptions]="dtOptions" *ngIf="plaMeta_table" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="plaMeta_table"   class="row-border hover">
               <thead>
                 <tr>
                   <th>Plant ID</th>
@@ -285,7 +285,7 @@
             </table>
           </div>
           <div class="meta_table" *ngIf="com_btn">
-            <table datatable [dtOptions]="dtOptions" *ngIf="comMeta_table" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="comMeta_table"   class="row-border hover">
               <thead>
                 <tr>
                   <th>Compound ID</th>
@@ -305,7 +305,7 @@
             </table>
           </div>
           <div class="meta_table" *ngIf="pro_btn">
-            <table datatable [dtOptions]="dtOptions" *ngIf="proMeta_table" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="proMeta_table"   class="row-border hover">
               <thead>
                 <tr>
                   <th>Protein ID</th>
@@ -323,7 +323,7 @@
             </table>
           </div>
           <div class="meta_table" *ngIf="dis_btn">
-            <table datatable [dtOptions]="dtOptions" *ngIf="disMeta_table" [dtTrigger]="dtTrigger" class="row-border hover">
+            <table datatable [dtOptions]="dtOptions" *ngIf="disMeta_table"   class="row-border hover">
               <thead>
                 <tr>
                   <th>Disease ID</th>
@@ -351,7 +351,7 @@
 <div id="modaldt" [style.display]="showmodals ? 'block' : 'none'">
   <div class="containers">
     <div class="c-containers">
-      <i class="fa fa-close" [style.color]="black" (click)="openfilter()"></i>
+      <i class="fa fa-close" [style.color]="'#000000'" (click)="openfilter()"></i>
       <h1>Filter Output</h1>
       <!-- <div class="slidecontainer">
         <input type="range" [(ngModel)]="filtermodel" min="0.00" max="1.00" value="0" step="0.0001" class="slider" id="myRange">
