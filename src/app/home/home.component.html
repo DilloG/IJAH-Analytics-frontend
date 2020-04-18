@@ -16,7 +16,7 @@
       <img src="assets/img/metabolism.png" />
       <h5>Compound Synergi</h5>
     </div>
-    <div href="#" class="hbf-select">
+    <div href="#" routerLink="/contribute" class="hbf-select">
       <img src="assets/img/conntribute.png" />
       <h5>Contribute</h5>
     </div>
@@ -83,7 +83,7 @@
         feel free to submit your publication here, We are thanking you
         for your contribution. Your contribution will be cited.
       </p>
-      <button>Contribute Now</button>
+      <button type="button" routerLink="/contribute">Contribute Now</button>
     </div>
     <div class="hc-right">
       <img src="assets/img/contribute.png" />
@@ -99,14 +99,16 @@
     <div class="hs-right">
       <h1>Citing IJAH Analytics ?</h1>
       <p>You can citing IJAH Analytics, for your documentation or your publication</p>
-      <button>Citing IJAH Analytics</button>
+      <button type="button" (click)="openCite()">Citing IJAH Analytics</button>
     </div>
   </div>
 </div>
 
-<div id="modal-cite" [style.display]="'none'">
-<h1>Citing IJAH Analytics</h1>
-  <div>
-
+<div id="loading" *ngIf='showCite'>
+  <div class="success-modal">
+    <h3><b>Citing IJAH Analytics</b></h3>
+    <h5>Kusuma, Wisnu Ananta, et al. “IJAH Analytics.” IJAH Analytics, Tropical Biopharmaca
+      Research Center, 2017, ijah.apps.cs.ipb.ac.id/.</h5>
+    <button type="button" name="button" (click)="openCite()">Ok</button>
   </div>
 </div>

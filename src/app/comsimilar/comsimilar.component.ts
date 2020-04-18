@@ -60,7 +60,7 @@ export class ComsimilarComponent implements OnInit {
             return nilai[key].npub + " | " + nilai[key].npac + " | " + key;
           });
         console.log(this.compound_arr);
-
+        this.showloadFirst = false;
       }
     });
   }
@@ -352,7 +352,71 @@ export class ComsimilarComponent implements OnInit {
       console.log(this.selectedFile);
     }
 
+    showFailed:boolean = false;
+    showSuccess:boolean = false;
+    showloadFirst:boolean = true;
+    showload:boolean = false;
+
+    closeError(){
+      this.showFailed = false;
+      this.showload = false;
+    }
+
+    fileUpload:any;
+    closeSuccess(){
+      this.showSuccess = false;
+      this.showload = false;
+      this.contributor = {
+        name: "",
+        email: "",
+        affiliation: ""
+      }
+      this.publication = {
+        title: "",
+        author: "",
+        year: "",
+        journal: "",
+        link: ""
+      }
+      this.plantMetadata = {
+        pla_name:"",
+        pla_idr_name:""
+      }
+      this.compoundMetadata = {
+        com_drugbank_id:"",
+        com_knapsack_id:"",
+        com_kegg_id:"",
+        com_cas_id:"",
+        com_smiles:"",
+        com_pubchem_synonym:"",
+        com_smiles_isomeric:"",
+        com_smiles_canonical:"",
+        com_pubchem_id:"",
+        com_inchikey:"",
+        com_iupac_name:"",
+        com_pubchem_name:""
+      }
+      this.proteinMetadata = {
+        pro_uniprot_id:"",
+        pro_uniprot_abbrv:"",
+        pro_name:"",
+        pro_pdb_id:""
+      }
+      this.diseaseMetadata = {
+        dis_omim_id:"",
+        dis_uniprot_abbrv:"",
+        dis_name:""
+      }
+      this.modelPla = "";
+      this.modelCom= "";
+      this.modelCom1= "";
+      this.modelPro= "";
+      this.modelDis= "";
+      this.fileUpload="";
+    }
+
     onUpload(){
+      this.showload = true;
       this.sendForm();
       const fd = new FormData();
       fd.append('pdf', this.selectedFile, this.selectedFile.name);
@@ -364,6 +428,7 @@ export class ComsimilarComponent implements OnInit {
      this.getResult(fd);
     }
 
+    errMsg:any;
     result:any;
     getResult(fd) {
       const httpOptions = {
@@ -373,11 +438,16 @@ export class ComsimilarComponent implements OnInit {
       };
       this.http.post<any>("http://admin.vidner.engineer/contribute", fd, httpOptions).toPromise().then(data => {
         this.result = data;
-        console.log(data);
+        // console.log(data);
         if (this.result) {
           console.log(this.result);
+          this.showSuccess = true;
         }
-      })
+      }).catch(err => {
+        console.log(err.message);
+        this.errMsg = err.message;
+        this.showFailed = true;
+      });
 
     }
 

@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     window.onbeforeunload = function () {
       window.scrollTo(0, 0);
-    }   
+    }
     AOS.init(
       {
         duration: 1200
@@ -22,5 +22,11 @@ export class HomeComponent implements OnInit {
     );
     window.scrollTo(0,0);
   }
+
+  showCite: boolean = false;
+  openCite(){
+    this.showCite = !this.showCite;
+  }
+
 
 }

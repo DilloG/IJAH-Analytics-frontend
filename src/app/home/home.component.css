@@ -341,3 +341,7 @@
 #h-sitasi .hs-left img{
   max-width: 200px;
 }
+
+#loading button:hover{
+  transform: scale(1.1);
+}
