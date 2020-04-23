@@ -1,6 +1,9 @@
 var express = require('express');
-// var app = express.createServer();
+const compression = require('compression');
+
 const app = express();
+
+app.use(compression());
 app.use(express.static("./dist/ijahtesting"));
 
 app.get("/*", function(req, res) {

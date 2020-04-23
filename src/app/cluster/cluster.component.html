@@ -4,6 +4,40 @@
   </div>
 </div>
 
+<div id="errMsg" *ngIf='showFailed'>
+  <div class="failed-modal">
+    <h3><b>Failed to Predict</b></h3>
+    <h5>Error Message: {{errMsg}}</h5>
+    <button type="button" name="button" (click)="closeError()">Ok</button>
+  </div>
+</div>
+
+<div id="errMsg" *ngIf='showFailedLoad'>
+  <div class="failed-modal">
+    <h3><b>Failed to Load Data</b></h3>
+    <h5>Cick <a href="#" routerLink="/contactus">here</a> to contact our team</h5>
+    <h5>Error Message: {{errMsg}}</h5>
+    <!-- <button type="button" name="button" (click)="closeError()">Ok</button> -->
+  </div>
+</div>
+
+<div id="errMsg" *ngIf='showFailedInput'>
+  <div class="failed-modal">
+    <h3><b>You dont fill all input</b></h3>
+    <h5>Please choose the pop up suggestion when you are enter the input</h5>
+    <button type="button" name="button" (click)="closeInfo()">Ok</button>
+  </div>
+</div>
+
+<!-- <div id="errMsg" *ngIf='showWantReset'>
+  <div class="failed-modal">
+    <h3><b>Are you sure want to reset?</b></h3>
+    <h5>The output will be overwrite</h5>
+    <button type="button" name="button" (click)="closeReset()">Ok</button>
+    <button type="button" name="button" (click)="closeResetFailed()">Cancel</button>
+  </div>
+</div> -->
+
 <div id="c-input">
   <div class="container">
     <div class="ci-container">
@@ -12,15 +46,48 @@
         <div class="cic-drug">
           <div class="cicd cicd-analgesic">
             <h1>Analgesic Compound</h1>
-            <input id="typeahead-analg" placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" class="form-control" [(ngModel)]="modelAnalg" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchAnalg" required />
+            <div>
+              <input id="typeahead-analg"
+              placeholder="CAS ID/Pubchem Name/IUPAC Name"
+              type="text" class="form-control"
+              [(ngModel)]="modelAnalg"
+              [ngModelOptions]="{standalone: true}"
+              [ngbTypeahead]="searchAnalg"
+              (selectItem)="selectedAnalg($event)"
+              [disabled]="analgDisabled"
+              required />
+              <button class="close-icon" type="button" (click)="removeAnalgesic()"><img src="assets/img/reset.png"/></button>
+            </div>
           </div>
           <div class="cicd cicd-bacteri">
             <h1>Antibacterial Compound</h1>
-            <input id="typeahead-bacteri" placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" class="form-control" [(ngModel)]="modelBacteri" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchBacteri" required />
+            <div>
+              <input id="typeahead-bacteri"
+              placeholder="CAS ID/Pubchem Name/IUPAC Name"
+              type="text" class="form-control"
+              [(ngModel)]="modelBacteri"
+              [ngModelOptions]="{standalone: true}"
+              [ngbTypeahead]="searchBacteri"
+              (selectItem)="selectedBacteri($event)"
+              [disabled]="bacteriDisabled"
+              required />
+              <button class="close-icon" type="button" (click)="removeAntibacterial()"><img src="assets/img/reset.png"/></button>
+            </div>
           </div>
           <div class="cicd cicd-inflam">
             <h1>Antiinflamatory Compound</h1>
-            <input id="typeahead-inflam" placeholder="CAS ID/Pubchem Name/IUPAC Name" type="text" class="form-control" [(ngModel)]="modelInflam" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchInflam" required />
+            <div>
+              <input id="typeahead-inflam"
+              placeholder="CAS ID/Pubchem Name/IUPAC Name"
+              type="text" class="form-control"
+              [(ngModel)]="modelInflam"
+              [ngModelOptions]="{standalone: true}"
+              [ngbTypeahead]="searchInflam"
+              (selectItem)="selectedInflam($event)"
+              [disabled]="inflamDisabled"
+              required />
+              <button class="close-icon" type="button" (click)="removeAntiinflamatory()"><img src="assets/img/reset.png"/></button>
+            </div>
           </div>
         </div>
 
@@ -28,21 +95,43 @@
         <div class="cic-target">
           <div class="cict cict-efficacy">
             <h1>Efficacy</h1>
-            <input id="typeahead-focus" placeholder="Disease Group" type="text" class="form-control" [(ngModel)]="modelEfficacy" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchEfficacy"
-              (focus)="focusEfficacy$.next($any($event).target.value)" (click)="clickEfficacy$.next($any($event).target.value)" (selectItem)="selectedEfficacy($event)" [editable]="false" #instanceEfficacy="ngbTypeahead" required />
+            <div>
+              <input id="typeahead-focus" placeholder="Disease Group" type="text" class="form-control" [(ngModel)]="modelEfficacy" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchEfficacy"
+                (focus)="focusEfficacy$.next($any($event).target.value)"
+                (click)="clickEfficacy$.next($any($event).target.value)"
+                (selectItem)="selectedEfficacy($event)" [editable]="false"
+                 #instanceEfficacy="ngbTypeahead"
+                 [disabled]="efficacyDisabled"
+                 required />
+              <button class="close-icon" type="button" (click)="removeEfficacy()"><img src="assets/img/reset.png"/></button>
+            </div>
           </div>
           <div class="cict cict-activity">
             <h1>Activity</h1>
-            <h6 [style.display]="clickedEfficacy == '' ? 'inline' : 'none'" [style.color]="'#F1F1F1'">Choose Efficacy First</h6>
-            <input [style.display]="clickedEfficacy == '' ? 'none' : 'inline'" id="typeahead-focus" placeholder="Disease Subgroup" type="text" class="form-control" [(ngModel)]="modelActivity" [ngModelOptions]="{standalone: true}"
-              [ngbTypeahead]="searchActivity" (focus)="focusActiviy$.next($any($event).target.value)" (click)="clickActiviy$.next($any($event).target.value)" (selectItem)="selectedActivity($event)" [editable]="false" #instanceActivity="ngbTypeahead"
-              required />
+            <div>
+              <h6 [style.display]="clickedEfficacy == '' ? 'inline' : 'none'" [style.color]="'#F1F1F1'">Choose Efficacy First</h6>
+              <input [style.display]="clickedEfficacy == '' ? 'none' : 'inline'" id="typeahead-focus" placeholder="Disease Subgroup" type="text" class="form-control" [(ngModel)]="modelActivity" [ngModelOptions]="{standalone: true}"
+                [ngbTypeahead]="searchActivity"
+                (focus)="focusActiviy$.next($any($event).target.value)"
+                (click)="clickActiviy$.next($any($event).target.value)"
+                (selectItem)="selectedActivity($event)"
+                [editable]="false"
+                #instanceActivity="ngbTypeahead"
+                [disabled]="activityDisabled"
+                required />
+              <button [style.display]="clickedEfficacy == '' ? 'none' : 'inline'" class="close-icon" type="button" (click)="removeActivity()"><img src="assets/img/reset.png"/></button>
+            </div>
           </div>
           <div class="cict cict-target">
             <h1>Target</h1>
-            <h6 [style.display]="clickedEfficacy && clickedActivity ? 'none' : 'inline'" [style.color]="'#F1F1F1'">Choose Efficacy & Activity First</h6>
-            <input [style.display]="clickedEfficacy && clickedActivity ? 'inline' : 'none'" id="typeahead-target" type="text" placeholder="CAS ID/Pubchem Name/IUPAC Name" class="form-control" [(ngModel)]="modelTarget"
-              [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchTarget" required />
+            <div>
+              <h6 [style.display]="clickedEfficacy && clickedActivity ? 'none' : 'inline'" [style.color]="'#F1F1F1'">Choose Efficacy & Activity First</h6>
+              <input [style.display]="clickedEfficacy && clickedActivity ? 'inline' : 'none'" id="typeahead-target" type="text" placeholder="CAS ID/Pubchem Name/IUPAC Name" class="form-control" [(ngModel)]="modelTarget"
+                [ngModelOptions]="{standalone: true}" [ngbTypeahead]="searchTarget"
+                (selectItem)="selectedTarget($event)"
+                [disabled]="targetDisabled" required />
+                <button [style.display]="clickedEfficacy && clickedActivity ? 'inline' : 'none'" class="close-icon" type="button" (click)="removeTarget()"><img src="assets/img/reset.png"/></button>
+            </div>
           </div>
         </div>
 

@@ -92,24 +92,55 @@ export class DrugtargetComponent implements OnInit {
     if (this.addDrug_btn > 1) {
       this.plantFor.splice(i, 1);
       this.addDrug_btn -= 1;
+      this.plaInputHoldersDisabled.splice(i,1);
+      this.plantForm.splice(i,1);
+      this.clickedItemPla -= 1;
+    }else if(this.clickedItemPla == 1){
+      this.plaInputHoldersDisabled.splice(i,1);
+      this.plantForm.splice(i,1);
+      this.plantFor[0].name="";
+      this.clickedItemPla -= 1;
     }
   }
   removeCompound(i: number) {
     if (this.addDrug_btn > 1) {
       this.compoundFor.splice(i, 1);
       this.addDrug_btn -= 1;
+      this.comInputHoldersDisabled.splice(i,1);
+      this.compoundForm.splice(i,1);
+      this.clickedItemCom -= 1;
+    }else if(this.clickedItemCom == 1){
+      this.comInputHoldersDisabled.splice(i,1);
+      this.compoundForm.splice(i,1);
+      this.compoundFor[0].name="";
+      this.clickedItemCom -= 1;
     }
   }
   removeProtein(i: number) {
     if (this.addTarget_btn > 1) {
       this.proteinFor.splice(i, 1);
       this.addTarget_btn -= 1;
+      this.proInputHoldersDisabled.splice(i,1);
+      this.proteinForm.splice(i,1);
+      this.clickedItemPro -= 1;
+    }else if(this.clickedItemPro == 1){
+      this.proInputHoldersDisabled.splice(i,1);
+      this.proteinForm.splice(i,1);
+      this.proteinFor[0].name="";
+      this.clickedItemPro -= 1;
     }
   }
   removeDisease(i: number) {
     if (this.addTarget_btn > 1) {
       this.diseaseFor.splice(i, 1);
       this.addTarget_btn -= 1;
+      this.disInputHoldersDisabled.splice(i,1);
+      this.diseaseForm.splice(i,1);
+      this.clickedItemDis -= 1;
+    }else if(this.clickedItemDis == 1){
+      this.disInputHoldersDisabled.splice(i,1);
+      this.diseaseForm.splice(i,1);
+      this.clickedItemDis -= 1;
     }
   }
 
@@ -149,7 +180,10 @@ export class DrugtargetComponent implements OnInit {
   plant_input() {
     if (this.pla_input_btn == false) {
       this.compoundFor.splice(0, this.compoundFor.length);
+      this.compoundForm.splice(0, this.compoundForm.length);
+      this.comInputHoldersDisabled.splice(0, this.comInputHoldersDisabled.length);
       this.addDrug_btn -= this.addDrug_btn;
+      this.clickedItemCom -= this.clickedItemCom;
       this.addCompound();
     }
     this.pla_input_btn = true;
@@ -158,7 +192,10 @@ export class DrugtargetComponent implements OnInit {
   compound_input() {
     if (this.com_input_btn == false) {
       this.plantFor.splice(0, this.plantFor.length);
+      this.plantForm.splice(0, this.plantForm.length);
+      this.plaInputHoldersDisabled.splice(0, this.plaInputHoldersDisabled.length);
       this.addDrug_btn -= this.addDrug_btn;
+      this.clickedItemPla -= this.clickedItemPla;
       this.addPlant()
     }
     this.pla_input_btn = false;
@@ -167,7 +204,10 @@ export class DrugtargetComponent implements OnInit {
   protein_input() {
     if (this.pro_input_btn == false) {
       this.diseaseFor.splice(0, this.diseaseFor.length);
+      this.proteinForm.splice(0, this.proteinForm.length);
+      this.proInputHoldersDisabled.splice(0, this.proInputHoldersDisabled.length);
       this.addTarget_btn -= this.addTarget_btn;
+      this.clickedItemPro -= this.clickedItemPro;
       this.addDisease()
     }
     this.pro_input_btn = true;
@@ -176,7 +216,10 @@ export class DrugtargetComponent implements OnInit {
   disease_input() {
     if (this.dis_input_btn == false) {
       this.proteinFor.splice(0, this.proteinFor.length);
+      this.diseaseForm.splice(0, this.diseaseForm.length);
+      this.disInputHoldersDisabled.splice(0, this.disInputHoldersDisabled.length);
       this.addTarget_btn -= this.addTarget_btn;
+      this.clickedItemDis -= this.clickedItemDis;
       this.addProtein()
     }
     this.pro_input_btn = false;
@@ -185,6 +228,11 @@ export class DrugtargetComponent implements OnInit {
 
   // fungsi untuk reset input
   resetinput() {
+    this.showresult = false;
+    this.compound_input();
+    this.protein_input();
+    this.disease_input();
+    this.plant_input();
   }
 
   // get plant meta
@@ -203,12 +251,23 @@ export class DrugtargetComponent implements OnInit {
         const nilai = this.plant_new;
         this.plant_new_arr = Object.keys(this.plant_new).map(
           function(key) {
-            return nilai[key].nlat + " | " + key;
+            let nameidr;
+            if(nilai[key].nidr != null){
+              nameidr = nilai[key].nidr + " | ";
+            } else{
+              nameidr = "";
+            }
+
+            return nilai[key].nlat + " | " + nameidr + key;
           });
         console.log(this.plant_new_arr);
         // var t3 = performance.now();
         // console.log("Took: " + (t3 - t2) + "msecs");
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
 
   }
@@ -239,7 +298,12 @@ export class DrugtargetComponent implements OnInit {
         var t3 = performance.now();
         console.log("Took: " + (t3 - t2) + "msecs");
         this.showloadFirst = false;
+        this.showFailedLoad = false;
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
 
@@ -262,6 +326,10 @@ export class DrugtargetComponent implements OnInit {
           });
         console.log(this.disease_arr);
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
 
@@ -284,6 +352,10 @@ export class DrugtargetComponent implements OnInit {
           });
         console.log(this.protein_arr);
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
 
@@ -320,12 +392,23 @@ export class DrugtargetComponent implements OnInit {
   showresult: boolean = false;
   showload: boolean = false;
   showloadFirst: boolean = true;
+  showFailedInput:boolean = false;
   async predict() {
+    const clickedItem = this.clickedItemPro + this.clickedItemCom + this.clickedItemDis + this.clickedItemPla;
     this.showresult = false;
-    this.showload = true;
-    this.filtermodel = 0.0;
-    this.filtermodelMax = 1.0;
-    this.getDrugTargetResult();
+    if(clickedItem == 0){
+      this.showFailedInput = true;
+    }else{
+        this.showload = true;
+        this.filtermodel = 0.0;
+        this.filtermodelMax = 1.0;
+        this.getDrugTargetResult();
+    }
+  }
+
+  closeInfo(){
+    this.showFailedInput = false;
+    this.showload = false;
   }
 
   // ngOnInit
@@ -364,65 +447,75 @@ export class DrugtargetComponent implements OnInit {
     this.target_side.length = 0;
     if (this.dsInput == true) {
       if (this.pla_input_btn == true) {
-        for (let i in this.plantFor) {
-          this.drug_side.push(this.plantFor[i].name.substring(this.plantFor[i].name.length - 11));
+        for (let i in this.plantForm) {
+          this.drug_side.push(this.plantForm[i].name.substring(this.plantForm[i].name.length - 11));
         }
         this.sendmsgjson = { plant: this.drug_side };
       }
       else {
-        for (let i in this.compoundFor) {
-          this.drug_side.push(this.compoundFor[i].name.substring(this.compoundFor[i].name.length - 11));
+        for (let i in this.compoundForm) {
+          this.drug_side.push(this.compoundForm[i].name.substring(this.compoundForm[i].name.length - 11));
         }
         this.sendmsgjson = { compound: this.drug_side };
       }
       console.log(this.sendmsgjson);
-      this.getResult();
     }
     if (this.tsInput == true) {
       if (this.pro_input_btn == true) {
-        for (let i in this.proteinFor) {
-          this.target_side.push(this.proteinFor[i].name.substring(this.proteinFor[i].name.length - 11));
+        for (let i in this.proteinForm) {
+          this.target_side.push(this.proteinForm[i].name.substring(this.proteinForm[i].name.length - 11));
         }
         this.sendmsgjson = { protein: this.target_side };
       }
       else {
-        for (let i in this.diseaseFor) {
-          this.target_side.push(this.diseaseFor[i].name.substring(this.diseaseFor[i].name.length - 11));
+        for (let i in this.diseaseForm) {
+          this.target_side.push(this.diseaseForm[i].name.substring(this.diseaseForm[i].name.length - 11));
         }
         this.sendmsgjson = { disease: this.target_side };
       }
-      this.getResult();
+
     }
     if (this.dstsInput == true) {
       let helper_drug;
       let helper_target;
       if (this.pla_input_btn == true) {
-        for (let i in this.plantFor) {
-          this.drug_side.push(this.plantFor[i].name.substring(this.plantFor[i].name.length - 11));
+        for (let i in this.plantForm) {
+          this.drug_side.push(this.plantForm[i].name.substring(this.plantForm[i].name.length - 11));
         }
         helper_drug = { plant: this.drug_side };
       }
       else {
-        for (let i in this.compoundFor) {
-          this.drug_side.push(this.compoundFor[i].name.substring(this.compoundFor[i].name.length - 11));
+        for (let i in this.compoundForm) {
+          this.drug_side.push(this.compoundForm[i].name.substring(this.compoundForm[i].name.length - 11));
         }
         helper_drug = { compound: this.drug_side };
       }
       if (this.pro_input_btn == true) {
-        for (let i in this.proteinFor) {
-          this.target_side.push(this.proteinFor[i].name.substring(this.proteinFor[i].name.length - 11));
+        for (let i in this.proteinForm) {
+          this.target_side.push(this.proteinForm[i].name.substring(this.proteinForm[i].name.length - 11));
         }
         helper_target = { protein: this.target_side };
       }
       else {
-        for (let i in this.diseaseFor) {
-          this.target_side.push(this.diseaseFor[i].name.substring(this.diseaseFor[i].name.length - 11));
+        for (let i in this.diseaseForm) {
+          this.target_side.push(this.diseaseForm[i].name.substring(this.diseaseForm[i].name.length - 11));
         }
         helper_target = { disease: this.target_side };
       }
       this.sendmsgjson = { ...helper_drug, ...helper_target };
-      this.getResult();
+
     }
+    this.getResult();
+
+  }
+
+  // close error
+  showFailed:boolean = false;
+  showFailedLoad:boolean = false;
+  closeError(){
+    this.showFailed = false;
+    this.showFailedLoad = false;
+    this.showload = false;
   }
 
   //fungsi untuk mendapatkan hasil dari api
@@ -451,7 +544,11 @@ export class DrugtargetComponent implements OnInit {
         this.getConnectivityTable();
         this.getMetaTable();
       }
-    })
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailed = true;
+    });
 
   }
 
@@ -937,6 +1034,7 @@ export class DrugtargetComponent implements OnInit {
     console.log(this.plavscomtopro);
   }
 
+  errMsg:any;
   // meta Table
   plaMeta_table: any;
   comMeta_table: any;
@@ -1147,5 +1245,55 @@ export class DrugtargetComponent implements OnInit {
 
 
   //// TEMP:
+
+  item:any;
+  clickedItemPla:any = 0;
+  clickedItemCom:any = 0;
+  clickedItemPro:any = 0;
+  clickedItemDis:any = 0;
+
+  public plantForm: any[] = [];
+  plaInputHoldersDisabled:any = [];
+  selectedPlant(item, i){
+    this.plaInputHoldersDisabled[i] = true;
+    this.clickedItemPla += 1;
+    this.plantForm.push({
+      name: item.item
+    });
+    console.log(this.clickedItemPla);
+  }
+
+  public compoundForm: any[] = [];
+  comInputHoldersDisabled:any = [];
+  selectedCompound(item, i){
+    this.comInputHoldersDisabled[i] = true;
+    this.clickedItemCom += 1;
+    this.compoundForm.push({
+      name: item.item
+    });
+    console.log(this.clickedItemCom);
+  }
+
+  public diseaseForm: any[] = [];
+  disInputHoldersDisabled:any = [];
+  selectedDisease(item, i){
+    this.disInputHoldersDisabled[i] = true;
+    this.clickedItemDis += 1;
+    this.diseaseForm.push({
+      name: item.item
+    });
+    console.log(this.clickedItemDis);
+  }
+
+  public proteinForm: any[] = [];
+  proInputHoldersDisabled:any = [];
+  selectedProtein(item, i){
+    this.proInputHoldersDisabled[i] = true;
+    this.clickedItemPro += 1;
+    this.proteinForm.push({
+      name: item.item
+    });
+    console.log(this.clickedItemPro);
+  }
 
 }

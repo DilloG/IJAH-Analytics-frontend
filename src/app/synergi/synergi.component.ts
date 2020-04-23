@@ -28,12 +28,36 @@ constructor(private http:HttpClient) { }
 
 // prediction function
   async predict() {
-    this.showload = true;
-    this.getSynergiResult();
+    this.showresult = false;
+    if(this.clickedItem){
+      this.showload = true;
+      this.getSynergiResult();
+    }else{
+      this.showFailedInput = true;
+    }
   }
+
   resetinput(){
     this.modelDis = "";
+    this.clickedItem = false;
   }
+
+  errMsg:any;
+  // close error
+  showFailed:boolean = false;
+  showFailedLoad:boolean = false;
+  closeError(){
+    this.showFailed = false;
+    this.showFailedLoad = false;
+    this.showload = false;
+  }
+
+  showFailedInput:boolean = false;
+  closeInfo(){
+    this.showFailedInput = false;
+    this.showload = false;
+  }
+
   // get syenrgi function
   synergi: any;
   synergy_arr: any;
@@ -66,6 +90,10 @@ constructor(private http:HttpClient) { }
         this.showload = false;
         this.showresult = true;
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailed = true;
     });
   }
 
@@ -105,6 +133,10 @@ constructor(private http:HttpClient) { }
       if (this.disease) {
         this.getDiseaseSynergy();
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
   // get synergy meta
@@ -130,11 +162,18 @@ constructor(private http:HttpClient) { }
         console.log(this.disease_arr);
         this.showloadfirst = false;
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
 // end Get Meta
 
-
+clickedItem: boolean = false;
+selectedEfficacy(item) {
+  this.clickedItem = true;
+}
 
 // typeahead
   modelDis: any;

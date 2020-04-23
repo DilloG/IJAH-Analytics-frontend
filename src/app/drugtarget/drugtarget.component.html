@@ -4,6 +4,31 @@
   </div>
 </div>
 
+<div id="errMsg" *ngIf='showFailed'>
+  <div class="failed-modal">
+    <h3><b>Failed to Predict</b></h3>
+    <h5>Error Message: {{errMsg}}</h5>
+    <button type="button" name="button" (click)="closeError()">Ok</button>
+  </div>
+</div>
+
+<div id="errMsg" *ngIf='showFailedLoad'>
+  <div class="failed-modal">
+    <h3><b>Failed to Load Data</b></h3>
+    <h5>Cick <a href="#" routerLink="/contactus">here</a> to contact our team or Try to refresh the page</h5>
+    <h5>Error Message: {{errMsg}}</h5>
+    <!-- <button type="button" name="button" (click)="closeError()">Ok</button> -->
+  </div>
+</div>
+
+<div id="errMsg" *ngIf='showFailedInput'>
+  <div class="failed-modal">
+    <h3><b>You dont choose any input</b></h3>
+    <h5>Please choose the pop up suggestion when you are enter the input</h5>
+    <button type="button" name="button" (click)="closeInfo()">Ok</button>
+  </div>
+</div>
+
 <div id="d-input">
   <div class="container">
     <div class="dic-button-atas">
@@ -31,8 +56,11 @@
               [ngModelOptions]="{standalone: true}"
               [ngbTypeahead]="searchPlant"
               [(ngModel)]="plantFor.name"
-              [value]="plantFor.name" required/>
-              <button class="close-icon" type="reset" (click)="removePlant(i)"><img src="assets/img/reset.png"/></button>
+              [value]="plantFor.name"
+              (selectItem)="selectedPlant($event, i)"
+              [disabled]="plaInputHoldersDisabled[i]"
+              required/>
+              <button class="close-icon" type="button" (click)="removePlant(i)"><img src="assets/img/reset.png"/></button>
             </div>
           </div>
           <div class="close_icon">
@@ -51,7 +79,10 @@
                 [ngModelOptions]="{standalone: true}"
                 [ngbTypeahead]="searchCompound"
                 [(ngModel)]="compoundFor.name"
-                [value]="compoundFor.name" required/>
+                [value]="compoundFor.name"
+                (selectItem)="selectedCompound($event, i)"
+                [disabled]="comInputHoldersDisabled[i]"
+                required/>
                 <button class="close-icon" type="button" (click)="removeCompound(i)"><img src="assets/img/reset.png"/></button>
               </div>
             </div>
@@ -77,8 +108,11 @@
               [ngModelOptions]="{standalone: true}"
               [ngbTypeahead]="searchProtein"
               [(ngModel)]="proteinFor.name"
-              [value]="proteinFor.name" required/>
-              <button class="close-icon" type="reset" (click)="removeProtein(i)"><img src="assets/img/reset.png"/></button>
+              [value]="proteinFor.name"
+              (selectItem)="selectedProtein($event, i)"
+              [disabled]="proInputHoldersDisabled[i]"
+              required/>
+              <button class="close-icon" type="button" (click)="removeProtein(i)"><img src="assets/img/reset.png"/></button>
             </div>
           </div>
           <div class="close_icon">
@@ -97,7 +131,10 @@
                 [ngModelOptions]="{standalone: true}"
                 [ngbTypeahead]="searchDisease"
                 [(ngModel)]="diseaseFor.name"
-                [value]="diseaseFor.name" required/>
+                [value]="diseaseFor.name"
+                (selectItem)="selectedDisease($event, i)"
+                [disabled]="disInputHoldersDisabled[i]"
+                required/>
                 <button class="close-icon" type="button" (click)="removeDisease(i)"><img src="assets/img/reset.png"/></button>
               </div>
             </div>
@@ -110,7 +147,7 @@
   </div>
   <div class="di-button">
     <!-- (click)="resetinput() -->
-    <button class="reset">Reset</button>
+    <button type="reset" class="reset" (click)="resetinput()">Reset</button>
     <button type="submit" [ngx-scroll-to]="'#dest'" class="search">Search</button>
   </div>
   </form>

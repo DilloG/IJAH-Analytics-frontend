@@ -4,6 +4,31 @@
   </div>
 </div>
 
+<div id="errMsg" *ngIf='showFailed'>
+  <div class="failed-modal">
+    <h3><b>Failed to Load Data</b></h3>
+    <h5>Error Message: {{errMsg}}</h5>
+    <button type="button" name="button" (click)="closeError()">Ok</button>
+  </div>
+</div>
+
+<div id="errMsg" *ngIf='showFailedLoad'>
+  <div class="failed-modal">
+    <h3><b>Failed to Load Data</b></h3>
+    <h5>Cick <a href="#" routerLink="/contactus">here</a> to contact our team</h5>
+    <h5>Error Message: {{errMsg}}</h5>
+    <!-- <button type="button" name="button" (click)="closeError()">Ok</button> -->
+  </div>
+</div>
+
+<div id="errMsg" *ngIf='showFailedInput'>
+  <div class="failed-modal">
+    <h3><b>You dont choose any input</b></h3>
+    <h5>Please choose the pop up suggestion when you are enter the input</h5>
+    <button type="button" name="button" (click)="closeInfo()">Ok</button>
+  </div>
+</div>
+
 <div id="s-input">
   <div class="container">
     <form #dtInputForm="ngForm"  (ngSubmit)="predict()" ngNativeValidate>
@@ -15,7 +40,10 @@
         [ngModelOptions]="{standalone: true}"
         [ngbTypeahead]="searchDisease"
         [(ngModel)]="modelDis"
-        [editable]='false' required/>
+        [editable]='false'
+        (selectItem)="selectedEfficacy($event)"
+        [attr.disabled]="clickedItem ? '' : null"
+        required/>
       <div class="si-form">
         <button type="reset" class="reset" (click)="resetinput()">Reset</button>
         <button type="submit" class="submit" [ngx-scroll-to]="'#destination'">Search</button>

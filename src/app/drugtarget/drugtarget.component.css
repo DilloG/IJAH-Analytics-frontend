@@ -158,8 +158,6 @@
 #d-input .dic_input .ngForm div{
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
-  /* padding-right: 30px; */
 }
 
 #d-input .dic_input input{

@@ -101,7 +101,6 @@ export class ClusterComponent implements OnInit {
   public com_btn: boolean = false;
   public pro_btn: boolean = false;
   public dis_btn: boolean = false;
-
   pla_on() {
     this.pla_btn = true;
     this.com_btn = false;
@@ -132,7 +131,6 @@ export class ClusterComponent implements OnInit {
   public com_pro_btn: boolean = false;
   public pro_dis_btn: boolean = false;
   public com_com_btn: boolean = false;
-
   pla_com_on() {
     this.pla_com_btn = true;
     this.com_pro_btn = false;
@@ -192,6 +190,10 @@ export class ClusterComponent implements OnInit {
         window.scrollTo(0, 0);
         this.showloadfirst = false;
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
     // //console.log(this.compound_arr);
   }
@@ -271,6 +273,10 @@ export class ClusterComponent implements OnInit {
       //console.log(this.plant_new);
       if (this.plant_new) {
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
 
@@ -289,6 +295,10 @@ export class ClusterComponent implements OnInit {
       if (this.compound) {
         this.getEfficacy();
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
 
@@ -307,6 +317,10 @@ export class ClusterComponent implements OnInit {
       if (this.disease) {
 
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
 
@@ -325,6 +339,10 @@ export class ClusterComponent implements OnInit {
       if (this.protein) {
 
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailedLoad = true;
     });
   }
   // end of getinput meta
@@ -334,11 +352,56 @@ export class ClusterComponent implements OnInit {
   public showload = false;
   public showresult = false;
   showloadfirst: boolean = true;
+  showFailedInput:boolean = false;
   async predict() {
     this.showresult = false;
-    this.showload = true;
-    this.filtermodel = 0.0;
-    this.getResultMeta();
+    if(this.clickedItem == 6){
+      this.showload = true;
+      this.filtermodel = 0.0;
+      this.getResultMeta();
+    }else{
+      this.showFailedInput = true;
+    }
+  }
+
+  // remove function
+  removeAnalgesic(){
+    this.modelAnalg = "";
+    this.analgDisabled = false;
+    this.clickedItem -= 1;
+  }
+  analgDisabled:boolean = false;
+  selectedAnalg(event){
+    if(event){
+      this.analgDisabled = true;
+      this.clickedItem += 1;
+    }
+  }
+
+  removeAntibacterial(){
+    this.modelBacteri = "";
+    this.bacteriDisabled = false;
+    this.clickedItem -= 1;
+  }
+  bacteriDisabled:boolean = false;
+  selectedBacteri(event){
+    if(event){
+      this.bacteriDisabled = true;
+      this.clickedItem += 1;
+    }
+  }
+
+  removeAntiinflamatory(){
+    this.modelInflam = "";
+    this.inflamDisabled = false;
+    this.clickedItem -= 1;
+  }
+  inflamDisabled:boolean = false;
+  selectedInflam(event){
+    if(event){
+      this.inflamDisabled = true;
+      this.clickedItem += 1;
+    }
   }
 
   dtOptions: any = {};
@@ -359,10 +422,24 @@ export class ClusterComponent implements OnInit {
     };
   }
 
+  // close error
+  showFailed:boolean = false;
+  showFailedLoad:boolean = false;
+  closeError(){
+    this.showFailed = false;
+    this.showFailedLoad = false;
+    this.showload = false;
+  }
+
+  closeInfo(){
+    this.showFailedInput = false;
+  }
+
   // get Result
   showfiltermax:any;
   result: any;
   result_arr: any = [];
+  errMsg:any;
   getResultMeta() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -392,6 +469,10 @@ export class ClusterComponent implements OnInit {
         this.getConnectivityTable();
         this.getMetaTable();
       }
+    }).catch(err => {
+      console.log(err.message);
+      this.errMsg = err.message;
+      this.showFailed = true;
     });
   }
   //
@@ -811,10 +892,13 @@ export class ClusterComponent implements OnInit {
     this.showresult = true;
   }
 
+  clickedItem: number = 0;
   clickedEfficacy: any = "";
   selectedEfficacy(item) {
     this.modelActivity = "";
     this.clickedEfficacy = item.item;
+    this.efficacyDisabled = true;
+    this.clickedItem += 1;
     //console.log(this.efficacy.group[this.clickedEfficacy]);
 
     // jalanin fungsi
@@ -829,6 +913,8 @@ export class ClusterComponent implements OnInit {
   selectedActivity(item) {
     this.modelTarget = "";
     this.clickedActivity = item.item;
+    this.activityDisabled = true;
+    this.clickedItem += 1;
     //console.log(this.efficacy.group[this.clickedEfficacy][this.clickedActivity]);
 
     var temp_Activity = this.efficacy.group[this.clickedEfficacy][this.clickedActivity];
@@ -852,7 +938,43 @@ export class ClusterComponent implements OnInit {
 
   }
 
+  selectedTarget(item){
+    if(item){
+      this.targetDisabled = true;
+      this.clickedItem += 1;
+    }
+  }
+
+  activityDisabled:boolean = false;
+  targetDisabled:boolean = false;
+  efficacyDisabled:boolean = false;
+  removeEfficacy(){
+    this.modelEfficacy = "";
+    this.clickedEfficacy= "";
+    this.efficacyDisabled = false;
+    this.clickedItem -= 1;
+    this.removeActivity();
+  }
+
+  removeActivity(){
+    this.modelActivity = "";
+    this.clickedActivity = "";
+    this.activityDisabled = false;
+    this.clickedItem -= 1;
+    this.removeTarget();
+  }
+
+  removeTarget(){
+    this.modelTarget = "";
+    this.targetDisabled = false;
+    this.clickedItem -= 1;
+  }
+
+
+  // showWantReset:boolean = true;
+
   resetulang(){
+    this.showresult = false;
     this.clickedActivity = "";
     this.clickedEfficacy= "";
     this.modelAnalg = "";
@@ -861,6 +983,11 @@ export class ClusterComponent implements OnInit {
     this.modelActivity = "";
     this.modelEfficacy = "";
     this.modelTarget = "";
+    this.inflamDisabled = false;
+    this.bacteriDisabled = false;
+    this.analgDisabled = false;
+    this.removeEfficacy();
+    this.clickedItem -= this.clickedItem;
   }
 
   //links to gbif plant databases
