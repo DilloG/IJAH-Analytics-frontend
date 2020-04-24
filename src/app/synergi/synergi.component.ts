@@ -40,6 +40,7 @@ constructor(private http:HttpClient) { }
   resetinput(){
     this.modelDis = "";
     this.clickedItem = false;
+    this.showresult = false;
   }
 
   errMsg:any;

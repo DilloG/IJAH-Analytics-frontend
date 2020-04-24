@@ -345,3 +345,13 @@
 #loading button:hover{
   transform: scale(1.1);
 }
+
+.hi-text a{
+  text-decoration: none;
+  font-size: 14px;
+  color: #4CAF50;
+}
+
+.hi-text a:hover{
+  color: white;
+}

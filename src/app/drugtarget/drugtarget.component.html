@@ -172,7 +172,7 @@
     <div class="ctitle">
       <div class="ctitle-box">
         <h1>Drug-Target Result</h1>
-        <p>The result based your input <span [style.display]="showfilter > 0 ? 'inline' : 'none'" >with compound similarity min weight <b>{{showfilter}}</b>, max weight <b>{{showfiltermax}}</b></span></p>
+        <p>The result based your input <span [style.display]="showfilter > 0 ? 'inline' : 'none'" >with compound similarity min Score <b>{{showfilter}}</b>, max Score <b>{{showfiltermax}}</b></span></p>
       </div>
       <button type="button" (click)="openfilter()">Filter <i class="fa fa-filter"></i></button>
     </div>
@@ -269,7 +269,7 @@
                   <th>Plant Id</th>
                   <th>Plant Latin</th>
                   <!-- <th>Plant Indonesia</th> -->
-                  <th>Connectivity Weight</th>
+                  <th>Connectivity Score</th>
                   <th>Compound Id</th>
                   <th>Compound Name</th>
                   <!-- <th>Compound IUPAC</th> -->
@@ -321,7 +321,7 @@
                   <th>Compound Id</th>
                   <th>Compound Name</th>
                   <!-- <th>Compound IUPAC</th> -->
-                  <th>Connectivity Weight</th>
+                  <th>Connectivity Score</th>
                   <th>Protein Id</th>
                   <th>Protein Name</th>
                   <!-- <th>Protein Uniprot ABBRV</th> -->
@@ -346,7 +346,7 @@
                 <tr>
                   <th>Protein Id</th>
                   <th>Protein Name</th>
-                  <th>Connectivity Weight</th>
+                  <th>Connectivity Score</th>
                   <th>Disease Id</th>
                   <th>Disease Name</th>
                 </tr>

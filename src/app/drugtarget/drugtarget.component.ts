@@ -825,7 +825,7 @@ export class DrugtargetComponent implements OnInit {
           values[1] +" | "+ com_side.substr(0, 10) + "..",
           values[2],
           values[0] +" | "+ temp_pla[values[0]].nlat +" -> "+
-          values[1] +" | "+ com_side +"<br>Weight :"+
+          values[1] +" | "+ com_side +"<br>Score :"+
           values[2]
         ];
       }
@@ -878,7 +878,7 @@ export class DrugtargetComponent implements OnInit {
           values[1] + " | " + pro_side.substr(0, 10) + "..",
           values[2],
           values[0] + " | " + com_side +" -> "+
-          values[1] + " | " + pro_side +"<br>Weight :"+
+          values[1] + " | " + pro_side +"<br>Score :"+
           values[2] + " *" + scoreval +" "+ values[3] + " | " + sim_side
         ];
       }
@@ -894,7 +894,7 @@ export class DrugtargetComponent implements OnInit {
           values[1] +" | "+ temp_dis[values[1]].name.substr(0, 10)+"..",
           values[2],
           values[0] +" | "+ pro_side +" -> "+
-          values[1] +" | "+ temp_dis[values[1]].name +"<br>Weight :"+
+          values[1] +" | "+ temp_dis[values[1]].name +"<br>Score :"+
           values[2]
         ];
       }
