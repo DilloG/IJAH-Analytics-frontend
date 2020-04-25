@@ -794,9 +794,16 @@ export class DrugtargetComponent implements OnInit {
     this.trycompro();
     this.tryplapro();
 
-    // ini untuk menggabungkan hasil
-    this.comtopro = this.plavscomtopro.concat(this.comvscomtopro);
+    //mapping protein
+    const compro_ls = Object.values(this.result.compound_vs_protein).map(
+      function(values:any) {
+        return [values[0], values[1], values[2], values[0]];
+      }
+    );
 
+    // ini untuk menggabungkan hasil
+    this.comtopro = this.plavscomtopro.concat(this.comvscomtopro, compro_ls);
+    console.log(this.comtopro)
     //filter to remove lost connection
     const temp_ = Object.values(this.comtopro).map(
       function(values: any) {
@@ -904,8 +911,84 @@ export class DrugtargetComponent implements OnInit {
       }
     );
 
+    const compro_l = Object.values(this.result.compound_vs_protein).map(
+      function(values: any) {
+
+                // compound if
+                let com_side;
+                if (temp_com[values[0]].npub != null) {
+                  com_side = temp_com[values[0]].npub;
+                }else if(temp_com[values[0]].ccid != null){
+                  com_side = temp_com[values[0]].ccid;
+                }else if(temp_com[values[0]].pbid != null){
+                  com_side = temp_com[values[0]].pbid;
+                }else{
+                  com_side = "null";
+                }
+
+                // protein if
+                let pro_side;
+                if (temp_pro[values[1]].name != null) {
+                  pro_side = temp_pro[values[1]].name;
+                }else{
+                  pro_side = "null";
+                }
+
+                // values if
+                let scoreval;
+                if(values[2]<1){
+                  scoreval = "Compound similarity with"
+                }else{
+                  scoreval = "Actual Value"
+                }
+
+                // com similarity source
+                let sim_side;
+                if (temp_com[values[0]].npub != null) {
+                  sim_side = temp_com[values[0]].npub;
+                }else if(temp_com[values[0]].ccid != null){
+                  sim_side = temp_com[values[0]].ccid;
+                }else if(temp_com[values[0]].pbid != null){
+                  sim_side = temp_com[values[0]].pbid;
+                }else{
+                  sim_side = "null";
+                }
+
+                return [
+                  values[0] + " | " + com_side.substr(0, 10) + "..",
+                  values[1] + " | " + pro_side.substr(0, 10) + "..",
+                  values[2],
+                  values[0] + " | " + com_side +" -> "+
+                  values[1] + " | " + pro_side +"<br>Score :"+
+                  values[2] + " *" + scoreval +" "+ values[0] + " | " + sim_side
+                ];
+      }
+    );
+    console.log(this.result.compound_vs_protein)
+    console.log(compro_l)
+
     //menyambungkan konektivitas yang putus agar sesuai kolom
     const void_placom = Object.values(this.comtopro).map(
+      function(values: any) {
+        let com_side;
+        if (temp_com[values[0]].npub != null) {
+          com_side = temp_com[values[0]].npub;
+        }else if(temp_com[values[0]].ccid != null){
+          com_side = temp_com[values[0]].ccid;
+        }else if(temp_com[values[0]].pbid != null){
+          com_side = temp_com[values[0]].pbid;
+        }else{
+          com_side = "null";
+        }
+        return [
+          "PLA",
+          values[0] + " | " + com_side.substr(0, 10) + "..",
+          0.0000000000000000001,
+          "null"
+        ];
+      }
+    );
+    const void_placom2 = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
         let com_side;
         if (temp_com[values[0]].npub != null) {
@@ -945,6 +1028,21 @@ export class DrugtargetComponent implements OnInit {
         ];
       }
     );
+    const void_compro2 = Object.values(this.result.protein_vs_disease).map(
+      function(values: any) {
+        let pro_side;
+        if (temp_pro[values[0]].name != null) {
+          pro_side = temp_pro[values[0]].name;
+        }
+
+        return [
+          "PRO",
+          values[0] + " | " + pro_side.substr(0, 10) + "..",
+          0.0000000000000000001,
+          "null"
+        ];
+      }
+    );
     const void_pla_compro = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
         let com_side;
@@ -972,6 +1070,9 @@ export class DrugtargetComponent implements OnInit {
       provsdis,
       void_placom,
       void_compro,
+      void_compro2,
+      void_placom2,
+      compro_l,
       void_pla_compro
     );
 
@@ -1019,6 +1120,7 @@ export class DrugtargetComponent implements OnInit {
     const c = [];
     const a = this.result.plant_vs_compound;
     const b = this.result.compound_vs_protein;
+
     a.forEach((arr1) => {
       b.forEach((arr2) => {
         if (arr2[0] == arr1[1]) {
@@ -1026,8 +1128,7 @@ export class DrugtargetComponent implements OnInit {
         }
       });
     });
-    // this.plavscomtopro = c;
-    // console.log(plavscom);
+
     let tmp = [];
     this.plavscomtopro = c.filter(function(v) {
       if (tmp.indexOf(v.toString()) < 0) {
