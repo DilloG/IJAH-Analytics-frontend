@@ -364,45 +364,7 @@ export class ClusterComponent implements OnInit {
     }
   }
 
-  // remove function
-  removeAnalgesic(){
-    this.modelAnalg = "";
-    this.analgDisabled = false;
-    this.clickedItem -= 1;
-  }
-  analgDisabled:boolean = false;
-  selectedAnalg(event){
-    if(event){
-      this.analgDisabled = true;
-      this.clickedItem += 1;
-    }
-  }
 
-  removeAntibacterial(){
-    this.modelBacteri = "";
-    this.bacteriDisabled = false;
-    this.clickedItem -= 1;
-  }
-  bacteriDisabled:boolean = false;
-  selectedBacteri(event){
-    if(event){
-      this.bacteriDisabled = true;
-      this.clickedItem += 1;
-    }
-  }
-
-  removeAntiinflamatory(){
-    this.modelInflam = "";
-    this.inflamDisabled = false;
-    this.clickedItem -= 1;
-  }
-  inflamDisabled:boolean = false;
-  selectedInflam(event){
-    if(event){
-      this.inflamDisabled = true;
-      this.clickedItem += 1;
-    }
-  }
 
   dtOptions: any = {};
   ngOnInit() {
@@ -938,9 +900,64 @@ export class ClusterComponent implements OnInit {
 
   }
 
+  clickedTarget:any = "";
   selectedTarget(item){
     if(item){
       this.targetDisabled = true;
+      this.clickedTarget = item.item;
+      this.clickedItem += 1;
+    }
+  }
+
+  // remove function
+  removeAnalgesic(){
+    this.modelAnalg = "";
+    this.showresult = false;
+    if(this.analgDisabled){
+      this.analgDisabled = false;
+      this.clickedItem -= 1;
+    }
+    console.log(this.clickedItem)
+  }
+  analgDisabled:boolean = false;
+  selectedAnalg(event){
+    if(event){
+      this.analgDisabled = true;
+      this.clickedItem += 1;
+    }
+  }
+
+  removeAntibacterial(){
+    this.modelBacteri = "";
+    this.showresult = false;
+    if(this.bacteriDisabled){
+      this.bacteriDisabled = false;
+      this.clickedItem -= 1;
+    }
+    console.log(this.clickedItem)
+  }
+
+  bacteriDisabled:boolean = false;
+  selectedBacteri(event){
+    if(event){
+      this.bacteriDisabled = true;
+      this.clickedItem += 1;
+    }
+  }
+
+  removeAntiinflamatory(){
+    this.modelInflam = "";
+    this.showresult = false;
+    if(this.inflamDisabled){
+      this.inflamDisabled = false;
+      this.clickedItem -= 1;
+    }
+    console.log(this.clickedItem)
+  }
+  inflamDisabled:boolean = false;
+  selectedInflam(event){
+    if(event){
+      this.inflamDisabled = true;
       this.clickedItem += 1;
     }
   }
@@ -951,23 +968,43 @@ export class ClusterComponent implements OnInit {
   removeEfficacy(){
     this.modelEfficacy = "";
     this.clickedEfficacy= "";
-    this.efficacyDisabled = false;
-    this.clickedItem -= 1;
-    this.removeActivity();
+    this.showresult = false;
+    if(this.efficacyDisabled){
+      this.efficacyDisabled = false;
+      this.clickedItem -= 1;
+    }
+
+    if(this.activityDisabled){
+      console.log(this.clickedItem);
+      this.removeActivity();
+    }
+    console.log(this.clickedItem)
   }
 
   removeActivity(){
     this.modelActivity = "";
     this.clickedActivity = "";
-    this.activityDisabled = false;
-    this.clickedItem -= 1;
-    this.removeTarget();
+    this.showresult = false;
+    if(this.activityDisabled){
+      this.activityDisabled = false;
+      this.clickedItem -= 1;
+    }
+
+    if(this.targetDisabled){
+      console.log(this.clickedItem);
+      this.removeTarget();
+    }
+    console.log(this.clickedItem)
   }
 
   removeTarget(){
     this.modelTarget = "";
-    this.targetDisabled = false;
-    this.clickedItem -= 1;
+    this.showresult = false;
+    if(this.targetDisabled){
+      this.targetDisabled = false;
+      this.clickedItem -= 1;
+    }
+    console.log(this.clickedItem)
   }
 
 
@@ -987,6 +1024,8 @@ export class ClusterComponent implements OnInit {
     this.bacteriDisabled = false;
     this.analgDisabled = false;
     this.removeEfficacy();
+    this.removeActivity();
+    this.removeTarget();
     this.clickedItem -= this.clickedItem;
   }
 

@@ -89,6 +89,7 @@ export class DrugtargetComponent implements OnInit {
 
   // fungsi menghapus field input
   removePlant(i: number) {
+    this.showresult = false;
     if (this.addDrug_btn > 1) {
       this.plantFor.splice(i, 1);
       this.addDrug_btn -= 1;
@@ -103,6 +104,7 @@ export class DrugtargetComponent implements OnInit {
     }
   }
   removeCompound(i: number) {
+    this.showresult = false;
     if (this.addDrug_btn > 1) {
       this.compoundFor.splice(i, 1);
       this.addDrug_btn -= 1;
@@ -117,6 +119,7 @@ export class DrugtargetComponent implements OnInit {
     }
   }
   removeProtein(i: number) {
+    this.showresult = false;
     if (this.addTarget_btn > 1) {
       this.proteinFor.splice(i, 1);
       this.addTarget_btn -= 1;
@@ -131,6 +134,7 @@ export class DrugtargetComponent implements OnInit {
     }
   }
   removeDisease(i: number) {
+    this.showresult = false;
     if (this.addTarget_btn > 1) {
       this.diseaseFor.splice(i, 1);
       this.addTarget_btn -= 1;
