@@ -442,11 +442,13 @@ export class ComsimilarComponent implements OnInit {
         if (this.result) {
           console.log(this.result);
           this.showSuccess = true;
+		  this.showload = false;
         }
       }).catch(err => {
         console.log(err.message);
         this.errMsg = err.message;
         this.showFailed = true;
+		this.showload = false;
       });
 
     }

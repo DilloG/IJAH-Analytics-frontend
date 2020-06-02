@@ -196,6 +196,7 @@ thead th{
   padding: 20px 20px;
   border-radius: 10px;
   position: relative;
+  z-index: 50000000000000000;
 }
 
 .success-modal button{

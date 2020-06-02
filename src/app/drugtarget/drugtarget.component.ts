@@ -801,9 +801,18 @@ export class DrugtargetComponent implements OnInit {
       }
     );
 
-    // ini untuk menggabungkan hasil
+    // ini untuk menggabungkan hasil !!!
     this.comtopro = this.plavscomtopro.concat(this.comvscomtopro, compro_ls);
     console.log(this.comtopro)
+	
+	//fixing fiter
+	this.comtopro = this.comtopro.filter((values:any) => {
+		return values[2] >= this.filtermodel && values[2] <= this.filtermodelMax;
+	})
+	
+	console.log(this.comtopro)
+	//endof fixing filter
+	
     //filter to remove lost connection
     const temp_ = Object.values(this.comtopro).map(
       function(values: any) {
@@ -894,6 +903,7 @@ export class DrugtargetComponent implements OnInit {
         ];
       }
     );
+	console.log(comvspro);
     const provsdis = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
         let pro_side;
@@ -1043,6 +1053,10 @@ export class DrugtargetComponent implements OnInit {
         ];
       }
     );
+	const temp_comtopro_arr = this.comtopro.map(item => {
+		return item[0];
+	})
+	console.log(temp_comtopro_arr);
     const void_pla_compro = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
         let com_side;
@@ -1062,7 +1076,7 @@ export class DrugtargetComponent implements OnInit {
           "null"
         ];
       }
-    );
+    )
 
     // menggabungkan semua sankey connectivity
     this.sankeyData = plavscom.concat(
@@ -1070,9 +1084,9 @@ export class DrugtargetComponent implements OnInit {
       provsdis,
       void_placom,
       void_compro,
-      void_compro2,
-      void_placom2,
-      compro_l,
+      //void_compro2,
+      //void_placom2,
+      //compro_l,
       void_pla_compro
     );
 
