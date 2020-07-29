@@ -422,9 +422,6 @@ export class ComsimilarComponent implements OnInit {
       fd.append('pdf', this.selectedFile, this.selectedFile.name);
       fd.append('data',  JSON.stringify(this.sendMsgJson));
       console.log(fd);
-     //  for (var pair of fd.entries()) {
-     //   console.log(pair[0] + ", " + pair[1] + ", " + pair[2]);
-     // }
      this.getResult(fd);
     }
 

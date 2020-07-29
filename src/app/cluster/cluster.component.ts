@@ -609,9 +609,21 @@ export class ClusterComponent implements OnInit {
     ////console.log(this.result.plant_vs_compound[0]);
     const plavscom = Object.values(this.result.plant_vs_compound).map(
       function(values: any) {
+		  let comcas;
+            if(temp_com[values[1]].ccid != null){
+              comcas = temp_com[values[1]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
+		  let plaidr;
+            if(temp_pla[values[0]].nidr != null){
+              plaidr = temp_pla[values[0]].nidr + " | ";
+            } else{
+              plaidr = "";
+            }
         return [
-          values[0] +" | "+ temp_pla[values[0]].nlat.substr(0, 10)+"..",
-          values[1] +" | "+ temp_com[values[1]].npub.substr(0, 10)+"..",
+          plaidr + temp_pla[values[0]].nlat,
+          comcas+ temp_com[values[1]].npub.substr(0, 10)+"..",
           values[2]
        ];
       }
@@ -619,9 +631,21 @@ export class ClusterComponent implements OnInit {
     ////console.log(plavscom);
     const comvscom = Object.values(this.result.compound_similarity).map(
       function(values: any) {
+		  let comcasA;
+            if(temp_com[values[0]].ccid != null){
+              comcasA = temp_com[values[0]].ccid + " | ";
+            } else{
+              comcasA = "";
+            }
+		  let comcasB;
+            if(temp_com[values[1]].ccid != null){
+              comcasB = temp_com[values[1]].ccid + " | ";
+            } else{
+              comcasB = "";
+            }
         return [
-          values[1] +" | "+ temp_com[values[1]].npub.substr(0, 10)+"..",
-          values[0] +" | "+ temp_com[values[0]].npub.substr(0, 10)+"..",
+          comcasB + temp_com[values[1]].npub.substr(0, 10)+"..",
+          comcasA + temp_com[values[0]].npub.substr(0, 10)+"..",
           values[2]
         ];
       }
@@ -629,9 +653,21 @@ export class ClusterComponent implements OnInit {
     ////console.log(comvscom);
     const comvspro = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
+		  let prouid;
+            if(temp_pro[values[1]].uid != null){
+              prouid = temp_pro[values[1]].uid + " | ";
+            } else{
+              prouid = "";
+            }
+		  let comcas;
+            if(temp_com[values[0]].ccid != null){
+              comcas = temp_com[values[0]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
         return [
-          values[0] +" | "+ temp_com[values[0]].npub.substr(0, 10)+"..",
-          values[1] +" | "+ temp_pro[values[1]].name.substr(0, 10)+"..",
+          comcas + temp_com[values[0]].npub.substr(0, 10)+"..",
+          prouid + temp_pro[values[1]].name.substr(0, 10)+"..",
           values[2]
         ];
       }
@@ -639,9 +675,21 @@ export class ClusterComponent implements OnInit {
     ////console.log(comvspro);
     const provsdis = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
+		  let prouid;
+            if(temp_pro[values[0]].uid != null){
+              prouid = temp_pro[values[0]].uid + " | ";
+            } else{
+              prouid = "";
+            }
+		  let disabbrv;
+            if(temp_dis[values[1]].uab != null){
+              disabbrv = temp_dis[values[1]].uab + " | ";
+            } else{
+              disabbrv = "";
+            }
         return [
-          values[0] +" | "+ temp_pro[values[0]].name.substr(0, 10)+"..",
-          values[1] +" | "+ temp_dis[values[1]].name.substr(0, 10)+"..",
+          prouid + temp_pro[values[0]].name.substr(0, 10)+"..",
+          disabbrv + temp_dis[values[1]].name.substr(0, 10)+"..",
           values[2]
         ];
       }
@@ -649,20 +697,66 @@ export class ClusterComponent implements OnInit {
 
     const com2vspro = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
+		  let prouid;
+            if(temp_pro[values[1]].uid != null){
+              prouid = temp_pro[values[1]].uid + " | ";
+            } else{
+              prouid = "";
+            }
         return ["COM ",
-        values[1] +" | "+ temp_pro[values[1]].name.substr(0, 10)+"..",
+        prouid + temp_pro[values[1]].name.substr(0, 10)+"..",
         0.00000000000000000000000000001];
       }
     );
+	
     const plavscom2 = Object.values(this.result.compound_similarity).map(
       function(values: any) {
+		  let comcas;
+            if(temp_com[values[0]].ccid != null){
+              comcas = temp_com[values[0]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
         return [
-          "COM",
-          values[0] +" | "+ temp_com[values[0]].npub.substr(0, 10)+"..",
+          "PLA",
+          comcas + temp_com[values[0]].npub.substr(0, 10)+"..",
           0.00000000000000000000000000001
         ];
       }
     );
+	
+	const plavscom3 = Object.values(this.result.compound_similarity).map(
+      function(values: any) {
+		  let comcas;
+            if(temp_com[values[1]].ccid != null){
+              comcas = temp_com[values[1]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
+        return [
+          "PLA",
+          comcas + temp_com[values[1]].npub.substr(0, 10)+"..",
+          0.00000000000000000000000000001
+        ];
+      }
+    );
+	console.log(this.result.compound_similarity);
+	const plavscom4 = Object.values(this.result.compound_similarity).map(
+      function(values: any) {
+		  let comcas;
+            if(temp_com[values[0]].ccid != null){
+              comcas = temp_com[values[0]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
+        return [
+          "COM",
+          comcas + temp_com[values[0]].npub.substr(0, 10)+"..",
+          0.00000000000000000000000000001
+        ];
+      }
+    );
+
 
     ////console.log(provsdis);
     this.sankeyData = plavscom.concat(
@@ -670,7 +764,9 @@ export class ClusterComponent implements OnInit {
       comvspro,
       com2vspro,
       provsdis,
-      plavscom2
+      plavscom2,
+	  plavscom3,
+	  plavscom4
     );
 
   }

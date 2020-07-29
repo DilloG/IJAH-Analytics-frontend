@@ -44,15 +44,18 @@
 .hbf-select{
   margin: 0 40px;
   display: flex;
+  width: 10%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: 0.3s;
   cursor: pointer;
+  border-bottom: 4px solid #2ECC71;
 }
 
 .hbf-select:hover{
   transform: scale(1.1,1.1);
+  border-bottom: 4px solid white;
 }
 
 .hbf-select img{

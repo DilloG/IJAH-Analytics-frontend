@@ -833,19 +833,32 @@ export class DrugtargetComponent implements OnInit {
         let com_side;
         if (temp_com[values[1]].npub != null) {
           com_side = temp_com[values[1]].npub;
-        }else if(temp_com[values[1]].ccid != null){
-          com_side = temp_com[values[1]].ccid;
         }else if(temp_com[values[1]].pbid != null){
           com_side = temp_com[values[1]].pbid;
         }else{
-          com_side = "null";
+          com_side = values[1];
         }
+		
+		let comcas;
+            if(temp_com[values[1]].ccid != null){
+              comcas = temp_com[values[1]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
+			
+		let plaidr;
+            if(temp_pla[values[0]].nidr != null){
+              plaidr = temp_pla[values[0]].nidr + " | ";
+            } else{
+              plaidr = "";
+            }
+			
         return [
-          values[0] +" | "+ temp_pla[values[0]].nlat.substr(0, 10)+"..",
-          values[1] +" | "+ com_side.substr(0, 10) + "..",
+          plaidr + temp_pla[values[0]].nlat,
+          comcas + com_side.substr(0, 10) + "..",
           values[2],
-          values[0] +" | "+ temp_pla[values[0]].nlat +" -> "+
-          values[1] +" | "+ com_side +"<br>Score :"+
+          plaidr + temp_pla[values[0]].nlat +" -> "+
+          comcas + com_side +"<br>Score :"+
           values[2]
         ];
       }
@@ -857,21 +870,33 @@ export class DrugtargetComponent implements OnInit {
         let com_side;
         if (temp_com[values[0]].npub != null) {
           com_side = temp_com[values[0]].npub;
-        }else if(temp_com[values[0]].ccid != null){
-          com_side = temp_com[values[0]].ccid;
         }else if(temp_com[values[0]].pbid != null){
           com_side = temp_com[values[0]].pbid;
         }else{
-          com_side = "null";
+          com_side = values[0];
         }
+		
+		let comcas;
+           if(temp_com[values[0]].ccid != null){
+              comcas = temp_com[values[0]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
 
         // protein if
         let pro_side;
         if (temp_pro[values[1]].name != null) {
           pro_side = temp_pro[values[1]].name;
         }else{
-          pro_side = "null";
+          pro_side = values[1];
         }
+		
+		let prouid;
+            if(temp_pro[values[1]].uid != null){
+              prouid = temp_pro[values[1]].uid + " | ";
+            } else{
+              prouid = "";
+            }
 
         // values if
         let scoreval;
@@ -885,42 +910,66 @@ export class DrugtargetComponent implements OnInit {
         let sim_side;
         if (temp_com[values[3]].npub != null) {
           sim_side = temp_com[values[3]].npub;
-        }else if(temp_com[values[3]].ccid != null){
-          sim_side = temp_com[values[3]].ccid;
         }else if(temp_com[values[3]].pbid != null){
           sim_side = temp_com[values[3]].pbid;
         }else{
-          sim_side = "null";
+          sim_side = values[3];
         }
+		
+		let simcas;
+           if(temp_com[values[3]].ccid != null){
+              simcas = temp_com[values[3]].ccid + " | ";
+            } else{
+              simcas = "";
+            }
 
         return [
-          values[0] + " | " + com_side.substr(0, 10) + "..",
-          values[1] + " | " + pro_side.substr(0, 10) + "..",
+          comcas + com_side.substr(0, 10) + "..",
+          prouid + pro_side.substr(0, 10) + "..",
           values[2],
-          values[0] + " | " + com_side +" -> "+
-          values[1] + " | " + pro_side +"<br>Score :"+
-          values[2] + " *" + scoreval +" "+ values[3] + " | " + sim_side
+          comcas + com_side +" -> "+
+          prouid + pro_side +"<br>Score :"+
+          values[2] + " *" + scoreval +" "+ simcas + sim_side
         ];
       }
     );
 	console.log(comvspro);
+	
     const provsdis = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
         let pro_side;
         if (temp_pro[values[0]].name != null) {
           pro_side = temp_pro[values[0]].name;
-        }
+        } else{
+		  pro_side = values[0];
+		}
+		
+		let prouid;
+            if(temp_pro[values[0]].uid != null){
+              prouid = temp_pro[values[0]].uid + " | ";
+            } else{
+              prouid = "";
+            }
+		
+		let disabbrv;
+            if(temp_dis[values[1]].uab != null){
+              disabbrv = temp_dis[values[1]].uab + " | ";
+            } else{
+              disabbrv = "";
+            }
+			
         return [
-          values[0] +" | "+ pro_side.substr(0, 10) + "..",
-          values[1] +" | "+ temp_dis[values[1]].name.substr(0, 10)+"..",
+          prouid + pro_side.substr(0, 10) + "..",
+          disabbrv + temp_dis[values[1]].name.substr(0, 10)+"..",
           values[2],
-          values[0] +" | "+ pro_side +" -> "+
-          values[1] +" | "+ temp_dis[values[1]].name +"<br>Score :"+
+          prouid + pro_side +" -> "+
+          disabbrv + temp_dis[values[1]].name +"<br>Score :"+
           values[2]
         ];
       }
     );
 
+	/*
     const compro_l = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
 
@@ -976,6 +1025,7 @@ export class DrugtargetComponent implements OnInit {
     );
     console.log(this.result.compound_vs_protein)
     console.log(compro_l)
+*/ 
 
     //menyambungkan konektivitas yang putus agar sesuai kolom
     const void_placom = Object.values(this.comtopro).map(
@@ -983,21 +1033,27 @@ export class DrugtargetComponent implements OnInit {
         let com_side;
         if (temp_com[values[0]].npub != null) {
           com_side = temp_com[values[0]].npub;
-        }else if(temp_com[values[0]].ccid != null){
-          com_side = temp_com[values[0]].ccid;
         }else if(temp_com[values[0]].pbid != null){
           com_side = temp_com[values[0]].pbid;
         }else{
-          com_side = "null";
+          com_side = values[0];
         }
+		
+		let comcas;
+           if(temp_com[values[0]].ccid != null){
+              comcas = temp_com[values[0]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
         return [
           "PLA",
-          values[0] + " | " + com_side.substr(0, 10) + "..",
+          comcas + com_side.substr(0, 10) + "..",
           0.0000000000000000001,
           "null"
         ];
       }
     );
+	/*
     const void_placom2 = Object.values(this.result.compound_vs_protein).map(
       function(values: any) {
         let com_side;
@@ -1010,6 +1066,13 @@ export class DrugtargetComponent implements OnInit {
         }else{
           com_side = "null";
         }
+		
+		let comcas;
+           if(temp_com[values[0]].ccid != null){
+              comcas = temp_com[values[0]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
         return [
           "PLA",
           values[0] + " | " + com_side.substr(0, 10) + "..",
@@ -1018,26 +1081,33 @@ export class DrugtargetComponent implements OnInit {
         ];
       }
     );
+	*/
     const void_compro = Object.values(this.comtopro).map(
       function(values: any) {
         let com_side;
         if (temp_com[values[0]].npub != null) {
           com_side = temp_com[values[0]].npub;
-        }else if(temp_com[values[0]].ccid != null){
-          com_side = temp_com[values[0]].ccid;
         }else if(temp_com[values[0]].pbid != null){
           com_side = temp_com[values[0]].pbid;
         }else{
-          com_side = "null";
+          com_side = values[0];
         }
+		
+		let comcas;
+           if(temp_com[values[0]].ccid != null){
+              comcas = temp_com[values[0]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
         return [
-          values[0] + " | " + com_side.substr(0, 10) + "..",
+          comcas + com_side.substr(0, 10) + "..",
           "PRO",
           0.0000000000000000001,
           "null"
         ];
       }
     );
+	/*
     const void_compro2 = Object.values(this.result.protein_vs_disease).map(
       function(values: any) {
         let pro_side;
@@ -1053,6 +1123,8 @@ export class DrugtargetComponent implements OnInit {
         ];
       }
     );
+	*/
+	
 	const temp_comtopro_arr = this.comtopro.map(item => {
 		return item[0];
 	})
@@ -1062,15 +1134,21 @@ export class DrugtargetComponent implements OnInit {
         let com_side;
         if (temp_com[values[1]].npub != null) {
           com_side = temp_com[values[1]].npub;
-        }else if(temp_com[values[1]].ccid != null){
-          com_side = temp_com[values[1]].ccid;
         }else if(temp_com[values[1]].pbid != null){
           com_side = temp_com[values[1]].pbid;
         }else{
-          com_side = "null";
+          com_side = values[0];
         }
+		
+		let comcas;
+           if(temp_com[values[1]].ccid != null){
+              comcas = temp_com[values[1]].ccid + " | ";
+            } else{
+              comcas = "";
+            }
+			
         return [
-          values[1] + " | " + com_side.substr(0, 10) + "..",
+          comcas + com_side.substr(0, 10) + "..",
           "PRO",
           0.0000000000000000001,
           "null"
