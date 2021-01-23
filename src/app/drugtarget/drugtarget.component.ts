@@ -18,6 +18,9 @@ export class DrugtargetComponent implements OnInit {
   constructor(private http: HttpClient) {
   }
 
+  // URL
+  public URL = "http://api.vidner.engineer";
+
   // for download images
   @ViewChild('screen', { static: false }) screen: ElementRef;
   @ViewChild('canvas', { static: false }) canvas: ElementRef;
@@ -248,7 +251,7 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/plant", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/plant", httpOptions).toPromise().then(data => {
       this.plant_new = data.data;
       if (this.plant_new) {
         // var t2 = performance.now();
@@ -285,7 +288,7 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/compound", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/compound", httpOptions).toPromise().then(data => {
       this.compound = data.data;
       if (this.compound) {
         var t2 = performance.now();
@@ -320,7 +323,7 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/disease", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/disease", httpOptions).toPromise().then(data => {
       this.disease = data.data;
       if (this.disease) {
         var nilai = this.disease;
@@ -346,7 +349,7 @@ export class DrugtargetComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/protein", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/protein", httpOptions).toPromise().then(data => {
       this.protein = data.data;
       if (this.protein) {
         var nilai = this.protein;
@@ -533,7 +536,7 @@ export class DrugtargetComponent implements OnInit {
     };
     const parseJson = JSON.stringify(this.sendmsgjson);
     console.log(parseJson);
-    this.http.post<any>("http://api.vidner.engineer/graph_from_all", parseJson, httpOptions).toPromise().then(data => {
+    this.http.post<any>(this.URL+"/graph_from_all", parseJson, httpOptions).toPromise().then(data => {
       this.result = data.data;
       console.log(data.data);
       if (this.result) {

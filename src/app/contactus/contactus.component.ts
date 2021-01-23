@@ -16,6 +16,9 @@ export class ContactusComponent implements OnInit {
   ngOnInit() {
   }
 
+  // url
+  public URL = "http://admin.vidner.engineer";
+
   name:any;
   email:any;
   affiliation:any;
@@ -62,7 +65,7 @@ export class ContactusComponent implements OnInit {
 
     const sendMsgJson = JSON.stringify(fd);
     console.log(sendMsgJson);
-    this.http.post<any>("http://admin.vidner.engineer/feedback", sendMsgJson, httpOptions).toPromise().then(data => {
+    this.http.post<any>(this.URL+"/feedback", sendMsgJson, httpOptions).toPromise().then(data => {
       this.result = data;
       if (this.result) {
         console.log(this.result);

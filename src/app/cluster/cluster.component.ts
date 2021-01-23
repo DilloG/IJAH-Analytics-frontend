@@ -32,6 +32,8 @@ export class ClusterComponent implements OnInit {
   }
   //end for download images
 
+  public URL = "http://api.vidner.engineer";
+
   // typeahead
   public modelAnalg: any;
   public modelBacteri: any;
@@ -173,7 +175,7 @@ export class ClusterComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/efficacy", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/efficacy", httpOptions).toPromise().then(data => {
       this.efficacy = data.data;
       //console.log(this.efficacy);
       if (this.efficacy) {
@@ -268,7 +270,7 @@ export class ClusterComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/plant", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/plant", httpOptions).toPromise().then(data => {
       this.plant_new = data.data;
       //console.log(this.plant_new);
       if (this.plant_new) {
@@ -289,7 +291,7 @@ export class ClusterComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/compound", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/compound", httpOptions).toPromise().then(data => {
       this.compound = data.data;
       //console.log(this.compound["COM00021005"].npub);
       if (this.compound) {
@@ -311,7 +313,7 @@ export class ClusterComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/disease", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/disease", httpOptions).toPromise().then(data => {
       this.disease = data.data;
       //console.log(this.disease);
       if (this.disease) {
@@ -333,7 +335,7 @@ export class ClusterComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/protein", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/protein", httpOptions).toPromise().then(data => {
       this.protein = data.data;
       //console.log(this.protein);
       if (this.protein) {
@@ -417,7 +419,7 @@ export class ClusterComponent implements OnInit {
       }
   );
     //console.log(postmsgcluster);
-    this.http.post<any>("http://api.vidner.engineer/graph_from_compound", postmsgcluster, httpOptions).toPromise().then(data => {
+    this.http.post<any>(this.URL+"/graph_from_compound", postmsgcluster, httpOptions).toPromise().then(data => {
       this.result = data.data;
       //console.log(this.result);
       if (this.result) {

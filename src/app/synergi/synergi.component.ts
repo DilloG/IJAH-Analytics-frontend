@@ -18,6 +18,9 @@ export class SynergiComponent implements OnInit {
 
 constructor(private http:HttpClient) { }
 
+  // url
+  URL ="http://api.vidner.engineer";
+
 // table design
   public showload: boolean = false;
   public showloadfirst: boolean = true;
@@ -70,7 +73,7 @@ constructor(private http:HttpClient) { }
     };
     var postmsgsynergi = JSON.stringify({disease: this.modelDis.substring(this.modelDis.length - 11)});
     //tinggal dipost
-    this.http.post<any>("http://api.vidner.engineer/sinergy_from_disease", postmsgsynergi, httpOptions).toPromise().then(data => {
+    this.http.post<any>(this.URL+"/sinergy_from_disease", postmsgsynergi, httpOptions).toPromise().then(data => {
       this.synergi = data.data;
       console.log(this.synergi);
       if(this.synergi){
@@ -128,7 +131,7 @@ constructor(private http:HttpClient) { }
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/disease", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/disease", httpOptions).toPromise().then(data => {
       this.disease = data.data;
       console.log(this.disease);
       if (this.disease) {
@@ -148,7 +151,7 @@ constructor(private http:HttpClient) { }
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>("http://api.vidner.engineer/sinergy", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/sinergy", httpOptions).toPromise().then(data => {
       this.diseaseSyn = data.data;
       console.log(this.diseaseSyn);
       if (this.diseaseSyn) {
