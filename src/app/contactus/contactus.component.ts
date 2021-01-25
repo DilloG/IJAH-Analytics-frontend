@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-
+import { environment } from '../../environments/environment';
 @Component({
   selector: 'app-contactus',
   templateUrl: './contactus.component.html',
@@ -17,7 +17,7 @@ export class ContactusComponent implements OnInit {
   }
 
   // url
-  public URL = "http://admin.vidner.engineer";
+  public URL = environment.baseURL.admin;
 
   name:any;
   email:any;

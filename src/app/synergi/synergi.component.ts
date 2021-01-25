@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { DataTableDirective } from 'angular-datatables';
+import { environment } from '../../environments/environment';
 
 type Disease_m = {id: string, name: string};
 
@@ -19,7 +20,7 @@ export class SynergiComponent implements OnInit {
 constructor(private http:HttpClient) { }
 
   // url
-  URL ="http://api.vidner.engineer";
+  public URL = environment.baseURL.api;
 
 // table design
   public showload: boolean = false;

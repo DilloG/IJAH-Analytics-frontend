@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-comsimilar',
@@ -15,7 +16,7 @@ export class ComsimilarComponent implements OnInit {
   constructor(private http: HttpClient) {
   }
 
-  public URL = "http://api.vidner.engineer";
+  public URL = environment.baseURL.api;
 
   // get plant meta
   plant_new: Object;

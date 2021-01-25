@@ -5,7 +5,9 @@ import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { environment } from '../../environments/environment';
 import html2canvas from 'html2canvas';
+
 
 @Component({
   selector: 'app-cluster',
@@ -32,7 +34,7 @@ export class ClusterComponent implements OnInit {
   }
   //end for download images
 
-  public URL = "http://api.vidner.engineer";
+  public URL = environment.baseURL.api;
 
   // typeahead
   public modelAnalg: any;

@@ -5,6 +5,7 @@ import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { environment } from '../../environments/environment';
 import html2canvas from 'html2canvas';
 
 
@@ -19,7 +20,7 @@ export class DrugtargetComponent implements OnInit {
   }
 
   // URL
-  public URL = "http://api.vidner.engineer";
+  public URL = environment.baseURL.api;
 
   // for download images
   @ViewChild('screen', { static: false }) screen: ElementRef;
