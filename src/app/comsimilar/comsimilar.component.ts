@@ -17,7 +17,7 @@ export class ComsimilarComponent implements OnInit {
   }
 
   public URL = environment.baseURL.api;
-
+  public adminURL = environment.baseURL.admin;
   // get plant meta
   plant_new: Object;
   public plant_new_arr = [];
@@ -436,7 +436,7 @@ export class ComsimilarComponent implements OnInit {
           "X-Requested-With": "XMLHttpRequest"
         })
       };
-      this.http.post<any>(this.URL+"/contribute", fd, httpOptions).toPromise().then(data => {
+      this.http.post<any>(this.adminURL+"/contribute", fd, httpOptions).toPromise().then(data => {
         this.result = data;
         // console.log(data);
         if (this.result) {
