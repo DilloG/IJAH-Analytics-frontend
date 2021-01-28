@@ -27,7 +27,7 @@ export class ComsimilarComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>(URL+"/plant", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.URL+"/plant", httpOptions).toPromise().then(data => {
       this.plant_new = data.data;
       if (this.plant_new) {
         const nilai = this.plant_new;
@@ -50,7 +50,7 @@ export class ComsimilarComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>(this.URL+"/compound", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.this.URL+"/compound", httpOptions).toPromise().then(data => {
       this.compound = data.data;
       if (this.compound) {
         const nilai = this.compound;
@@ -77,7 +77,7 @@ export class ComsimilarComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>(this.URL+"/disease", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.this.URL+"/disease", httpOptions).toPromise().then(data => {
       this.disease = data.data;
       if (this.disease) {
         var nilai = this.disease;
@@ -99,7 +99,7 @@ export class ComsimilarComponent implements OnInit {
         "X-Requested-With": "XMLHttpRequest"
       })
     };
-    this.http.get<any>(this.URL+"/protein", httpOptions).toPromise().then(data => {
+    this.http.get<any>(this.this.URL+"/protein", httpOptions).toPromise().then(data => {
       this.protein = data.data;
       if (this.protein) {
         var nilai = this.protein;
@@ -436,7 +436,7 @@ export class ComsimilarComponent implements OnInit {
           "X-Requested-With": "XMLHttpRequest"
         })
       };
-      this.http.post<any>(this.adminURL+"/contribute", fd, httpOptions).toPromise().then(data => {
+      this.http.post<any>(this.adminthis.URL+"/contribute", fd, httpOptions).toPromise().then(data => {
         this.result = data;
         // console.log(data);
         if (this.result) {
